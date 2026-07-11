@@ -140,6 +140,20 @@ userControlSettings = "User Control Settings"
 webBrowserSettings = "Web Browser Setting"
 yourApiKey = "Your API Key"
 
+[account.license]
+daysRemaining_one = "{{count}} day left"
+daysRemaining_other = "{{count}} days left"
+expired = "Your access has expired. The app is read-only until an administrator renews your plan."
+expiresOn = "Expires on {{date}}"
+managedByAdmin = "Your access plan is managed by your administrator."
+noExpiry = "No expiry"
+title = "Access plan"
+
+[account.license.tier]
+free = "Free"
+pro = "Pro"
+ultimate = "Ultimate"
+
 [account.mfa]
 codeLabel = "Authentication code"
 codePlaceholder = "Enter 6-digit code"

@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   Alert,
+  Badge,
   Box,
   Group,
   Modal,
@@ -13,6 +14,7 @@ import {
 import { Button } from "@app/ui/Button";
 import { useTranslation } from "react-i18next";
 import LocalIcon from "@app/components/shared/LocalIcon";
+import { useUserLicense } from "@app/hooks/useUserLicense";
 import { alert as showToast } from "@app/components/toast";
 import { useAuth } from "@app/auth/UseSession";
 import { accountService } from "@app/services/accountService";
@@ -23,9 +25,10 @@ import { BASE_PATH } from "@app/constants/app";
 import { MfaSetupResponse } from "@app/responses/Mfa/MfaResponse";
 
 const AccountSection: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { user, signOut } = useAuth();
   const accountLogout = useAccountLogout();
+  const license = useUserLicense();
   const [passwordModalOpen, setPasswordModalOpen] = useState(false);
   const [usernameModalOpen, setUsernameModalOpen] = useState(false);
 
@@ -346,6 +349,17 @@ const AccountSection: React.FC = () => {
     }
   };
 
+  const licenseTierLabels: Record<string, string> = {
+    FREE: t("account.license.tier.free", "Free"),
+    PRO: t("account.license.tier.pro", "Pro"),
+    ULTIMATE: t("account.license.tier.ultimate", "Ultimate"),
+  };
+  const licenseTierColors: Record<string, string> = {
+    FREE: "gray",
+    PRO: "blue",
+    ULTIMATE: "teal",
+  };
+
   return (
     <Stack gap="md">
       <div>
@@ -356,6 +370,69 @@ const AccountSection: React.FC = () => {
           {t("changeCreds.header", "Update Your Account Details")}
         </Text>
       </div>
+
+      {license && (
+        <Paper withBorder p="md" radius="md">
+          <Stack gap="sm">
+            <Group justify="space-between" align="center">
+              <Text fw={600}>{t("account.license.title", "Access plan")}</Text>
+              <Badge
+                color={licenseTierColors[license.tier] ?? "gray"}
+                variant="light"
+                size="lg"
+              >
+                {licenseTierLabels[license.tier] ?? license.tier}
+              </Badge>
+            </Group>
+
+            {license.expired ? (
+              <Alert
+                icon={
+                  <LocalIcon icon="error-rounded" width="1rem" height="1rem" />
+                }
+                color="red"
+                variant="light"
+              >
+                {t(
+                  "account.license.expired",
+                  "Your access has expired. The app is read-only until an administrator renews your plan.",
+                )}
+              </Alert>
+            ) : license.expiresAt ? (
+              <Group gap="xs" align="center">
+                <Text size="sm" c="dimmed">
+                  {t("account.license.expiresOn", "Expires on {{date}}", {
+                    date: new Date(license.expiresAt).toLocaleDateString(
+                      i18n.language,
+                    ),
+                  })}
+                </Text>
+                {license.daysRemaining >= 0 && (
+                  <Badge
+                    color={license.daysRemaining <= 7 ? "orange" : "gray"}
+                    variant="light"
+                  >
+                    {t("account.license.daysRemaining", "{{count}} days left", {
+                      count: license.daysRemaining,
+                    })}
+                  </Badge>
+                )}
+              </Group>
+            ) : (
+              <Text size="sm" c="dimmed">
+                {t("account.license.noExpiry", "No expiry")}
+              </Text>
+            )}
+
+            <Text size="xs" c="dimmed">
+              {t(
+                "account.license.managedByAdmin",
+                "Your access plan is managed by your administrator.",
+              )}
+            </Text>
+          </Stack>
+        </Paper>
+      )}
 
       <Paper withBorder p="md" radius="md">
         <Stack gap="sm">
