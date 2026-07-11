@@ -43,6 +43,7 @@ import stirling.software.proprietary.audit.Audited;
 import stirling.software.proprietary.model.Team;
 import stirling.software.proprietary.security.database.repository.UserRepository;
 import stirling.software.proprietary.security.model.AuthenticationType;
+import stirling.software.proprietary.security.model.LicenseTier;
 import stirling.software.proprietary.security.model.User;
 import stirling.software.proprietary.security.model.api.user.UsernameAndPass;
 import stirling.software.proprietary.security.repository.TeamRepository;
@@ -52,6 +53,7 @@ import stirling.software.proprietary.security.service.LoginAttemptService;
 import stirling.software.proprietary.security.service.SaveUserRequest;
 import stirling.software.proprietary.security.service.TeamMembershipService;
 import stirling.software.proprietary.security.service.TeamService;
+import stirling.software.proprietary.security.service.UserLicenseAccessService;
 import stirling.software.proprietary.security.service.UserService;
 import stirling.software.proprietary.security.session.SessionPersistentRegistry;
 import stirling.software.proprietary.service.UserLicenseSettingsService;
@@ -71,6 +73,7 @@ public class UserController {
     private final UserLicenseSettingsService licenseSettingsService;
     private final LoginAttemptService loginAttemptService;
     private final TeamMembershipService teamMembershipService;
+    private final UserLicenseAccessService licenseAccessService;
 
     @PreAuthorize("!hasAuthority('ROLE_DEMO_USER')")
     @PostMapping("/register")
@@ -813,6 +816,46 @@ public class UserController {
         }
         userService.deleteUser(username);
         return ResponseEntity.ok(Map.of("message", "User deleted successfully"));
+    }
+
+    // Admin-managed per-user access license: assign a tier (FREE/PRO/ULTIMATE), which resets the
+    // user's expiry to now + the tier's duration (renew = assign the same tier again).
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/admin/setUserLicense")
+    public ResponseEntity<?> setUserLicense(
+            @RequestParam(name = "username") String username,
+            @RequestParam(name = "tier") String tier) {
+        Optional<User> userOpt = userService.findByUsernameIgnoreCase(username);
+        if (userOpt.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("error", "User not found."));
+        }
+        LicenseTier licenseTier = LicenseTier.fromString(tier);
+        User saved = licenseAccessService.assign(userOpt.get(), licenseTier);
+        Map<String, Object> body = new HashMap<>();
+        body.put("message", "License updated");
+        body.put("tier", licenseTier.name());
+        body.put("expiresAt", saved.getLicenseExpiresAt());
+        return ResponseEntity.ok(body);
+    }
+
+    // Current user's own license status (for the in-app remaining-days / read-only banner).
+    @GetMapping("/license")
+    public ResponseEntity<?> getMyLicense(Principal principal) {
+        if (principal == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        Optional<User> userOpt = userService.findByUsernameIgnoreCase(principal.getName());
+        if (userOpt.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        User user = userOpt.get();
+        Map<String, Object> body = new HashMap<>();
+        body.put("tier", licenseAccessService.effectiveTier(user).name());
+        body.put("expiresAt", user.getLicenseExpiresAt());
+        body.put("expired", licenseAccessService.isExpired(user));
+        body.put("daysRemaining", licenseAccessService.daysRemaining(user));
+        return ResponseEntity.ok(body);
     }
 
     @PreAuthorize("!hasAuthority('ROLE_DEMO_USER')")

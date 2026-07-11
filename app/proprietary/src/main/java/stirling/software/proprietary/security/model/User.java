@@ -86,6 +86,15 @@ public class User implements UserDetails, Serializable {
     @Column(name = "email", unique = true)
     private String email;
 
+    // Admin-managed per-user access license (see LicenseTier). A null tier/expiry means
+    // grandfathered/unlimited, so accounts created before this feature keep full access; only
+    // newly created users get the Free trial.
+    @Column(name = "license_tier")
+    private String licenseTier;
+
+    @Column(name = "license_expires_at")
+    private LocalDateTime licenseExpiresAt;
+
     // SaaS-only: Supabase user UUID. Null in OSS / proprietary deployments.
     // Column is `supabase_auth_id` (canonical name from the initial Supabase remote
     // schema migration). An earlier Flyway V2 (PR #6384) accidentally introduced a

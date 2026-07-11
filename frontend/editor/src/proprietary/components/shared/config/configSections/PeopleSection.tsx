@@ -300,6 +300,31 @@ export default function PeopleSection() {
     }
   };
 
+  const handleSetLicense = async (
+    user: User,
+    tier: "FREE" | "PRO" | "ULTIMATE",
+  ) => {
+    try {
+      await userManagementService.setUserLicense(user.username, tier);
+      alert({
+        alertType: "success",
+        title: t("workspace.people.license.updated", "Access plan updated"),
+      });
+      fetchData();
+    } catch (error: unknown) {
+      const errorMessage = isAxiosError(error)
+        ? error.response?.data?.message ||
+          error.response?.data?.error ||
+          error.message
+        : (error instanceof Error ? error.message : undefined) ||
+          t(
+            "workspace.people.license.updateError",
+            "Failed to update access plan",
+          );
+      alert({ alertType: "error", title: errorMessage });
+    }
+  };
+
   const handleDeleteUser = async (user: User) => {
     const confirmMessage = t(
       "workspace.people.confirmDelete",
@@ -876,6 +901,54 @@ export default function PeopleSection() {
                                 ? t("workspace.people.disable")
                                 : t("workspace.people.enable")}
                             </Menu.Item>
+                          )}
+                          {!isCurrentUser(user) && (
+                            <>
+                              <Menu.Divider />
+                              <Menu.Label>
+                                {t(
+                                  "workspace.people.license.setPlan",
+                                  "Access plan",
+                                )}
+                                {user.licenseExpiresAt
+                                  ? ` · ${new Date(
+                                      user.licenseExpiresAt,
+                                    ).toLocaleDateString()}`
+                                  : ""}
+                              </Menu.Label>
+                              <Menu.Item
+                                onClick={() => handleSetLicense(user, "FREE")}
+                                disabled={!loginEnabled}
+                              >
+                                {t(
+                                  "workspace.people.license.tier.free",
+                                  "Free (7 days)",
+                                )}
+                                {user.licenseTier === "FREE" ? " ✓" : ""}
+                              </Menu.Item>
+                              <Menu.Item
+                                onClick={() => handleSetLicense(user, "PRO")}
+                                disabled={!loginEnabled}
+                              >
+                                {t(
+                                  "workspace.people.license.tier.pro",
+                                  "Pro (1 year)",
+                                )}
+                                {user.licenseTier === "PRO" ? " ✓" : ""}
+                              </Menu.Item>
+                              <Menu.Item
+                                onClick={() =>
+                                  handleSetLicense(user, "ULTIMATE")
+                                }
+                                disabled={!loginEnabled}
+                              >
+                                {t(
+                                  "workspace.people.license.tier.ultimate",
+                                  "Ultimate (5 years)",
+                                )}
+                                {user.licenseTier === "ULTIMATE" ? " ✓" : ""}
+                              </Menu.Item>
+                            </>
                           )}
                           {!isCurrentUser(user) && isLockedUser(user) && (
                             <Menu.Item

@@ -15,6 +15,10 @@ export interface User {
   };
   createdAt?: string;
   updatedAt?: string;
+  // Admin-managed access license
+  licenseTier?: string;
+  licenseExpiresAt?: string;
+  licenseExpired?: boolean;
   // Enriched client-side fields
   isActive?: boolean;
   lastRequest?: number; // timestamp in milliseconds
@@ -183,6 +187,22 @@ export const userManagementService = {
       formData.append("teamId", data.teamId.toString());
     }
     await apiClient.post("/api/v1/user/admin/changeRole", formData, {
+      suppressErrorToast: true,
+    });
+  },
+
+  /**
+   * Set a user's admin-managed access license tier (admin only). Assigning a tier resets the
+   * user's expiry to now + the tier's duration (Free 7 days, Pro 1 year, Ultimate 5 years).
+   */
+  async setUserLicense(
+    username: string,
+    tier: "FREE" | "PRO" | "ULTIMATE",
+  ): Promise<void> {
+    const formData = new FormData();
+    formData.append("username", username);
+    formData.append("tier", tier);
+    await apiClient.post("/api/v1/user/admin/setUserLicense", formData, {
       suppressErrorToast: true,
     });
   },

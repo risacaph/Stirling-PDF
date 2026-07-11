@@ -47,6 +47,15 @@ public class AdminUserSummary {
     @Schema(description = "Authentication type (WEB, OAUTH2, SAML2)")
     private String authenticationType;
 
+    @Schema(description = "Admin-managed access tier (FREE/PRO/ULTIMATE); null = grandfathered")
+    private String licenseTier;
+
+    @Schema(description = "When the user's access expires; null = unlimited")
+    private LocalDateTime licenseExpiresAt;
+
+    @Schema(description = "Whether the user's access has expired")
+    private boolean licenseExpired;
+
     @Schema(description = "Team membership (if any)")
     private TeamSummary team;
 

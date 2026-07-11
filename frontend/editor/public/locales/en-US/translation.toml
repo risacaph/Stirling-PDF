@@ -10960,11 +10960,19 @@ grandfathered = "Grandfathered"
 grandfatheredShort = "{{count}} grandfathered"
 slotsAvailable_one = "{{count}} user slot available"
 slotsAvailable_other = "{{count}} user slots available"
+setPlan = "Access plan"
 slotsAvailable_zero = "No slots available"
 unlimited = "Unlimited"
 unlimitedSlots = "Unlimited user slots available"
+updateError = "Failed to update access plan"
+updated = "Access plan updated"
 users_one = "user"
 users_other = "users"
+
+[workspace.people.license.tier]
+free = "Free (7 days)"
+pro = "Pro (1 year)"
+ultimate = "Ultimate (5 years)"
 
 [workspace.people.mfa]
 adminDisableError = "Failed to disable MFA for user"

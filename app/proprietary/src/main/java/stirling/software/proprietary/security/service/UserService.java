@@ -6,6 +6,7 @@ import static stirling.software.proprietary.security.service.MfaService.MFA_REQU
 import static stirling.software.proprietary.security.service.MfaService.MFA_SECRET_KEY;
 
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -50,6 +51,7 @@ import stirling.software.proprietary.security.database.repository.PersistentLogi
 import stirling.software.proprietary.security.database.repository.UserRepository;
 import stirling.software.proprietary.security.model.AuthenticationType;
 import stirling.software.proprietary.security.model.Authority;
+import stirling.software.proprietary.security.model.LicenseTier;
 import stirling.software.proprietary.security.model.User;
 import stirling.software.proprietary.security.repository.TeamRepository;
 import stirling.software.proprietary.security.saml2.CustomSaml2AuthenticatedPrincipal;
@@ -543,6 +545,14 @@ public class UserService implements UserServiceInterface {
             user.setTeam(request.getTeam());
         } else {
             user.setTeam(resolveTeam(request.getTeamId(), this::getDefaultTeam));
+        }
+
+        // New accounts start on the Free 7-day trial. Admins and internal API accounts are exempt
+        // from license enforcement, so a default tier on them is harmless.
+        if (user.getLicenseTier() == null) {
+            user.setLicenseTier(LicenseTier.FREE.name());
+            user.setLicenseExpiresAt(
+                    LocalDateTime.now().plusDays(LicenseTier.FREE.getDurationDays()));
         }
 
         // Save user

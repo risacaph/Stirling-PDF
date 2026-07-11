@@ -595,6 +595,11 @@ public class ProprietaryUIDataController {
         summary.setAuthenticationType(user.getAuthenticationType());
         summary.setCreatedAt(user.getCreatedAt());
         summary.setUpdatedAt(user.getUpdatedAt());
+        summary.setLicenseTier(user.getLicenseTier());
+        summary.setLicenseExpiresAt(user.getLicenseExpiresAt());
+        summary.setLicenseExpired(
+                user.getLicenseExpiresAt() != null
+                        && java.time.LocalDateTime.now().isAfter(user.getLicenseExpiresAt()));
 
         // Map team if present
         if (user.getTeam() != null) {
