@@ -43,6 +43,18 @@ export interface AdminSettingsData {
   lockedUsers?: string[];
 }
 
+/**
+ * The backend reports Integer.MAX_VALUE seats when the user limit is disabled
+ * (i.e. an unlimited number of users). Any value at or above this threshold is
+ * treated as "unlimited" in the UI so we never render the raw sentinel number.
+ */
+export const UNLIMITED_USER_THRESHOLD = 1_000_000;
+
+/** Whether the license reports an effectively unlimited number of user seats. */
+export function isUnlimitedUserLimit(maxAllowedUsers: number): boolean {
+  return maxAllowedUsers >= UNLIMITED_USER_THRESHOLD;
+}
+
 export interface CreateUserRequest {
   username: string;
   password?: string;

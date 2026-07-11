@@ -291,48 +291,28 @@ class UserLicenseSettingsServiceMoreTest {
     @DisplayName("slot calculations")
     class SlotCalculations {
 
+        // The license-based user limit has been removed, so adding users never exceeds the cap
+        // and there is always free capacity, regardless of the (informational) grandfathered count.
+
         @Test
-        @DisplayName("wouldExceedLimit true when adding pushes over the cap")
-        void wouldExceedLimit_true() {
+        @DisplayName("wouldExceedLimit is always false now that the user limit is removed")
+        void wouldExceedLimit_alwaysFalse() {
             lockedSettings(5);
             when(userService.getTotalUsersCount()).thenReturn(5L);
 
-            boolean result = service.wouldExceedLimit(1);
-
-            assertThat(result).isTrue();
+            assertThat(service.wouldExceedLimit(1)).isFalse();
+            assertThat(service.wouldExceedLimit(1_000)).isFalse();
         }
 
         @Test
-        @DisplayName("wouldExceedLimit false when within the cap")
-        void wouldExceedLimit_false() {
-            lockedSettings(10);
-            when(userService.getTotalUsersCount()).thenReturn(5L);
-
-            boolean result = service.wouldExceedLimit(2);
-
-            assertThat(result).isFalse();
-        }
-
-        @Test
-        @DisplayName("getAvailableUserSlots returns remaining capacity")
-        void availableSlots_remaining() {
+        @DisplayName("getAvailableUserSlots reports effectively unlimited capacity")
+        void availableSlots_unlimited() {
             lockedSettings(10);
             when(userService.getTotalUsersCount()).thenReturn(4L);
 
             long slots = service.getAvailableUserSlots();
 
-            assertThat(slots).isEqualTo(6);
-        }
-
-        @Test
-        @DisplayName("getAvailableUserSlots never returns negative")
-        void availableSlots_clampedToZero() {
-            lockedSettings(5);
-            when(userService.getTotalUsersCount()).thenReturn(20L);
-
-            long slots = service.getAvailableUserSlots();
-
-            assertThat(slots).isZero();
+            assertThat(slots).isGreaterThan(1_000_000L);
         }
     }
 

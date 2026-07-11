@@ -19,7 +19,10 @@ import { ActionIcon } from "@app/ui/ActionIcon";
 import { SegmentedControl } from "@app/ui/SegmentedControl";
 import LocalIcon from "@app/components/shared/LocalIcon";
 import { alert } from "@app/components/toast";
-import { userManagementService } from "@app/services/userManagementService";
+import {
+  userManagementService,
+  isUnlimitedUserLimit,
+} from "@app/services/userManagementService";
 import { teamService, Team } from "@app/services/teamService";
 import { Z_INDEX_OVER_CONFIG_MODAL } from "@app/styles/zIndex";
 import { useAppConfig } from "@app/contexts/AppConfigContext";
@@ -418,10 +421,15 @@ export default function InviteMembersModal({
                       height="1rem"
                     />
                     <Text size="sm" fw={500}>
-                      {t("workspace.people.license.slotsAvailable", {
-                        count: licenseInfo.availableSlots,
-                        defaultValue: `${licenseInfo.availableSlots} user slot(s) available`,
-                      })}
+                      {isUnlimitedUserLimit(licenseInfo.maxAllowedUsers)
+                        ? t(
+                            "workspace.people.license.unlimitedSlots",
+                            "Unlimited user slots available",
+                          )
+                        : t("workspace.people.license.slotsAvailable", {
+                            count: licenseInfo.availableSlots,
+                            defaultValue: `${licenseInfo.availableSlots} user slot(s) available`,
+                          })}
                     </Text>
                   </Group>
                   {licenseInfo.availableSlots === 0 && (
@@ -435,11 +443,16 @@ export default function InviteMembersModal({
                   )}
                 </Group>
                 <Text size="xs" c="dimmed">
-                  {t("workspace.people.license.currentUsage", {
-                    current: licenseInfo.totalUsers,
-                    max: licenseInfo.maxAllowedUsers,
-                    defaultValue: `Currently using ${licenseInfo.totalUsers} of ${licenseInfo.maxAllowedUsers} user licenses`,
-                  })}
+                  {isUnlimitedUserLimit(licenseInfo.maxAllowedUsers)
+                    ? t("workspace.people.license.currentUsageUnlimited", {
+                        current: licenseInfo.totalUsers,
+                        defaultValue: `Currently using ${licenseInfo.totalUsers} user licenses`,
+                      })
+                    : t("workspace.people.license.currentUsage", {
+                        current: licenseInfo.totalUsers,
+                        max: licenseInfo.maxAllowedUsers,
+                        defaultValue: `Currently using ${licenseInfo.totalUsers} of ${licenseInfo.maxAllowedUsers} user licenses`,
+                      })}
                 </Text>
               </Stack>
             </Paper>

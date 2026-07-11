@@ -23,6 +23,7 @@ import LocalIcon from "@app/components/shared/LocalIcon";
 import { alert } from "@app/components/toast";
 import {
   userManagementService,
+  isUnlimitedUserLimit,
   User,
 } from "@app/services/userManagementService";
 import { teamService, Team } from "@app/services/teamService";
@@ -484,7 +485,9 @@ export default function PeopleSection() {
               /{" "}
             </Text>
             <Text component="span" fw={600} c="inherit">
-              {licenseInfo.maxAllowedUsers}
+              {isUnlimitedUserLimit(licenseInfo.maxAllowedUsers)
+                ? t("workspace.people.license.unlimited", "Unlimited")
+                : licenseInfo.maxAllowedUsers}
             </Text>
             <Text component="span" c="dimmed">
               {" "}

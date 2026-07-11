@@ -28,14 +28,14 @@ import stirling.software.proprietary.security.service.UserService;
 /**
  * Service for managing user license settings and grandfathering logic.
  *
- * <p>User limit calculation:
+ * <p>The license-based limit on the number of users has been removed. {@link
+ * #calculateMaxAllowedUsers()} always reports an unlimited number of seats, so user registration,
+ * admin-created accounts and invitations are never blocked by a seat cap regardless of license
+ * type.
  *
- * <ul>
- *   <li>Default limit: 5 users
- *   <li>Grandfathered limit: max(5, existing user count at initialization)
- *   <li>With pro license: grandfathered limit + license maxUsers
- *   <li>Without pro license: grandfathered limit
- * </ul>
+ * <p>The grandfathering fields and their integrity signature are retained for informational display
+ * (see {@link #getDisplayGrandfatheredCount()}) and for the separate OAuth/SAML SSO eligibility
+ * checks, which are governed by license type rather than by a user count.
  */
 @Service
 @Slf4j
@@ -290,52 +290,21 @@ public class UserLicenseSettingsService {
     }
 
     /**
-     * Calculates the maximum allowed users based on grandfathering rules.
+     * Reports the maximum number of users allowed.
      *
-     * <p>Logic:
+     * <p>The license-based user limit has been removed, so this always reports an unlimited number
+     * of seats ({@link Integer#MAX_VALUE}) regardless of license type or grandfathering. As a
+     * result {@link #wouldExceedLimit(int)} never blocks and {@link #getAvailableUserSlots()}
+     * always reports free capacity.
      *
-     * <ul>
-     *   <li>Grandfathered limit = max(5, existing user count at V1→V2 migration)
-     *   <li>No license: Uses grandfathered limit only
-     *   <li>SERVER license (maxUsers=0): Unlimited users (Integer.MAX_VALUE)
-     *   <li>ENTERPRISE license (maxUsers>0): License seats only (NO grandfathering added)
-     * </ul>
+     * <p>The settings integrity check still runs so the (now purely informational) grandfathered
+     * user count stays tamper-resistant for display purposes.
      *
-     * <p>IMPORTANT: Paid licenses REPLACE the limit, they don't add to grandfathering.
-     *
-     * @return Maximum number of users allowed (Integer.MAX_VALUE for unlimited)
+     * @return {@link Integer#MAX_VALUE}, i.e. an unlimited number of users
      */
     public int calculateMaxAllowedUsers() {
         validateSettingsIntegrity();
-        UserLicenseSettings settings = getOrCreateSettings();
-
-        int grandfatheredLimit = settings.getGrandfatheredUserCount();
-        if (grandfatheredLimit == 0) {
-            // Fallback if not initialized yet - should not happen with validation
-            log.warn("Grandfathered limit is 0, using default: {}", DEFAULT_USER_LIMIT);
-            grandfatheredLimit = DEFAULT_USER_LIMIT;
-        }
-
-        // No license: use grandfathered limit
-        if (!hasPaidLicense()) {
-            log.debug("No license: using grandfathered limit of {}", grandfatheredLimit);
-            return grandfatheredLimit;
-        }
-
-        int licenseMaxUsers = settings.getLicenseMaxUsers();
-
-        // SERVER license (maxUsers=0): unlimited users
-        if (licenseMaxUsers == 0) {
-            log.debug("SERVER license: unlimited users allowed");
-            return Integer.MAX_VALUE;
-        }
-
-        // ENTERPRISE license (maxUsers>0): license seats only (replaces grandfathering)
-        log.debug(
-                "ENTERPRISE license: {} seats (grandfathered {} not added)",
-                licenseMaxUsers,
-                grandfatheredLimit);
-        return licenseMaxUsers;
+        return Integer.MAX_VALUE;
     }
 
     /**

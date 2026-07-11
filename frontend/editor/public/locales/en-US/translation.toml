@@ -10954,12 +10954,15 @@ username = "Username"
 
 [workspace.people.license]
 currentUsage = "Currently using {{current}} of {{max}} user licenses"
+currentUsageUnlimited = "Currently using {{current}} user licenses"
 fromLicense = "from license"
 grandfathered = "Grandfathered"
 grandfatheredShort = "{{count}} grandfathered"
 slotsAvailable_one = "{{count}} user slot available"
 slotsAvailable_other = "{{count}} user slots available"
 slotsAvailable_zero = "No slots available"
+unlimited = "Unlimited"
+unlimitedSlots = "Unlimited user slots available"
 users_one = "user"
 users_other = "users"
 
