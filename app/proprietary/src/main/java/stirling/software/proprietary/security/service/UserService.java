@@ -547,9 +547,14 @@ public class UserService implements UserServiceInterface {
             user.setTeam(resolveTeam(request.getTeamId(), this::getDefaultTeam));
         }
 
-        // New accounts start on the Free 7-day trial. Admins and internal API accounts are exempt
-        // from license enforcement, so a default tier on them is harmless.
-        if (user.getLicenseTier() == null) {
+        // New accounts start on the Free 7-day trial — except admins and internal API accounts,
+        // which are exempt from license enforcement. Leaving their tier unset keeps them shown as
+        // unlimited (rather than as an expired Free trial) in the admin People view.
+        String role = request.getRole();
+        boolean privileged =
+                Role.ADMIN.getRoleId().equals(role)
+                        || Role.INTERNAL_API_USER.getRoleId().equals(role);
+        if (user.getLicenseTier() == null && !privileged) {
             user.setLicenseTier(LicenseTier.FREE.name());
             user.setLicenseExpiresAt(
                     LocalDateTime.now().plusDays(LicenseTier.FREE.getDurationDays()));
