@@ -198,11 +198,13 @@ class AppConfigTest {
     class ProfileAndEnvBeans {
 
         @Test
-        @DisplayName("default-profile license beans return community defaults")
+        @DisplayName("default-profile license beans report the top tier (license limits removed)")
         void licenseDefaults() {
-            assertThat(appConfig.runningProOrHigher()).isFalse();
-            assertThat(appConfig.runningEnterprise()).isFalse();
-            assertThat(appConfig.licenseType()).isEqualTo("NORMAL");
+            // License limits have been removed: all server/enterprise capabilities are unlocked
+            // unconditionally, so the default-profile fallbacks report the top tier.
+            assertThat(appConfig.runningProOrHigher()).isTrue();
+            assertThat(appConfig.runningEnterprise()).isTrue();
+            assertThat(appConfig.licenseType()).isEqualTo("ENTERPRISE");
         }
 
         @Test

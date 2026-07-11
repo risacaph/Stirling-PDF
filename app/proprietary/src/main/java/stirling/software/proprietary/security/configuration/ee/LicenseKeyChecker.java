@@ -1,8 +1,6 @@
 package stirling.software.proprietary.security.configuration.ee;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Lazy;
@@ -23,24 +21,19 @@ import stirling.software.proprietary.service.UserLicenseSettingsService;
 @Component
 public class LicenseKeyChecker {
 
-    private static final String FILE_PREFIX = "file:";
-
-    private final KeygenLicenseVerifier licenseService;
-
     private final ApplicationProperties applicationProperties;
 
     private final UserLicenseSettingsService licenseSettingsService;
 
-    // volatile: written by evaluateLicense() on the @Scheduled refresh thread, read by request
-    // threads via getPremiumLicenseEnabledResult() / requireProOrEnterprise(). Ensures readers see
-    // the latest tier rather than a stale cached value.
-    private volatile License premiumEnabledResult = License.NORMAL;
+    // License limits have been removed: the instance always runs as the top ENTERPRISE tier, so
+    // every premium/enterprise capability is unlocked without a license key and without any call
+    // to the Keygen service. Pinned here (and re-affirmed by evaluateLicense) so readers via
+    // getPremiumLicenseEnabledResult() / requireProOrEnterprise() always see ENTERPRISE.
+    private volatile License premiumEnabledResult = License.ENTERPRISE;
 
     public LicenseKeyChecker(
-            KeygenLicenseVerifier licenseService,
             ApplicationProperties applicationProperties,
             @Lazy UserLicenseSettingsService licenseSettingsService) {
-        this.licenseService = licenseService;
         this.applicationProperties = applicationProperties;
         this.licenseSettingsService = licenseSettingsService;
     }
@@ -69,55 +62,17 @@ public class LicenseKeyChecker {
     }
 
     private void evaluateLicense() {
-        if (!applicationProperties.getPremium().isEnabled()) {
-            premiumEnabledResult = License.NORMAL;
-        } else {
-            String licenseKey = getLicenseKeyContent(applicationProperties.getPremium().getKey());
-            if (licenseKey != null) {
-                premiumEnabledResult = licenseService.verifyLicense(licenseKey);
-                if (License.ENTERPRISE == premiumEnabledResult) {
-                    log.info("License key is Enterprise.");
-                } else if (License.SERVER == premiumEnabledResult) {
-                    log.info("License key is Server.");
-                } else {
-                    log.info("License key is invalid, defaulting to non pro license.");
-                }
-            } else {
-                log.error("Failed to obtain license key content.");
-                premiumEnabledResult = License.NORMAL;
-            }
-        }
+        // License limits removed: always run as ENTERPRISE with premium features enabled, without
+        // reading a license key or contacting the Keygen service. Premium is force-enabled so the
+        // direct premium.isEnabled() consumers (config/app-config flags, analytics, invites) also
+        // report unlocked, and the user cap is set to unlimited.
+        premiumEnabledResult = License.ENTERPRISE;
+        applicationProperties.getPremium().setEnabled(true);
+        applicationProperties.getPremium().setMaxUsers(0);
     }
 
     private void synchronizeLicenseSettings() {
         licenseSettingsService.updateLicenseMaxUsers();
-    }
-
-    private String getLicenseKeyContent(String keyOrFilePath) {
-        if (keyOrFilePath == null || keyOrFilePath.trim().isEmpty()) {
-            log.error("License key is not specified");
-            return null;
-        }
-
-        // Check if it's a file reference
-        if (keyOrFilePath.startsWith(FILE_PREFIX)) {
-            String filePath = keyOrFilePath.substring(FILE_PREFIX.length());
-            try {
-                Path path = Path.of(filePath);
-                if (!Files.exists(path)) {
-                    log.error("License file does not exist: {}", filePath);
-                    return null;
-                }
-                log.info("Reading license from file: {}", filePath);
-                return Files.readString(path);
-            } catch (IOException e) {
-                log.error("Failed to read license file: {}", e.getMessage());
-                return null;
-            }
-        }
-
-        // It's a direct license key
-        return keyOrFilePath;
     }
 
     public void updateLicenseKey(String newKey) throws IOException {

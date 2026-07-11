@@ -234,22 +234,27 @@ public class AppConfig {
         return applicationProperties.getSystem().getDatasource();
     }
 
+    // License limits have been removed: all server/enterprise capabilities are unlocked
+    // unconditionally. These default-profile fallbacks (used when the security profile is not
+    // active) report the top tier so premium/enterprise features are never gated. Under the
+    // security profile the equivalent EEAppConfig beans apply and derive the same values from
+    // LicenseKeyChecker, which is likewise pinned to ENTERPRISE.
     @Bean(name = "runningProOrHigher")
     @Profile("default")
     public boolean runningProOrHigher() {
-        return false;
+        return true;
     }
 
     @Bean(name = "runningEE")
     @Profile("default")
     public boolean runningEnterprise() {
-        return false;
+        return true;
     }
 
     @Bean(name = "license")
     @Profile("default")
     public String licenseType() {
-        return "NORMAL";
+        return "ENTERPRISE";
     }
 
     @Bean(name = "scarfEnabled")
