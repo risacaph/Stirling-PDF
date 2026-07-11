@@ -223,7 +223,7 @@ fn check_default_linux() -> Result<bool, String> {
     add_log(format!("Linux PDF handler: {}", handler.trim()));
 
     // Check if it's our .desktop file
-    let is_default = handler.trim() == "papyra.desktop";
+    let is_default = handler.trim().eq_ignore_ascii_case("papyra.desktop");
     Ok(is_default)
 }
 
@@ -233,7 +233,7 @@ fn set_default_linux() -> Result<String, String> {
 
     // Use xdg-mime to set the default application for PDF files
     let result = Command::new("xdg-mime")
-        .args(["default", "papyra.desktop", "application/pdf"])
+        .args(["default", "Papyra.desktop", "application/pdf"])
         .output()
         .map_err(|e| format!("Failed to set default app: {}", e))?;
 

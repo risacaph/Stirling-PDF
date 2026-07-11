@@ -150,7 +150,7 @@ class ReactRoutingControllerTest {
 
         String body = response.getBody();
         assertNotNull(body);
-        assertTrue(body.contains("stirlingpdf://auth/sso-complete"));
+        assertTrue(body.contains("papyra://auth/sso-complete"));
     }
 
     // --- forwarding routes ---
