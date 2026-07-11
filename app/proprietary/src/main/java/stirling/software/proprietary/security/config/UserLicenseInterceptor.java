@@ -55,7 +55,16 @@ public class UserLicenseInterceptor implements HandlerInterceptor {
     public boolean preHandle(
             HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
+        // Use the path relative to the servlet context so gating still applies when the app is
+        // deployed under a non-root context path (getRequestURI() includes the context path).
         String path = request.getRequestURI();
+        String contextPath = request.getContextPath();
+        if (contextPath != null
+                && !contextPath.isEmpty()
+                && path != null
+                && path.startsWith(contextPath)) {
+            path = path.substring(contextPath.length());
+        }
         String method =
                 request.getMethod() == null ? "" : request.getMethod().toUpperCase(Locale.ROOT);
 
