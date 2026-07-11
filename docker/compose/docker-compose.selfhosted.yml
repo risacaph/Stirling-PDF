@@ -1,0 +1,64 @@
+# Self-hosted Stirling-PDF — builds from THIS repository (so it includes the
+# license-unlock changes) and runs with the full server/enterprise feature set
+# enabled. Intended for a single-node self-hosted deployment (e.g. a Proxmox VM
+# or LXC running Docker).
+#
+# Usage (from the repository root):
+#   docker compose -f docker/compose/docker-compose.selfhosted.yml up -d --build
+#
+# The `${VAR:-default}` values below can be overridden via the shell environment
+# or a `.env` file. deploy/proxmox-install.sh sets sensible values for you and
+# generates a random admin password.
+
+services:
+  stirling-pdf:
+    build:
+      # Build the embedded (frontend + backend) image from this checkout.
+      context: ../..
+      dockerfile: docker/embedded/Dockerfile
+    image: stirling-pdf-selfhosted
+    container_name: stirling-pdf
+    restart: unless-stopped
+    ports:
+      - "${STIRLING_PORT:-8080}:8080"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080$${SYSTEM_ROOTURIPATH:-''}/api/v1/info/status | grep -q 'UP'"]
+      interval: 15s
+      timeout: 10s
+      retries: 8
+      start_period: 90s
+    environment:
+      # --- Server / enterprise feature set -------------------------------
+      # Turn the full feature set ON (users, teams, SSO, audit, storage, ...).
+      DISABLE_ADDITIONAL_FEATURES: "false"
+      # Enable login + user management.
+      SECURITY_ENABLELOGIN: "true"
+      # Initial admin account, created only on the FIRST start (ignored once the
+      # database exists). CHANGE THE PASSWORD — either here, via the shell env,
+      # or by letting deploy/proxmox-install.sh generate one.
+      SECURITY_INITIALLOGIN_USERNAME: "${STIRLING_ADMIN_USERNAME:-admin}"
+      SECURITY_INITIALLOGIN_PASSWORD: "${STIRLING_ADMIN_PASSWORD:-changeme}"
+      # --- General -------------------------------------------------------
+      SYSTEM_DEFAULTLOCALE: "${STIRLING_LOCALE:-en-US}"
+      SYSTEM_MAXFILESIZE: "${STIRLING_MAXFILESIZE:-100}"
+      UI_APPNAME: "${STIRLING_APPNAME:-Stirling-PDF}"
+      METRICS_ENABLED: "true"
+    volumes:
+      # Settings + the H2 database live here — persist it or you lose users/config.
+      - stirling_config:/configs
+      - stirling_logs:/logs
+      # OCR language data and custom fonts/static files (optional but handy).
+      - stirling_tessdata:/usr/share/tessdata
+      - stirling_customfiles:/customFiles
+    networks:
+      - stirling-network
+
+networks:
+  stirling-network:
+    driver: bridge
+
+volumes:
+  stirling_config:
+  stirling_logs:
+  stirling_tessdata:
+  stirling_customfiles:
