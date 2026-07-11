@@ -493,7 +493,7 @@ export default function AdminGeneralSection() {
               <Text size="xs" c="dimmed" mb="xs">
                 {t(
                   "admin.settings.general.logoStyle.description",
-                  "Choose between the modern minimalist logo or the classic S icon",
+                  "Choose between the modern minimalist logo and the classic logo",
                 )}
               </Text>
               <SegmentedControl

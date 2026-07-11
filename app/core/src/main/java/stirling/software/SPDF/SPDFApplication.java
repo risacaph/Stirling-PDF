@@ -183,7 +183,7 @@ public class SPDFApplication {
             serverPortStatic = port;
         }
         // Log the actual runtime port for Tauri to parse
-        log.info("Stirling-PDF running on port: {}", serverPortStatic);
+        log.info("Papyra running on port: {}", serverPortStatic);
     }
 
     private static void printStartupLogs() {
