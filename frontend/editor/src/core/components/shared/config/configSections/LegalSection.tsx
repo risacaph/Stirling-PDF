@@ -34,6 +34,10 @@ const LegalSection: React.FC = () => {
   });
 
   const isValidLink = (link?: string) => link && link.trim().length > 0;
+  // Treat the legacy upstream default (stirling.com) as unset so existing installs that persisted
+  // it fall back to the bundled Papyra pages.
+  const isConfiguredLegalUrl = (link?: string) =>
+    isValidLink(link) && !/stirling\.com/i.test(link!);
 
   const legalLinks: LegalLink[] = [
     // Privacy/Terms link to the bundled Papyra legal pages unless the administrator has configured
@@ -41,14 +45,14 @@ const LegalSection: React.FC = () => {
     {
       key: "privacy",
       label: t("legal.privacy", "Privacy Policy"),
-      href: isValidLink(privacyPolicy)
+      href: isConfiguredLegalUrl(privacyPolicy)
         ? privacyPolicy!
         : withBasePath("/legal/privacy-policy.html"),
     },
     {
       key: "terms",
       label: t("legal.terms", "Terms and Conditions"),
-      href: isValidLink(termsAndConditions)
+      href: isConfiguredLegalUrl(termsAndConditions)
         ? termsAndConditions!
         : withBasePath("/legal/terms-and-conditions.html"),
     },

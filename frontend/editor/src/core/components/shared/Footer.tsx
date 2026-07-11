@@ -46,9 +46,16 @@ export default function Footer({
   });
 
   // Privacy Policy and Terms link to the bundled Papyra legal pages unless the administrator has
-  // configured their own URLs in Settings > Legal.
-  const finalTermsUrl = finalTermsAndConditions || DEFAULT_TERMS_URL;
-  const finalPrivacyUrl = finalPrivacyPolicy || DEFAULT_PRIVACY_URL;
+  // configured their own URLs in Settings > Legal. The legacy upstream default (stirling.com) is
+  // treated as unset so existing installs that persisted it still get the Papyra pages.
+  const isConfiguredLegalUrl = (url?: string) =>
+    !!url && url.trim().length > 0 && !/stirling\.com/i.test(url);
+  const finalTermsUrl = isConfiguredLegalUrl(finalTermsAndConditions)
+    ? finalTermsAndConditions!
+    : DEFAULT_TERMS_URL;
+  const finalPrivacyUrl = isConfiguredLegalUrl(finalPrivacyPolicy)
+    ? finalPrivacyPolicy!
+    : DEFAULT_PRIVACY_URL;
 
   // Helper to check if a value is valid (not null/undefined/empty string)
   const isValidLink = (link?: string) => link && link.trim().length > 0;
