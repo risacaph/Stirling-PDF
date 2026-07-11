@@ -4,8 +4,7 @@ import { Button } from "@app/ui/Button";
 import { useTranslation } from "react-i18next";
 import LocalIcon from "@app/components/shared/LocalIcon";
 import { requestStartTour } from "@app/constants/events";
-import { openExternal } from "@app/platform/openExternal";
-import { docsUrl } from "@app/constants/siteLinks";
+import { openBundledPage } from "@app/platform/openBundledPage";
 
 interface HelpSectionProps {
   isAdmin: boolean;
@@ -48,7 +47,7 @@ const HelpSection: React.FC<HelpSectionProps> = ({
                 height="1rem"
               />
             }
-            onClick={() => void openExternal(docsUrl())}
+            onClick={() => void openBundledPage("docs/index.html")}
           >
             {t("settings.help.gettingStarted.open", "Open docs")}
           </Button>

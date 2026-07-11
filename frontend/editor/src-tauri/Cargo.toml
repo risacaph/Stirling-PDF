@@ -1,5 +1,5 @@
 [package]
-name = "stirling-pdf"
+name = "papyra"
 version = "0.1.0"
 description = "Papyra Desktop Application"
 authors = ["Papyra Contributors"]

@@ -2,8 +2,8 @@
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "Papyra",
   "mainBinaryName": "Papyra",
-  "version": "2.14.2",
-  "identifier": "stirling.pdf.dev",
+  "version": "2.14.3",
+  "identifier": "com.papyra.desktop",
   "build": {
     "frontendDist": "../dist",
     "devUrl": "http://localhost:5173",
@@ -49,10 +49,10 @@
     ],
     "linux": {
       "deb": {
-        "desktopTemplate": "stirling-pdf.desktop"
+        "desktopTemplate": "papyra.desktop"
       },
       "rpm": {
-        "desktopTemplate": "stirling-pdf.desktop",
+        "desktopTemplate": "papyra.desktop",
         "compression": { "type": "zstd", "level": 3 }
       },
       "appimage": {
@@ -64,7 +64,7 @@
       "digestAlgorithm": "sha256",
       "timestampUrl": "http://timestamp.digicert.com",
       "wix": {
-        "upgradeCode": "3305fba9-7e5e-5c09-bc71-eca0a65f4fee",
+        "upgradeCode": "f3fd9091-bd38-4177-a248-c37d3565f6a7",
         "bannerPath": "windows/wix/banner.bmp",
         "dialogImagePath": "windows/wix/dialog.bmp",
         "fragmentPaths": ["windows/wix/provisioning.wxs"],
@@ -88,7 +88,7 @@
     },
     "deep-link": {
       "desktop": {
-        "schemes": ["stirlingpdf"]
+        "schemes": ["papyra"]
       }
     },
     "updater": {
