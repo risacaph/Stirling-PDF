@@ -85,16 +85,42 @@ jobs:
           MAVEN_PUBLIC_URL: ${{ secrets.MAVEN_PUBLIC_URL }}
         run: task desktop:prepare
 
-      # Disable Tauri updater artifacts for this build so no signing key is
-      # required (Tauri auto-merges tauri.windows.conf.json over tauri.conf.json).
-      - name: Disable updater artifacts (no signing key on fork)
-        shell: bash
+      # Write a Windows-only Tauri config override (auto-merged over tauri.conf.json):
+      #  - always disable updater artifacts (avoids needing the Tauri updater signing key)
+      #  - if a WINDOWS_CERTIFICATE secret is present, import it and sign the exe + MSI with
+      #    its thumbprint; otherwise build an unsigned MSI. This keeps the fork buildable with
+      #    no secrets, and produces a signed MSI once the cert secrets are configured.
+      - name: Configure Windows bundle + signing
+        shell: pwsh
+        env:
+          WINDOWS_CERTIFICATE: ${{ secrets.WINDOWS_CERTIFICATE }}
+          WINDOWS_CERTIFICATE_PASSWORD: ${{ secrets.WINDOWS_CERTIFICATE_PASSWORD }}
         run: |
-          cat > ./frontend/editor/src-tauri/tauri.windows.conf.json <<'EOF'
-          { "bundle": { "createUpdaterArtifacts": false } }
-          EOF
+          $bundle = @{ createUpdaterArtifacts = $false }
+          if ($env:WINDOWS_CERTIFICATE) {
+            Write-Host "WINDOWS_CERTIFICATE present - importing and signing."
+            $certBytes = [Convert]::FromBase64String($env:WINDOWS_CERTIFICATE)
+            $certPath = Join-Path $env:RUNNER_TEMP "papyra-cert.pfx"
+            [IO.File]::WriteAllBytes($certPath, $certBytes)
+            $pwd = ConvertTo-SecureString -String $env:WINDOWS_CERTIFICATE_PASSWORD -AsPlainText -Force
+            $cert = Import-PfxCertificate -FilePath $certPath -CertStoreLocation Cert:\CurrentUser\My -Password $pwd
+            Remove-Item $certPath -Force
+            Write-Host "Imported certificate thumbprint: $($cert.Thumbprint)"
+            $bundle.windows = @{
+              certificateThumbprint = $cert.Thumbprint
+              digestAlgorithm       = "sha256"
+              timestampUrl          = "http://timestamp.digicert.com"
+            }
+          } else {
+            Write-Host "No WINDOWS_CERTIFICATE secret set - building an UNSIGNED MSI."
+          }
+          $config = @{ bundle = $bundle } | ConvertTo-Json -Depth 6
+          $out = "./frontend/editor/src-tauri/tauri.windows.conf.json"
+          Set-Content -Path $out -Value $config -Encoding utf8
+          Write-Host "Wrote $out:"
+          Get-Content $out
 
-      - name: Build Windows MSI (unsigned)
+      - name: Build Windows MSI
         uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
