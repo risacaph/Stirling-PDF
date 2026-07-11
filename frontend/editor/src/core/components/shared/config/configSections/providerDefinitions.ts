@@ -422,7 +422,7 @@ const useTelegramProvider = (): Provider => {
         ),
         description: t(
           "admin.settings.telegram.enabled.description",
-          "Allow users to interact with Stirling PDF through your configured Telegram bot.",
+          "Allow users to interact with Papyra through your configured Telegram bot.",
         ),
         defaultValue: false,
       },

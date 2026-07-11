@@ -479,7 +479,7 @@ export function ChatPanel({ onBack, backLabel }: ChatPanelProps) {
         loading={isLoading}
         className="chat-panel__header"
         barClassName="chat-panel__agent-pill-vt"
-        menuLabel={t("chat.header.agentMenu", "Stirling agent options")}
+        menuLabel={t("chat.header.agentMenu", "Papyra agent options")}
         menuItems={[
           {
             key: "clear-chat",

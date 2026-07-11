@@ -161,10 +161,7 @@ const ValidateSignatureReportView: React.FC<
 
             <Group justify="space-between" align="center" mt="auto" pt="md">
               <Text size="xs" c="dimmed">
-                {t(
-                  "validateSignature.report.footer",
-                  "Validated via Stirling PDF",
-                )}
+                {t("validateSignature.report.footer", "Validated via Papyra")}
               </Text>
               <Text size="xs" c="dimmed">
                 {t("validateSignature.report.page", "Page")} {index + 1} /{" "}

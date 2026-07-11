@@ -56,16 +56,13 @@ export const startReportPage = ({
     color: colorPalette.textMuted,
   });
 
-  page.drawText(
-    t("validateSignature.report.footer", "Validated via Stirling PDF"),
-    {
-      x: marginX,
-      y: marginY / 2,
-      size: 9,
-      font,
-      color: colorPalette.textMuted,
-    },
-  );
+  page.drawText(t("validateSignature.report.footer", "Validated via Papyra"), {
+    x: marginX,
+    y: marginY / 2,
+    size: 9,
+    font,
+    color: colorPalette.textMuted,
+  });
 
   return { page, cursorY };
 };

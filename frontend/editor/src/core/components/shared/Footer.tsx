@@ -3,6 +3,12 @@ import { useTranslation } from "react-i18next";
 import { useCookieConsent } from "@app/hooks/useCookieConsent";
 import { useFooterInfo } from "@app/hooks/useFooterInfo";
 import { Button } from "@app/ui/Button";
+import { withBasePath } from "@app/constants/app";
+
+// Bundled Papyra legal pages, served from the app's public assets. Administrators can override
+// these with their own URLs in Settings > Legal.
+const DEFAULT_PRIVACY_URL = withBasePath("/legal/privacy-policy.html");
+const DEFAULT_TERMS_URL = withBasePath("/legal/terms-and-conditions.html");
 
 interface FooterProps {
   privacyPolicy?: string;
@@ -39,11 +45,10 @@ export default function Footer({
     analyticsEnabled: finalAnalyticsEnabled,
   });
 
-  // Privacy Policy and Terms links point wherever the administrator configures them in
-  // Settings > Legal. Self-hosted builds ship no default legal pages, so the links are simply
-  // hidden until a URL is set (rather than pointing at a third-party site).
-  const finalTermsUrl = finalTermsAndConditions;
-  const finalPrivacyUrl = finalPrivacyPolicy;
+  // Privacy Policy and Terms link to the bundled Papyra legal pages unless the administrator has
+  // configured their own URLs in Settings > Legal.
+  const finalTermsUrl = finalTermsAndConditions || DEFAULT_TERMS_URL;
+  const finalPrivacyUrl = finalPrivacyPolicy || DEFAULT_PRIVACY_URL;
 
   // Helper to check if a value is valid (not null/undefined/empty string)
   const isValidLink = (link?: string) => link && link.trim().length > 0;
