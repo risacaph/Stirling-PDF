@@ -11,7 +11,7 @@
 #     enabled in its Proxmox options, otherwise Docker will not start.
 #
 # Quick start:
-#   bash <(curl -fsSL https://raw.githubusercontent.com/risacaph/Stirling-PDF/main/deploy/proxmox-install.sh)
+#   bash <(curl -fsSL https://raw.githubusercontent.com/risacaph/Papyra-PDF/main/deploy/proxmox-install.sh)
 # or, from a checkout:
 #   ./deploy/proxmox-install.sh
 #
@@ -21,7 +21,7 @@
 
 set -euo pipefail
 
-REPO_URL="${REPO_URL:-https://github.com/risacaph/Stirling-PDF.git}"
+REPO_URL="${REPO_URL:-https://github.com/risacaph/Papyra-PDF.git}"
 BRANCH="${BRANCH:-main}"
 INSTALL_DIR="${INSTALL_DIR:-/opt/stirling-pdf}"
 COMPOSE_FILE="docker/compose/docker-compose.selfhosted.yml"

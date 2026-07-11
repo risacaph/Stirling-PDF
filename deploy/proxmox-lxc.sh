@@ -9,7 +9,7 @@
 # deploys THIS fork instead of the upstream release.
 #
 # Usage (on the PVE host shell):
-#   bash <(curl -fsSL https://raw.githubusercontent.com/risacaph/Stirling-PDF/main/deploy/proxmox-lxc.sh)
+#   bash <(curl -fsSL https://raw.githubusercontent.com/risacaph/Papyra-PDF/main/deploy/proxmox-lxc.sh)
 #
 # Tunables (override via environment), with defaults sized for building the
 # image from source:
@@ -33,10 +33,10 @@ BRIDGE="${BRIDGE:-vmbr0}"
 STORAGE="${STORAGE:-}"
 TEMPLATE_STORAGE="${TEMPLATE_STORAGE:-local}"
 OSVER="${OSVER:-12}"
-REPO_URL="${REPO_URL:-https://github.com/risacaph/Stirling-PDF.git}"
+REPO_URL="${REPO_URL:-https://github.com/risacaph/Papyra-PDF.git}"
 BRANCH="${BRANCH:-main}"
 STIRLING_ADMIN_PASSWORD="${STIRLING_ADMIN_PASSWORD:-}"
-INSTALLER_URL="${INSTALLER_URL:-https://raw.githubusercontent.com/risacaph/Stirling-PDF/${BRANCH}/deploy/proxmox-install.sh}"
+INSTALLER_URL="${INSTALLER_URL:-https://raw.githubusercontent.com/risacaph/Papyra-PDF/${BRANCH}/deploy/proxmox-install.sh}"
 
 log() { printf '\033[1;34m==>\033[0m %s\n' "$*"; }
 warn() { printf '\033[1;33m!!\033[0m %s\n' "$*" >&2; }
