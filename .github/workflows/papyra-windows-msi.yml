@@ -117,7 +117,7 @@ jobs:
           $config = @{ bundle = $bundle } | ConvertTo-Json -Depth 6
           $out = "./frontend/editor/src-tauri/tauri.windows.conf.json"
           Set-Content -Path $out -Value $config -Encoding utf8
-          Write-Host "Wrote $out:"
+          Write-Host "Wrote ${out}:"
           Get-Content $out
 
       - name: Build Windows MSI
