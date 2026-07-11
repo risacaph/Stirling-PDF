@@ -3,6 +3,12 @@ import { useTranslation } from "react-i18next";
 import { useCookieConsent } from "@app/hooks/useCookieConsent";
 import { useFooterInfo } from "@app/hooks/useFooterInfo";
 import { Button } from "@app/ui/Button";
+import { withBasePath } from "@app/constants/app";
+
+// Bundled Papyra legal pages, served from the app's public assets. Administrators can override
+// these with their own URLs in Settings > Legal.
+const DEFAULT_PRIVACY_URL = withBasePath("/legal/privacy-policy.html");
+const DEFAULT_TERMS_URL = withBasePath("/legal/terms-and-conditions.html");
 
 interface FooterProps {
   privacyPolicy?: string;
@@ -39,13 +45,10 @@ export default function Footer({
     analyticsEnabled: finalAnalyticsEnabled,
   });
 
-  // Default URLs
-  const defaultTermsUrl = "https://www.stirling.com/terms";
-  const defaultPrivacyUrl = "https://www.stirling.com/privacy";
-
-  // Use provided URLs or fall back to defaults
-  const finalTermsUrl = finalTermsAndConditions || defaultTermsUrl;
-  const finalPrivacyUrl = finalPrivacyPolicy || defaultPrivacyUrl;
+  // Privacy Policy and Terms link to the bundled Papyra legal pages unless the administrator has
+  // configured their own URLs in Settings > Legal.
+  const finalTermsUrl = finalTermsAndConditions || DEFAULT_TERMS_URL;
+  const finalPrivacyUrl = finalPrivacyPolicy || DEFAULT_PRIVACY_URL;
 
   // Helper to check if a value is valid (not null/undefined/empty string)
   const isValidLink = (link?: string) => link && link.trim().length > 0;
@@ -70,22 +73,26 @@ export default function Footer({
           fontSize: "0.75rem",
         }}
       >
-        <a
-          className="footer-link px-3"
-          target="_blank"
-          rel="noopener noreferrer"
-          href={finalPrivacyUrl}
-        >
-          {t("legal.privacy", "Privacy Policy")}
-        </a>
-        <a
-          className="footer-link px-3"
-          target="_blank"
-          rel="noopener noreferrer"
-          href={finalTermsUrl}
-        >
-          {t("legal.terms", "Terms and Conditions")}
-        </a>
+        {isValidLink(finalPrivacyUrl) && (
+          <a
+            className="footer-link px-3"
+            target="_blank"
+            rel="noopener noreferrer"
+            href={finalPrivacyUrl}
+          >
+            {t("legal.privacy", "Privacy Policy")}
+          </a>
+        )}
+        {isValidLink(finalTermsUrl) && (
+          <a
+            className="footer-link px-3"
+            target="_blank"
+            rel="noopener noreferrer"
+            href={finalTermsUrl}
+          >
+            {t("legal.terms", "Terms and Conditions")}
+          </a>
+        )}
         <a
           className="footer-link px-3"
           target="_blank"
@@ -98,7 +105,7 @@ export default function Footer({
           className="footer-link px-3"
           target="_blank"
           rel="noopener noreferrer"
-          href="https://github.com/Stirling-Tools/Stirling-PDF"
+          href="https://github.com/risacaph/Papyra-PDF"
         >
           {t("footer.issues", "GitHub")}
         </a>

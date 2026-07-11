@@ -4,6 +4,7 @@ import { Button } from "@app/ui/Button";
 import { useTranslation } from "react-i18next";
 import LocalIcon from "@app/components/shared/LocalIcon";
 import { requestStartTour } from "@app/constants/events";
+import { withBasePath } from "@app/constants/app";
 
 interface HelpSectionProps {
   isAdmin: boolean;
@@ -23,6 +24,42 @@ const HelpSection: React.FC<HelpSectionProps> = ({
 
   return (
     <Stack gap="lg">
+      <Paper withBorder p="md" radius="md">
+        <Group justify="space-between" align="center">
+          <div>
+            <Text fw={600} size="sm">
+              {t("settings.help.gettingStarted.title", "Getting Started")}
+            </Text>
+            <Text size="xs" c="dimmed" mt={4}>
+              {t(
+                "settings.help.gettingStarted.description",
+                "Read the documentation to learn how to get the most out of the app.",
+              )}
+            </Text>
+          </div>
+          <Button
+            variant="secondary"
+            size="sm"
+            leftSection={
+              <LocalIcon
+                icon="open-in-new-rounded"
+                width="1rem"
+                height="1rem"
+              />
+            }
+            onClick={() =>
+              window.open(
+                withBasePath("/docs/"),
+                "_blank",
+                "noopener,noreferrer",
+              )
+            }
+          >
+            {t("settings.help.gettingStarted.open", "Open docs")}
+          </Button>
+        </Group>
+      </Paper>
+
       <Paper withBorder p="md" radius="md">
         <Stack gap="md">
           <Group justify="space-between" align="center">

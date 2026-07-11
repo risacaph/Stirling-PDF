@@ -1,5 +1,18 @@
 <svg width="186" height="142" viewBox="0 0 186 142" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect x="61" y="16" width="64" height="64" rx="16" fill="#3AAFA9"/>
-  <text x="93" y="48" text-anchor="middle" dominant-baseline="central" font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="40" fill="#FFFFFF">P</text>
-  <text x="93" y="112" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="28" fill="#1F2937">Papyra</text>
+  <defs>
+    <linearGradient id="pg-llh" x1="93" y1="12" x2="93" y2="76" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#4FC9C1"/><stop offset="1" stop-color="#2B8480"/>
+    </linearGradient>
+    <clipPath id="pc-llh"><rect x="61" y="12" width="64" height="64" rx="16.64"/></clipPath>
+    <mask id="pm-llh" maskUnits="userSpaceOnUse" x="61" y="12" width="64" height="64">
+      <rect x="61" y="12" width="64" height="64" fill="black"/>
+      <rect x="79.56" y="26.72" width="8.64" height="33.28" rx="3.2" fill="white"/>
+      <rect x="79.56" y="26.72" width="26.88" height="19.2" rx="9.6" fill="white"/>
+      <rect x="88.2" y="31.84" width="10.88" height="9.28" rx="4.61" fill="black"/>
+    </mask>
+  </defs>
+  <rect x="61" y="12" width="64" height="64" rx="16.64" fill="url(#pg-llh)"/>
+  <g clip-path="url(#pc-llh)"><ellipse cx="80.2" cy="20.32" rx="39.68" ry="26.88" fill="#FFFFFF" opacity="0.14"/></g>
+  <rect x="61" y="12" width="64" height="64" fill="#FFFFFF" mask="url(#pm-llh)"/>
+  <text x="49" y="120" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-weight="700" font-size="26" letter-spacing="0.5" fill="#1F2937">Papyra</text>
 </svg>

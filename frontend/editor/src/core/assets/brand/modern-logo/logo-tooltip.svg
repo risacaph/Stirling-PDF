@@ -1,4 +1,17 @@
 <svg width="192" height="192" viewBox="0 0 192 192" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect x="26" y="26" width="140" height="140" rx="34" fill="#3AAFA9"/>
-  <text x="96" y="96" text-anchor="middle" dominant-baseline="central" font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="96" fill="#FFFFFF">P</text>
+  <defs>
+    <linearGradient id="pg-tip" x1="96" y1="26" x2="96" y2="166" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#4FC9C1"/><stop offset="1" stop-color="#2B8480"/>
+    </linearGradient>
+    <clipPath id="pc-tip"><rect x="26" y="26" width="140" height="140" rx="36.4"/></clipPath>
+    <mask id="pm-tip" maskUnits="userSpaceOnUse" x="26" y="26" width="140" height="140">
+      <rect x="26" y="26" width="140" height="140" fill="black"/>
+      <rect x="66.6" y="58.2" width="18.9" height="72.8" rx="7" fill="white"/>
+      <rect x="66.6" y="58.2" width="58.8" height="42" rx="21" fill="white"/>
+      <rect x="85.5" y="69.4" width="23.8" height="20.3" rx="10.08" fill="black"/>
+    </mask>
+  </defs>
+  <rect x="26" y="26" width="140" height="140" rx="36.4" fill="url(#pg-tip)"/>
+  <g clip-path="url(#pc-tip)"><ellipse cx="68" cy="44.2" rx="86.8" ry="58.8" fill="#FFFFFF" opacity="0.14"/></g>
+  <rect x="26" y="26" width="140" height="140" fill="#FFFFFF" mask="url(#pm-tip)"/>
 </svg>

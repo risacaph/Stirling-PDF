@@ -6,6 +6,7 @@ import LocalIcon from "@app/components/shared/LocalIcon";
 import { useAppConfig } from "@app/contexts/AppConfigContext";
 import { useFooterInfo } from "@app/hooks/useFooterInfo";
 import { useCookieConsent } from "@app/hooks/useCookieConsent";
+import { withBasePath } from "@app/constants/app";
 
 interface LegalLink {
   key: string;
@@ -35,19 +36,21 @@ const LegalSection: React.FC = () => {
   const isValidLink = (link?: string) => link && link.trim().length > 0;
 
   const legalLinks: LegalLink[] = [
+    // Privacy/Terms link to the bundled Papyra legal pages unless the administrator has configured
+    // their own URLs.
     {
       key: "privacy",
       label: t("legal.privacy", "Privacy Policy"),
       href: isValidLink(privacyPolicy)
         ? privacyPolicy!
-        : "https://www.stirling.com/privacy",
+        : withBasePath("/legal/privacy-policy.html"),
     },
     {
       key: "terms",
       label: t("legal.terms", "Terms and Conditions"),
       href: isValidLink(termsAndConditions)
         ? termsAndConditions!
-        : "https://www.stirling.com/terms",
+        : withBasePath("/legal/terms-and-conditions.html"),
     },
     ...(isValidLink(accessibilityStatement)
       ? [

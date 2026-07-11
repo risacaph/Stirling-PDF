@@ -851,6 +851,19 @@ public class UserController {
         }
         User user = userOpt.get();
         Map<String, Object> body = new HashMap<>();
+        // Admins and internal API accounts are exempt from per-user licensing (mirrors
+        // UserLicenseInterceptor), so report unlimited access to keep the UI ungated for them.
+        String roles = user.getRolesAsString();
+        boolean exempt =
+                userService.isCurrentUserAdmin()
+                        || (roles != null && roles.contains(Role.INTERNAL_API_USER.getRoleId()));
+        if (exempt) {
+            body.put("tier", LicenseTier.ULTIMATE.name());
+            body.put("expiresAt", null);
+            body.put("expired", false);
+            body.put("daysRemaining", -1L);
+            return ResponseEntity.ok(body);
+        }
         body.put("tier", licenseAccessService.effectiveTier(user).name());
         body.put("expiresAt", user.getLicenseExpiresAt());
         body.put("expired", licenseAccessService.isExpired(user));

@@ -81,3 +81,18 @@ code {
 .viewer-file-tab[data-active] {
   background-color: rgba(147, 197, 253, 0.5);
 }
+
+/* Mobile: iOS Safari auto-zooms when a focused field's font is below 16px.
+   Bump form fields to 16px on small/touch screens to stop the jarring zoom.
+   Loaded after Mantine's stylesheet, so these win at equal specificity. */
+@media (max-width: 640px) {
+  input,
+  textarea,
+  select,
+  .mantine-Input-input,
+  .mantine-NativeSelect-input,
+  .mantine-Textarea-input,
+  .mantine-PasswordInput-innerInput {
+    font-size: 16px;
+  }
+}

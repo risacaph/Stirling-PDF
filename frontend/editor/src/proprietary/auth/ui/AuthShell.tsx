@@ -52,20 +52,7 @@ export function AuthShell({ children, rightPanel, footer }: AuthShellProps) {
         </div>
         {showRightPanel && rightPanel}
       </div>
-      {footer && (
-        <div
-          style={{
-            position: "fixed",
-            bottom: 0,
-            left: 0,
-            right: 0,
-            width: "100%",
-            zIndex: 10,
-          }}
-        >
-          {footer}
-        </div>
-      )}
+      {footer && <div className={styles.authFooter}>{footer}</div>}
     </div>
   );
 }

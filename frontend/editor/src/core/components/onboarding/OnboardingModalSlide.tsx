@@ -54,7 +54,7 @@ export default function OnboardingModalSlide({
           <div className={styles.iconWrapper}>
             <img
               src={`${BASE_PATH}/modern-logo/logo512.png`}
-              alt="Stirling icon"
+              alt="Papyra icon"
               className={styles.downloadIcon}
             />
           </div>
@@ -101,8 +101,8 @@ export default function OnboardingModalSlide({
         )}
         {slideDefinition.hero.type === "logo" && (
           <img
-            src={`${BASE_PATH}/branding/StirlingPDFLogoNoTextLightHC.svg`}
-            alt="Stirling logo"
+            src={`${BASE_PATH}/modern-logo/StirlingPDFLogoNoTextLight.svg`}
+            alt="Papyra logo"
           />
         )}
       </div>

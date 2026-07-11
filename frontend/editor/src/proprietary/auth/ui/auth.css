@@ -48,6 +48,29 @@
   outline: none;
 }
 
+/* Mobile login: 16px fields (prevents iOS focus zoom), a smaller logo/title
+   so the form fits, and comfortable tap targets. */
+@media (max-width: 640px) {
+  .auth-input,
+  .auth-button,
+  .auth-magic-button {
+    font-size: 1rem; /* 16px */
+  }
+
+  .auth-input,
+  .auth-button {
+    padding: 0.75rem 0.85rem;
+  }
+
+  .auth-logo-header {
+    height: 5rem;
+  }
+
+  .login-title {
+    font-size: 1.5rem; /* 24px */
+  }
+}
+
 .auth-input:focus {
   border-color: var(--auth-border-focus-light-only);
   box-shadow: 0 0 0 3px var(--auth-focus-ring-light-only);

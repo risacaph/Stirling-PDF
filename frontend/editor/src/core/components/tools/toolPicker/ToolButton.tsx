@@ -20,6 +20,7 @@ import {
   getToolDisabledReason,
   getDisabledLabel,
 } from "@app/components/tools/fullscreen/shared";
+import { useToolLicenseGate } from "@app/hooks/tools/useToolLicenseGate";
 import { useAppConfig } from "@app/contexts/AppConfigContext";
 import { CloudBadge } from "@app/components/shared/CloudBadge";
 import { useWillUseCloud } from "@app/hooks/useWillUseCloud";
@@ -56,12 +57,10 @@ const ToolButton: React.FC<ToolButtonProps> = ({
   const premiumEnabled = config?.premiumEnabled;
   const { isFavorite, toolAvailability } = useToolWorkflowData();
   const { toggleFavorite } = useToolWorkflowActions();
-  const disabledReason = getToolDisabledReason(
-    id,
-    tool,
-    toolAvailability,
-    premiumEnabled,
-  );
+  const licenseGate = useToolLicenseGate();
+  const disabledReason =
+    getToolDisabledReason(id, tool, toolAvailability, premiumEnabled) ??
+    licenseGate(id, tool);
   const isUnavailable = disabledReason !== null;
   // If onUnavailableClick is provided for a non-comingSoon tool, render as "cloud-available":
   // full opacity, cloud badge, normal tooltip — clicking still fires onUnavailableClick (e.g. sign-in).

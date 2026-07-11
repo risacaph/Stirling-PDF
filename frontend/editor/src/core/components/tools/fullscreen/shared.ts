@@ -4,6 +4,7 @@ import { ToolRegistryEntry } from "@app/data/toolsTaxonomy";
 import { ToolId } from "@app/types/toolId";
 import type { ToolAvailabilityMap } from "@app/hooks/useToolManagement";
 import { useAppConfig } from "@app/contexts/AppConfigContext";
+import { useToolLicenseGate } from "@app/hooks/tools/useToolLicenseGate";
 
 export const getItemClasses = (isDetailed: boolean): string => {
   return isDetailed ? "tool-panel__fullscreen-item--detailed" : "";
@@ -36,6 +37,8 @@ export type ToolDisabledReason =
   | "unknownUnavailable"
   | "requiresPremium"
   | "selfHostedOffline"
+  | "licenseExpired"
+  | "requiresLicenseTier"
   | null;
 
 export const getToolDisabledReason = (
@@ -79,10 +82,22 @@ export const getDisabledLabel = (
       fallback: "Premium feature:",
     };
   }
+  if (disabledReason === "licenseExpired") {
+    return {
+      key: "toolPanel.licenseExpired",
+      fallback: "Access expired — read-only:",
+    };
+  }
+  if (disabledReason === "requiresLicenseTier") {
+    return {
+      key: "toolPanel.requiresPlan",
+      fallback: "Not included in your plan:",
+    };
+  }
   if (disabledReason === "selfHostedOffline") {
     return {
       key: "toolPanel.fullscreen.selfHostedOffline",
-      fallback: "Requires your Stirling-PDF server (currently offline):",
+      fallback: "Requires your Papyra server (currently offline):",
     };
   }
   if (disabledReason === "missingDependency") {
@@ -112,14 +127,13 @@ export function useToolMeta(id: string, tool: ToolRegistryEntry) {
   const { config } = useAppConfig();
   const premiumEnabled = config?.premiumEnabled;
 
+  const licenseGate = useToolLicenseGate();
+
   const isFav = isFavorite(id as ToolId);
   const binding = hotkeys[id as ToolId];
-  const disabledReason = getToolDisabledReason(
-    id,
-    tool,
-    toolAvailability,
-    premiumEnabled,
-  );
+  const disabledReason =
+    getToolDisabledReason(id, tool, toolAvailability, premiumEnabled) ??
+    licenseGate(id as ToolId, tool);
   const disabled = disabledReason !== null;
 
   return {
