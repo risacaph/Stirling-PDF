@@ -57,7 +57,7 @@ keepWorking = "Keep Working"
 loading = "Loading..."
 loginAgreementAccept = "Accept"
 loginAgreementDecline = "Decline"
-loginAgreementProvider = "This notice is provided by your administrator, not Stirling PDF Inc."
+loginAgreementProvider = "This notice is provided by your administrator, not Papyra Inc."
 loginAgreementTitle = "Login Agreement"
 logOut = "Log out"
 marginTooltip = "Distance between the page number and the edge of the page."
@@ -919,11 +919,11 @@ description = "Configure optional features and functionality."
 title = "Features"
 
 [admin.settings.features.serverCertificate]
-description = "Configure server-side certificate generation for \"Sign with Stirling-PDF\" functionality"
+description = "Configure server-side certificate generation for \"Sign with Papyra\" functionality"
 label = "Server Certificate"
 
 [admin.settings.features.serverCertificate.enabled]
-description = "Enable server-side certificate for \"Sign with Stirling-PDF\" option"
+description = "Enable server-side certificate for \"Sign with Papyra\" option"
 label = "Enable Server Certificate"
 
 [admin.settings.features.serverCertificate.organizationName]
@@ -1071,7 +1071,7 @@ description = "URL or filename to cookie policy"
 label = "Cookie Policy"
 
 [admin.settings.legal.disclaimer]
-message = "By customizing these legal documents, you assume full responsibility for ensuring compliance with all applicable laws and regulations, including but not limited to GDPR and other EU data protection requirements. Only modify these settings if: (1) you are operating a personal/private instance, (2) you are outside EU jurisdiction and understand your local legal obligations, or (3) you have obtained proper legal counsel and accept sole responsibility for all user data and legal compliance. Stirling-PDF and its developers assume no liability for your legal obligations."
+message = "By customizing these legal documents, you assume full responsibility for ensuring compliance with all applicable laws and regulations, including but not limited to GDPR and other EU data protection requirements. Only modify these settings if: (1) you are operating a personal/private instance, (2) you are outside EU jurisdiction and understand your local legal obligations, or (3) you have obtained proper legal counsel and accept sole responsibility for all user data and legal compliance. Papyra and its developers assume no liability for your legal obligations."
 title = "Legal Responsibility Warning"
 
 [admin.settings.legal.impressum]
@@ -1539,7 +1539,7 @@ description = "When enabled, only listed user IDs can use the bot."
 label = "Allow Specific User IDs"
 
 [admin.settings.telegram.enabled]
-description = "Allow users to interact with Stirling PDF through your configured Telegram bot."
+description = "Allow users to interact with Papyra through your configured Telegram bot."
 label = "Enable Telegram Bot"
 
 [admin.settings.telegram.feedback]
@@ -1612,7 +1612,7 @@ settingsOverview = "This is the <strong>Settings Panel</strong>. Admin settings 
 systemCustomization = "We have extensive ways to customize the UI: <strong>System Settings</strong> let you change the app name and languages, <strong>Features</strong> allows server certificate management, and <strong>Endpoints</strong> lets you enable or disable specific tools for your users."
 teamsAndUsers = "Manage <strong>Teams</strong> and individual users here. You can invite new users via email, shareable links, or create custom accounts for them yourself."
 welcome = "Welcome to the <strong>Admin Tour</strong>! Let's explore the powerful enterprise features and settings available to system administrators."
-wrapUp = "That's the admin tour! You've seen the enterprise features that make Stirling PDF a powerful, customizable solution for organizations. You can replay it anytime - just open <strong>Settings</strong> and find it here in the <strong>Tours</strong> section under Help."
+wrapUp = "That's the admin tour! You've seen the enterprise features that make Papyra a powerful, customizable solution for organizations. You can replay it anytime - just open <strong>Settings</strong> and find it here in the <strong>Tours</strong> section under Help."
 
 [adminUserSettings]
 admin = "Admin"
@@ -1623,9 +1623,9 @@ stirling_name = "Stirling"
 
 [analytics]
 learnMore = "Learn more about our analytics"
-paragraph1 = "Stirling PDF has opt-in analytics to help us improve the product. We do not track any personal information or file contents."
-paragraph2 = "Please consider enabling analytics to help Stirling-PDF grow and to allow us to understand our users better."
-title = "Do you want to help make Stirling PDF better?"
+paragraph1 = "Papyra has opt-in analytics to help us improve the product. We do not track any personal information or file contents."
+paragraph2 = "Please consider enabling analytics to help Papyra grow and to allow us to understand our users better."
+title = "Do you want to help make Papyra better?"
 
 [annotate]
 tags = "annotate,highlight,draw,markup,comment,notes,review,redline,feedback,markup tools,sticky notes,shapes,arrows,text box,freehand"
@@ -2558,7 +2558,7 @@ bullet1 = "Supports PEM, PKCS12, JKS, and server certificate formats"
 bullet2 = "Option to show or hide signature on the PDF"
 bullet3 = "Add reason, location, and signer name"
 bullet4 = "Choose which page to place visible signatures"
-bullet5 = "Use server certificate for simple 'Sign with Stirling-PDF' option"
+bullet5 = "Use server certificate for simple 'Sign with Papyra' option"
 text = "To sign a PDF, you need a digital certificate (like PEM, PKCS12, or JKS). You can choose to make the signature visible on the document or keep it invisible for security only."
 title = "Adding Signatures"
 
@@ -3073,13 +3073,13 @@ upgradeButton = "Upgrade Account"
 [config.apiKeys]
 copyKeyAriaLabel = "Copy API key"
 description = "Your API key for accessing Stirling's suite of PDF tools. Copy it to your project or refresh to generate a new one."
-docsDescription = "Learn more about integrating with Stirling PDF:"
+docsDescription = "Learn more about integrating with Papyra:"
 docsLink = "API Documentation"
 docsTitle = "API Documentation"
 generateError = "We couldn't generate your API key."
 goToAccount = "Go to Account"
 guestInfo = "Guest users do not receive API keys. Create an account to get an API key you can use in your applications."
-intro = "Use your API key to programmatically access Stirling PDF's processing capabilities."
+intro = "Use your API key to programmatically access Papyra's processing capabilities."
 label = "API Key"
 publicKeyAriaLabel = "Public API key"
 refreshAriaLabel = "Refresh API key"
@@ -3103,10 +3103,10 @@ title = "Refresh API Keys"
 warning = "⚠️ Warning: This action will generate new API keys and make your previous keys invalid."
 
 [config.mcp]
-description = "Model Context Protocol (MCP) lets AI assistants like Claude use your Stirling PDF tools directly. Connect a client once and your assistant can convert, edit, secure and process documents on your behalf."
-guestInfo = "Guest users can't connect MCP clients. Create an account to use the MCP server and let your AI assistant run Stirling PDF tools on your behalf."
+description = "Model Context Protocol (MCP) lets AI assistants like Claude use your Papyra tools directly. Connect a client once and your assistant can convert, edit, secure and process documents on your behalf."
+guestInfo = "Guest users can't connect MCP clients. Create an account to use the MCP server and let your AI assistant run Papyra tools on your behalf."
 navLabel = "MCP Server"
-tip = "Every action your assistant runs is performed as your account and counts toward your usage, just like using Stirling PDF directly."
+tip = "Every action your assistant runs is performed as your account and counts toward your usage, just like using Papyra directly."
 title = "MCP Server"
 viewApiKeys = "View API keys"
 
@@ -3232,7 +3232,7 @@ showPreferencesBtn = "Manage preferences"
 title = "How we use Cookies"
 
 [cookieBanner.popUp.description]
-1 = "We use cookies and other technologies to make Stirling PDF work better for you-helping us improve our tools and keep building features you'll love."
+1 = "We use cookies and other technologies to make Papyra work better for you-helping us improve our tools and keep building features you'll love."
 2 = "If you'd rather not, clicking 'No Thanks' will only enable the essential cookies needed to keep things running smoothly."
 
 [cookieBanner.preferencesModal]
@@ -3245,12 +3245,12 @@ subtitle = "Cookie Usage"
 title = "Consent Preferences Center"
 
 [cookieBanner.preferencesModal.analytics]
-description = "These cookies help us understand how our tools are being used, so we can focus on building the features our community values most. Rest assured-Stirling PDF cannot and will never track the content of the documents you work with."
+description = "These cookies help us understand how our tools are being used, so we can focus on building the features our community values most. Rest assured-Papyra cannot and will never track the content of the documents you work with."
 title = "Analytics"
 
 [cookieBanner.preferencesModal.description]
-1 = "Stirling PDF uses cookies and similar technologies to enhance your experience and understand how our tools are used. This helps us improve performance, develop the features you care about, and provide ongoing support to our users."
-2 = "Stirling PDF cannot-and will never-track or access the content of the documents you use."
+1 = "Papyra uses cookies and similar technologies to enhance your experience and understand how our tools are used. This helps us improve performance, develop the features you care about, and provide ongoing support to our users."
+2 = "Papyra cannot-and will never-track or access the content of the documents you use."
 3 = "Your privacy and trust are at the core of what we do."
 
 [cookieBanner.preferencesModal.necessary]
@@ -3346,14 +3346,14 @@ message = "Failed to set default PDF handler"
 title = "Error"
 
 [defaultApp.prompt]
-message = "Make Stirling PDF your default application for opening PDF files."
+message = "Make Papyra your default application for opening PDF files."
 
 [defaultApp.settingsOpened]
-message = "In Windows Settings, search for 'PDF' and select Stirling PDF as your default app"
+message = "In Windows Settings, search for 'PDF' and select Papyra as your default app"
 title = "Settings Opened"
 
 [defaultApp.success]
-message = "Stirling PDF is now your default PDF editor"
+message = "Papyra is now your default PDF editor"
 title = "Default App Set"
 
 [desktopUpdate]
@@ -3369,7 +3369,7 @@ updateFailedMessage = "Failed to download or install the update."
 
 [desktopUpdate.blocked]
 docsLink = "View installation documentation"
-message = "Stirling-PDF does not have permission to update itself on this machine."
+message = "Papyra does not have permission to update itself on this machine."
 title = "Administrator permissions required"
 
 [devAirgapped]
@@ -4203,7 +4203,7 @@ invisible = "Invisible (metadata only)"
 location = "Location:"
 logo = "Logo:"
 logoHidden = "No logo"
-logoShown = "Stirling PDF logo shown"
+logoShown = "Papyra logo shown"
 participantCount_one = "{{count}} participant will sign in order"
 participantCount_other = "{{count}} participants will sign in order"
 participants = "Participants"
@@ -4257,7 +4257,7 @@ title = "Sequential Signing"
 dismiss = "Dismiss banner"
 message = "Create a free account to save your work, access more features, and support the project."
 signUp = "Sign Up Free"
-title = "You're using Stirling PDF as a guest!"
+title = "You're using Papyra as a guest!"
 
 [home.addAttachments]
 desc = "Add or remove embedded files (attachments) to/from a PDF"
@@ -4416,7 +4416,7 @@ tags = "combine,join,unite,merge,merge PDFs,combine PDFs,join PDFs,concatenate,a
 title = "Merge"
 
 [home.mobile]
-brandAlt = "Stirling PDF logo"
+brandAlt = "Papyra logo"
 openFiles = "Open files"
 swipeHint = "Swipe left or right to switch views"
 tools = "Tools"
@@ -4641,7 +4641,7 @@ passwordRequired = "Password is required"
 signIn = "Sign in"
 validating = "Validating invitation..."
 validationError = "Failed to validate invitation link"
-welcome = "Welcome to Stirling PDF"
+welcome = "Welcome to Papyra"
 welcomeSubtitle = "Complete your account setup to get started"
 welcomeTitle = "You've been invited!"
 
@@ -4726,7 +4726,7 @@ subtitle = "With over a dozen tools to help you redact, sign, read and manipulat
 title = "Edit PDFs to display/secure the information you want"
 
 [login.slides.overview]
-alt = "Stirling PDF overview"
+alt = "Papyra overview"
 subtitle = "A privacy-first cloud suite for PDFs that lets you convert, sign, redact, and manage documents, along with 50+ other powerful tools."
 title = "Your one-stop-shop for all your PDF needs."
 
@@ -4844,7 +4844,7 @@ message = "Authentication was not successful. You can close this window and try 
 title = "Authentication Failed"
 
 [oauth.success]
-message = "You can close this window and return to Stirling PDF."
+message = "You can close this window and return to Papyra."
 title = "Authentication Successful"
 
 [oauthConsent]
@@ -4857,17 +4857,17 @@ loadFailed = "This authorization request is invalid or has expired. Close this t
 loading = "Loading authorization request..."
 missingId = "Missing authorization request. Start the connection from your app and try again."
 redirecting = "Returning you to the app..."
-requesting = "{{app}} wants to access your Stirling PDF account"
+requesting = "{{app}} wants to access your Papyra account"
 scopesIntro = "This will allow {{app}} to:"
 signedInAs = "Signed in as {{name}}"
 signInButton = "Sign in to continue"
-signInPrompt = "Sign in to your Stirling PDF account to continue connecting the app."
+signInPrompt = "Sign in to your Papyra account to continue connecting the app."
 title = "Authorize access"
 unknownApp = "A third-party application"
 
 [oauthConsent.access]
 actAsYou = "Act as you - everything {{app}} does runs under your account and counts towards your usage"
-tools = "Use your Stirling PDF tools on your behalf - convert, edit, sign, secure and process your documents"
+tools = "Use your Papyra tools on your behalf - convert, edit, sign, secure and process your documents"
 
 [oauthConsent.scope]
 email = "See your email address"
@@ -5036,11 +5036,11 @@ seePlans = "See Plans →"
 upgrade = "Upgrade now →"
 
 [onboarding.tourOverview]
-body = "Stirling PDF V2 ships with dozens of tools and a refreshed layout. Take a quick tour to see what changed and where to find the features you need."
+body = "Papyra V2 ships with dozens of tools and a refreshed layout. Take a quick tour to see what changed and where to find the features you need."
 title = "Tour Overview"
 
 [onboarding.welcomeSlide]
-body = "Stirling PDF is now ready for teams of all sizes. This update includes a new layout, powerful new admin capabilities, and our most requested feature - <strong>Edit Text</strong>."
+body = "Papyra is now ready for teams of all sizes. This update includes a new layout, powerful new admin capabilities, and our most requested feature - <strong>Edit Text</strong>."
 title = "Welcome to Stirling"
 
 [onboarding.whatsNew]
@@ -5406,7 +5406,7 @@ leader = "Team owner"
 member = "Member"
 
 [payg.signupRequired]
-body = "Stirling PDF gives every signed-up account 500 free operations, enough to keep most workflows humming without paying a cent. You're currently using Stirling as a guest, which doesn't include billable tools like AI, automations, or hosted processing."
+body = "Papyra gives every signed-up account 500 free operations, enough to keep most workflows humming without paying a cent. You're currently using Stirling as a guest, which doesn't include billable tools like AI, automations, or hosted processing."
 cancel = "Not now"
 cta = "Sign up free"
 subtext = "Creating an account is free and takes a few seconds. No credit card required."
@@ -5893,7 +5893,7 @@ upToFiveUsers = "Up to 5 users"
 usageTrackingPrometheus = "Usage tracking & Prometheus"
 
 [plan.licenseWarning]
-body = "You have {{total}} users but the free tier only supports {{limit}} per server. Upgrade to keep Stirling PDF running smoothly."
+body = "You have {{total}} users but the free tier only supports {{limit}} per server. Upgrade to keep Papyra running smoothly."
 cta = "See plans"
 overLimit = "more than {{limit}}"
 title = "Free self-hosted limit reached"
@@ -6660,7 +6660,7 @@ time = "Time"
 user = "User"
 
 [portal.editorAdmin]
-subtitle = "Deploy the Stirling PDF Editor, pair self-hosted instances to your org, and operate the running fleet — targets, health, credentials, and offline activation in one place."
+subtitle = "Deploy the Papyra Editor, pair self-hosted instances to your org, and operate the running fleet — targets, health, credentials, and offline activation in one place."
 title = "Editor deployment"
 
 [portal.editorAdmin.health.columns]
@@ -6751,7 +6751,7 @@ guide = "Open the {{name}} guide"
 openInBrowser = "Open in browser instead"
 sectionDesktop = "Desktop app"
 sectionSelfHosted = "Self-hosted"
-title = "Install the Stirling PDF Editor"
+title = "Install the Papyra Editor"
 
 [portal.home.download.docker]
 detailBody = "Run the official image on your server."
@@ -6801,7 +6801,7 @@ title = "Windows"
 activeUsers = "{{n}} active"
 install = "Install the editor"
 invite = "Invite teammates"
-name = "Stirling PDF Editor"
+name = "Papyra Editor"
 open = "Open in browser"
 updated = "updated {{time}}"
 
@@ -8129,7 +8129,7 @@ limited = "{{used}} / {{limit}}"
 unlimited = "{{used}} · Unlimited"
 
 [portal.welcome]
-ariaLabel = "Welcome to Stirling PDF"
+ariaLabel = "Welcome to Papyra"
 install = "Install the editor"
 invite = "Invite teammates"
 openInBrowser = "Open in browser"
@@ -8825,8 +8825,8 @@ hideTools = "Hide unavailable tools ▴"
 messageNoFallback = "Tools are unavailable until your server comes back online."
 messageWithFallback = "Some tools require a server connection."
 showTools = "View unavailable tools ▾"
-title = "Your Stirling-PDF server is unreachable"
-toolNotAvailableLocally = "Your Stirling-PDF server is offline and \"{{endpoint}}\" is not available on the local backend."
+title = "Your Papyra server is unreachable"
+toolNotAvailableLocally = "Your Papyra server is offline and \"{{endpoint}}\" is not available on the local backend."
 
 [session]
 expired = "Your session has expired. Please refresh the page and try again."
@@ -8901,7 +8901,7 @@ autoUnzipFileLimitDescription = "Maximum number of files to extract from ZIP"
 autoUnzipFileLimitTooltip = "Only unzip if the ZIP contains this many files or fewer. Set higher to extract larger ZIPs."
 autoUnzipTooltip = "Automatically extract ZIP files returned from API operations. Disable to keep ZIP files intact. This does not affect automation workflows."
 defaultPdfEditor = "Default PDF editor"
-defaultPdfEditorActive = "Stirling PDF is your default PDF editor"
+defaultPdfEditorActive = "Papyra is your default PDF editor"
 defaultPdfEditorChecking = "Checking..."
 defaultPdfEditorInactive = "Another application is set as default"
 defaultPdfEditorSet = "Already Default"
@@ -8968,7 +8968,7 @@ updateBehavior = "Update behavior"
 updateBehaviorDescription = "Choose whether to prompt before installing updates, install them automatically, or skip update checks entirely."
 updateBehaviorError = "Could not change update behavior"
 updateBehaviorErrorLocked = "This setting is locked by your administrator."
-updateBehaviorLockedDescription = "Your administrator has configured how Stirling-PDF handles updates on this machine. Contact them to change this."
+updateBehaviorLockedDescription = "Your administrator has configured how Papyra handles updates on this machine. Contact them to change this."
 updateBehaviorSaved = "Update behavior saved."
 versionMismatch = "Warning: A mismatch has been detected between the client version and the AppConfig version. Using different versions can lead to compatibility issues, errors, and security risks. Please ensure that server and client are using the same version."
 viewDetails = "View Details"
@@ -9216,7 +9216,7 @@ step3 = "Restart the server"
 title = "Login Not Enabled"
 
 [setup.server.url]
-description = "Enter the full URL of your self-hosted Stirling PDF server"
+description = "Enter the full URL of your self-hosted Papyra server"
 label = "Server URL"
 
 [sharedSign]
@@ -9452,7 +9452,7 @@ pleaseFillAllFields = "Please fill in all fields"
 signUp = "Sign Up"
 signUpWith = "Sign up with"
 skip = "Skip"
-subtitle = "Join Stirling PDF to get started"
+subtitle = "Join Papyra to get started"
 title = "Create an account"
 unexpectedError = "Unexpected error: {{message}}"
 
@@ -9679,7 +9679,7 @@ download = "Download"
 downloaded = "Downloaded"
 downloadFailed = "Unable to download this file."
 downloadsCount = "Downloads: {{count}}"
-emailWarningBody = "This looks like an email address. If this person is not already a Stirling PDF user, they will not be able to access the file."
+emailWarningBody = "This looks like an email address. If this person is not already a Papyra user, they will not be able to access the file."
 emailWarningConfirm = "Share anyway"
 emailWarningTitle = "Email address"
 errorTitle = "Share failed"
@@ -9710,7 +9710,7 @@ manageTitle = "Manage Sharing"
 noActivity = "No activity yet."
 noLinks = "No active share links yet."
 noSharedUsers = "No users have access yet."
-openInApp = "Open in Stirling PDF"
+openInApp = "Open in Papyra"
 ownerLabel = "Owner"
 ownerUnknown = "Unknown"
 removeLink = "Remove link"
@@ -9764,7 +9764,7 @@ updateButton = "Update on Server"
 uploadButton = "Upload to Server"
 
 [survey]
-title = "Stirling-PDF Survey"
+title = "Papyra Survey"
 
 [swagger]
 tags = "api,documentation,swagger,endpoints,development"
@@ -9892,7 +9892,7 @@ favorites = "Favorites"
 heading = "All tools (fullscreen view)"
 noResults = "Try adjusting your search or toggle descriptions to find what you need."
 recommended = "Recommended"
-selfHostedOffline = "Requires your Stirling-PDF server (currently offline):"
+selfHostedOffline = "Requires your Papyra server (currently offline):"
 showDetails = "Show Details"
 unavailable = "Disabled by server administrator:"
 unavailableDependency = "Unavailable - required tool missing on server:"
@@ -9901,7 +9901,7 @@ unfavorite = "Remove from favorites"
 [toolPanel.modePrompt]
 chooseFullscreen = "Use fullscreen mode"
 chooseSidebar = "Use sidebar mode"
-description = "Preview both layouts and decide how you want to explore Stirling PDF tools."
+description = "Preview both layouts and decide how you want to explore Papyra tools."
 dismiss = "Maybe later"
 fullscreenDescription = "Browse every tool in a catalog that covers the workspace until you pick one."
 fullscreenTitle = "Fullscreen mode - (legacy)"
@@ -9969,7 +9969,7 @@ loadingDetailedInfo = "Loading detailed information..."
 migrationGuide = "Migration Guide"
 migrationGuides = "Migration Guides"
 migrationGuidesDesc = "Review important changes before updating."
-modalSubtitle = "A new version of Stirling PDF is ready to install."
+modalSubtitle = "A new version of Papyra is ready to install."
 modalTitle = "Update Available"
 notes = "Notes"
 releaseNotes = "Release Notes"
@@ -9993,7 +9993,7 @@ urgent = "Urgent"
 attentionBody = "Your admin needs to sign in to see more info. Please contact them immediately."
 attentionBodyAdmin = "Review the license requirements to keep this server compliant."
 attentionTitle = "This server needs admin attention"
-message = "Get the most out of Stirling PDF with unlimited users and advanced features"
+message = "Get the most out of Papyra with unlimited users and advanced features"
 seeInfo = "See info"
 title = "Upgrade to Server Plan"
 upgradeButton = "Upgrade Now"
@@ -10115,7 +10115,7 @@ authWeb = "Password"
 create = "Create account"
 createSubtitle = "Create a self-hosted account with a password or SSO."
 createTitle = "Create account"
-editorDesc = "Edit PDFs in the Stirling PDF Editor. Everyone gets this."
+editorDesc = "Edit PDFs in the Papyra Editor. Everyone gets this."
 email = "Email address"
 emailError = "Enter a valid email address"
 emailPlaceholder2 = "name@company.com"
@@ -10261,7 +10261,7 @@ downloads = "Downloads"
 entryLabel = "Signature Summary"
 filesEvaluated_one = "{{count}} file evaluated"
 filesEvaluated_other = "{{count}} files evaluated"
-footer = "Validated via Stirling PDF"
+footer = "Validated via Papyra"
 generatedAt = "Generated"
 noPdf = "PDF report will be available after a successful validation."
 page = "Page"

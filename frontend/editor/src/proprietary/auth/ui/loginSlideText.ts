@@ -20,7 +20,7 @@ export function loginSlideText(
 ): LoginSlideText[] {
   return [
     {
-      alt: translate("login.slides.overview.alt", "Stirling PDF overview"),
+      alt: translate("login.slides.overview.alt", "Papyra overview"),
       title: translate(
         "login.slides.overview.title",
         "Your one-stop-shop for all your PDF needs.",

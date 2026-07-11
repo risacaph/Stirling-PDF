@@ -201,7 +201,7 @@ public class AppConfig {
 
     @Bean(name = "StirlingPDFLabel")
     public String stirlingPDFLabel() {
-        return "Stirling-PDF" + " v" + appVersion();
+        return "Papyra" + " v" + appVersion();
     }
 
     @Bean(name = "UUID")

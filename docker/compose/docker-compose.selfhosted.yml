@@ -41,7 +41,7 @@ services:
       # --- General -------------------------------------------------------
       SYSTEM_DEFAULTLOCALE: "${STIRLING_LOCALE:-en-US}"
       SYSTEM_MAXFILESIZE: "${STIRLING_MAXFILESIZE:-100}"
-      UI_APPNAME: "${STIRLING_APPNAME:-Stirling-PDF}"
+      UI_APPNAMENAVBAR: "${STIRLING_APPNAME:-Papyra}"
       METRICS_ENABLED: "true"
     volumes:
       # Settings + the H2 database live here — persist it or you lose users/config.
