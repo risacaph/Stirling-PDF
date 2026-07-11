@@ -1,8 +1,12 @@
-// Centralized download URLs for Papyra desktop installers
+// Centralized download URLs for Papyra. The self-hosted fork is distributed through its GitHub
+// releases rather than a dedicated download host, so all download entry points route there.
+export const PAPYRA_RELEASES_URL =
+  "https://github.com/risacaph/Papyra-PDF/releases";
+
 export const DOWNLOAD_URLS = {
-  WINDOWS: "https://files.stirlingpdf.com/win-installer.exe",
-  MAC: "https://files.stirlingpdf.com/mac-installer.dmg",
-  LINUX_DOCS: "https://docs.stirlingpdf.com/Installation/Unix%20Installation/",
+  WINDOWS: PAPYRA_RELEASES_URL,
+  MAC: PAPYRA_RELEASES_URL,
+  LINUX_DOCS: PAPYRA_RELEASES_URL,
 } as const;
 
-export const DOWNLOAD_BASE_URL = "https://files.stirlingpdf.com/";
+export const DOWNLOAD_BASE_URL = `${PAPYRA_RELEASES_URL}/`;
