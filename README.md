@@ -17,7 +17,7 @@ Papyra is a powerful, self-hosted PDF platform (a rebranded fork of [Stirling-PD
   </a>
 </p>
 
-![Stirling PDF - Dashboard](images/home-light.png)
+![Papyra - Dashboard](images/home-light.png)
 
 ## Key Capabilities
 

@@ -1,7 +1,7 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Stirling-Tools/Stirling-PDF/main/docs/stirling.png" width="80">
+  <img src="https://raw.githubusercontent.com/risacaph/Papyra-PDF/main/docs/stirling.png" width="80">
   <br>
-  <h1 align="center">Stirling-PDF</h1>
+  <h1 align="center">Papyra</h1>
 </p>
 
 # How to add new languages to Stirling-PDF
