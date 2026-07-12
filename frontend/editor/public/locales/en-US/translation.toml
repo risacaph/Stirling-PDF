@@ -8163,6 +8163,10 @@ openInBrowser = "Open in browser"
 productName = "PDF Editor"
 stats = "30M downloads · 60+ PDF operations · Free forever"
 
+[print]
+failedBody = "Your browser blocked printing, or this PDF can't be printed here. Try downloading it and printing from your PDF viewer."
+failedTitle = "Couldn't open the print dialog"
+
 [printFile]
 title = "Print File"
 
