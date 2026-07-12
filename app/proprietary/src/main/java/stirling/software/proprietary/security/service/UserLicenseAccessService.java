@@ -58,10 +58,17 @@ public class UserLicenseAccessService {
     private final UserRepository userRepository;
     private final PlanDefinitionService planDefinitionService;
 
-    /** No tier set (pre-existing / grandfathered account) is treated as full access. */
+    /**
+     * The tier the user effectively has right now. A pre-existing/grandfathered account (no tier)
+     * is treated as full access; an expired plan drops to the permanent Free tier (e.g. once the
+     * Pro trial ends) rather than locking the user out.
+     */
     public LicenseTier effectiveTier(User user) {
         if (user == null || user.getLicenseTier() == null || user.getLicenseTier().isBlank()) {
             return LicenseTier.ULTIMATE;
+        }
+        if (isExpired(user)) {
+            return LicenseTier.FREE;
         }
         return LicenseTier.fromString(user.getLicenseTier());
     }

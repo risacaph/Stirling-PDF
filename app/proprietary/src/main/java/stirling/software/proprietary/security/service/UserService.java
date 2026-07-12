@@ -6,6 +6,7 @@ import static stirling.software.proprietary.security.service.MfaService.MFA_REQU
 import static stirling.software.proprietary.security.service.MfaService.MFA_SECRET_KEY;
 
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -70,6 +71,9 @@ import stirling.software.proprietary.workflow.service.UserServerCertificateServi
 @Slf4j
 @RequiredArgsConstructor
 public class UserService implements UserServiceInterface {
+
+    // New non-admin accounts get a Pro trial of this many days, then fall back to permanent Free.
+    private static final int TRIAL_DAYS = 7;
 
     private final UserRepository userRepository;
     private final TeamRepository teamRepository;
@@ -546,16 +550,18 @@ public class UserService implements UserServiceInterface {
             user.setTeam(resolveTeam(request.getTeamId(), this::getDefaultTeam));
         }
 
-        // New accounts start on the Free plan — except admins and internal API accounts, which are
-        // exempt from license enforcement. Leaving their tier unset keeps them shown as unlimited
-        // (rather than as an expired Free trial) in the admin People view. The Free plan never
-        // expires, so no expiry is stamped; an admin can still assign a paid tier with a duration.
+        // New accounts get a Pro trial — except admins and internal API accounts, which are exempt
+        // from license enforcement. Leaving their tier unset keeps them shown as unlimited (rather
+        // than as an expired trial) in the admin People view. When the trial expires the user drops
+        // to the permanent Free tier (see UserLicenseAccessService#effectiveTier), so access never
+        // fully lapses.
         String role = request.getRole();
         boolean privileged =
                 Role.ADMIN.getRoleId().equals(role)
                         || Role.INTERNAL_API_USER.getRoleId().equals(role);
         if (user.getLicenseTier() == null && !privileged) {
-            user.setLicenseTier(LicenseTier.FREE.name());
+            user.setLicenseTier(LicenseTier.PRO.name());
+            user.setLicenseExpiresAt(LocalDateTime.now().plusDays(TRIAL_DAYS));
         }
 
         // Save user

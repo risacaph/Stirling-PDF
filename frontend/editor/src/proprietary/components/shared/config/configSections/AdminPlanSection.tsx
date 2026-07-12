@@ -261,7 +261,7 @@ const AdminPlanSection: React.FC = () => {
           <Text c="dimmed" size="xs">
             {t(
               "settings.plan.selfHosted.manageHint",
-              "Go to Settings → People to change a user's access plan. Expired users can still sign in, but the app becomes read-only until an admin renews their plan.",
+              "Go to Settings → People to change a user's access plan. New accounts start with a 7-day Pro trial, then move to the Free plan, which never expires.",
             )}
           </Text>
         </Stack>

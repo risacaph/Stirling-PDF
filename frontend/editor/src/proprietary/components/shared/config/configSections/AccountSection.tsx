@@ -387,15 +387,13 @@ const AccountSection: React.FC = () => {
 
             {license.expired ? (
               <Alert
-                icon={
-                  <LocalIcon icon="error-rounded" width="1rem" height="1rem" />
-                }
-                color="red"
+                icon={<LocalIcon icon="info" width="1rem" height="1rem" />}
+                color="blue"
                 variant="light"
               >
                 {t(
                   "account.license.expired",
-                  "Your access has expired. The app is read-only until an administrator renews your plan.",
+                  "Your plan has ended — you're now on the Free plan.",
                 )}
               </Alert>
             ) : license.expiresAt ? (
