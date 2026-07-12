@@ -12,10 +12,10 @@ import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
 
+import stirling.software.common.model.ApplicationProperties;
+
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
-
-import stirling.software.common.model.ApplicationProperties;
 
 /**
  * Verifies Cloudflare Turnstile response tokens server-side.
