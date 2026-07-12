@@ -39,6 +39,7 @@ import stirling.software.proprietary.security.model.api.user.MfaCodeRequest;
 import stirling.software.proprietary.security.model.api.user.UsernameAndPassMfa;
 import stirling.software.proprietary.security.model.exception.AuthenticationFailureException;
 import stirling.software.proprietary.security.service.CustomUserDetailsService;
+import stirling.software.proprietary.security.service.DeviceActivationService;
 import stirling.software.proprietary.security.service.JwtServiceInterface;
 import stirling.software.proprietary.security.service.LoginAttemptService;
 import stirling.software.proprietary.security.service.MfaService;
@@ -70,6 +71,7 @@ public class AuthController {
     private final AiUserDataService aiUserDataService;
     private final ResourceAccessService resourceAccessService;
     private final TeamLeadLookup teamLeadLookup;
+    private final DeviceActivationService deviceActivationService;
 
     /**
      * Login endpoint - replaces Supabase signInWithPassword
@@ -195,6 +197,24 @@ public class AuthController {
                                             "error", "invalid_mfa_code",
                                             "message", "Invalid two-factor code"));
                 }
+            }
+
+            // Enforce the per-user device limit before issuing a token. The device is identified by
+            // the browser's stable X-Browser-Id; admins/internal accounts and clients that send no
+            // id are exempt (handled in the service).
+            if (!deviceActivationService.registerOrReject(
+                    user,
+                    httpRequest.getHeader("X-Browser-Id"),
+                    httpRequest.getHeader("User-Agent"))) {
+                log.warn("Device limit reached for user: {} from IP: {}", username, ip);
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                        .body(
+                                Map.of(
+                                        "error",
+                                        "device_limit_exceeded",
+                                        "message",
+                                        "You've reached the device limit for your plan. Remove a"
+                                                + " device to sign in here."));
             }
 
             Map<String, Object> claims = new HashMap<>();
