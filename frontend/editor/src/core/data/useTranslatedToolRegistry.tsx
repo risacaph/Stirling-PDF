@@ -50,6 +50,7 @@ import { signOperationConfig } from "@app/hooks/tools/sign/useSignOperation";
 import { cropOperationConfig } from "@app/hooks/tools/crop/useCropOperation";
 import { removeAnnotationsOperationConfig } from "@app/hooks/tools/removeAnnotations/useRemoveAnnotationsOperation";
 import { extractImagesOperationConfig } from "@app/hooks/tools/extractImages/useExtractImagesOperation";
+import { extractTablesCsvOperationConfig } from "@app/hooks/tools/extractTablesCsv/useExtractTablesCsvOperation";
 import { replaceColorOperationConfig } from "@app/hooks/tools/replaceColor/useReplaceColorOperation";
 import { grayscaleOperationConfig } from "@app/hooks/tools/grayscale/useGrayscaleOperation";
 import { removePagesOperationConfig } from "@app/hooks/tools/removePages/useRemovePagesOperation";
@@ -849,6 +850,25 @@ export function useTranslatedToolCatalog(): TranslatedToolCatalog {
             import("@app/components/tools/extractImages/ExtractImagesSettings"),
         ),
         synonyms: getSynonyms(t, "extractImages"),
+      },
+      extractTablesCsv: {
+        icon: <LocalIcon icon="table-chart" width="1.5rem" height="1.5rem" />,
+        name: t("home.extractTablesCsv.title", "Extract Tables to CSV"),
+        component: lazy(() => import("@app/tools/ExtractTablesCsv")),
+        description: t(
+          "home.extractTablesCsv.desc",
+          "Detect tables in a PDF and export them as CSV",
+        ),
+        categoryId: ToolCategoryId.STANDARD_TOOLS,
+        subcategoryId: SubcategoryId.EXTRACTION,
+        maxFiles: -1,
+        endpoints: ["pdf-to-csv"],
+        operationConfig: asRegistryConfig(extractTablesCsvOperationConfig),
+        automationSettings: lazySettings(
+          () =>
+            import("@app/components/tools/extractTablesCsv/ExtractTablesCsvSettings"),
+        ),
+        synonyms: getSynonyms(t, "extractTablesCsv"),
       },
 
       // Removal

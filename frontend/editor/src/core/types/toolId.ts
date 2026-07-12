@@ -52,6 +52,7 @@ export const CORE_REGULAR_TOOL_IDS = [
   "extractPages",
   "reorganizePages",
   "extractImages",
+  "extractTablesCsv",
   "addStamp",
   "addAttachments",
   "changeMetadata",

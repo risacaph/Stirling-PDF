@@ -60,6 +60,7 @@ const TOOL_IDS = [
   "extractPages",
   "reorganizePages",
   "extractImages",
+  "extractTablesCsv",
   "addStamp",
   "addAttachments",
   "changeMetadata",

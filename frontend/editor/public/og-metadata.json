@@ -205,6 +205,11 @@
       "title": "Extract Images - Stirling PDF",
       "description": "Extract images from PDF documents"
     },
+    "extractTablesCsv": {
+      "image": "/og_images/home.png",
+      "title": "Extract Tables to CSV - Stirling PDF",
+      "description": "Detect tables in a PDF and export them as CSV"
+    },
     "addStamp": {
       "image": "/og_images/add-stamp.png",
       "title": "Add Stamp to PDF - Stirling PDF",
@@ -552,6 +557,7 @@
     "/extract-pages": "extractPages",
     "/reorganize-pages": "reorganizePages",
     "/extract-images": "extractImages",
+    "/extract-tables-csv": "extractTablesCsv",
     "/add-stamp": "addStamp",
     "/add-attachments": "addAttachments",
     "/change-metadata": "changeMetadata",
