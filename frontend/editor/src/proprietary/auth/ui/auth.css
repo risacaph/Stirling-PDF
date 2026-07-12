@@ -150,7 +150,7 @@
 .auth-checkbox {
   width: 1rem; /* 16px */
   height: 1rem; /* 16px */
-  accent-color: #af3434;
+  accent-color: #3aafa9;
 }
 
 .auth-terms-label {
@@ -658,20 +658,20 @@
   color: var(--auth-text-primary-light-only);
 }
 
-/* Email login button - red CTA style matching SaaS version */
+/* Email login button - teal CTA style matching SaaS version */
 .auth-cta-button {
-  background-color: #af3434 !important;
+  background-color: #3aafa9 !important;
   color: white !important;
   border: none !important;
   font-weight: 600 !important;
 }
 
 .auth-cta-button:hover:not(:disabled) {
-  background-color: #9a2e2e !important;
+  background-color: #2b8480 !important;
 }
 
 .auth-cta-button:disabled {
-  background-color: #af3434 !important;
+  background-color: #3aafa9 !important;
   opacity: 0.6 !important;
 }
 
@@ -722,7 +722,7 @@
 }
 
 .auth-expandable-trigger--active {
-  border-color: #af3434 !important;
+  border-color: #3aafa9 !important;
   box-shadow: 0 0 0 3px rgba(175, 52, 52, 0.12);
 }
 

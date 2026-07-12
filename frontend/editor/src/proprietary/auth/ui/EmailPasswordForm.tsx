@@ -131,7 +131,7 @@ export default function EmailPasswordForm({
         }
         fullWidth
         loading={isSubmitting}
-        // Stirling-red brand CTA; the brand accent sets the colour inline so the
+        // Papyra teal brand CTA; the brand accent sets the colour inline so the
         // host app's Mantine primaryColor can't win (editor vs portal differ).
         accent="brand"
       >
