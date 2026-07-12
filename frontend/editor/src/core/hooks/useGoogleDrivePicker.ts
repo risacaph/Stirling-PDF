@@ -4,6 +4,7 @@
 
 import { useState, useCallback, useEffect, useMemo } from "react";
 import { useAppConfig } from "@app/contexts/AppConfigContext";
+import { useCloudDriveAccess } from "@app/hooks/useCloudDriveAccess";
 import {
   getGoogleDrivePickerService,
   isGoogleDriveConfigured,
@@ -28,6 +29,8 @@ interface UseGoogleDrivePickerReturn {
  */
 export function useGoogleDrivePicker(): UseGoogleDrivePickerReturn {
   const { config } = useAppConfig();
+  // Cloud drives are a paid-plan feature; core is always allowed, proprietary gates to non-Free.
+  const hasCloudDriveAccess = useCloudDriveAccess();
   const [isEnabled, setIsEnabled] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -44,15 +47,16 @@ export function useGoogleDrivePicker(): UseGoogleDrivePickerReturn {
     ],
   );
 
-  // Check if Google Drive is configured and reset initialization if disabled
+  // Enabled only when Google Drive is admin-configured AND the user's plan allows cloud drives.
   useEffect(() => {
-    const configured = isGoogleDriveConfigured(googleDriveBackendConfig);
-    setIsEnabled(configured);
+    const enabled =
+      isGoogleDriveConfigured(googleDriveBackendConfig) && hasCloudDriveAccess;
+    setIsEnabled(enabled);
     // Reset initialization state if Google Drive becomes disabled
-    if (!configured) {
+    if (!enabled) {
       setIsInitialized(false);
     }
-  }, [googleDriveBackendConfig]);
+  }, [googleDriveBackendConfig, hasCloudDriveAccess]);
 
   /**
    * Initialize the Google Drive service (lazy initialization)
