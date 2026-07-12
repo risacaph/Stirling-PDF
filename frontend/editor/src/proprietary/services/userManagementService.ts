@@ -128,6 +128,14 @@ export interface ChangeUserPasswordRequest {
   forcePasswordChange?: boolean;
 }
 
+/** Admin-editable access plan definition (one per tier). */
+export interface PlanDefinition {
+  tier: "FREE" | "PRO" | "ULTIMATE";
+  title: string;
+  durationMonths: number | null; // null = never expires
+  maxDevices: number;
+}
+
 /**
  * User Management Service
  * Provides functions to interact with user management backend APIs
@@ -193,7 +201,7 @@ export const userManagementService = {
 
   /**
    * Set a user's admin-managed access license tier (admin only). Assigning a tier resets the
-   * user's expiry to now + the tier's duration (Free 7 days, Pro 1 year, Ultimate 5 years).
+   * user's expiry to now + the plan's configured duration (the Free plan never expires by default).
    */
   async setUserLicense(
     username: string,
@@ -205,6 +213,36 @@ export const userManagementService = {
     await apiClient.post("/api/v1/user/admin/setUserLicense", formData, {
       suppressErrorToast: true,
     });
+  },
+
+  /**
+   * Get the admin-editable access plans (title, duration, device cap) for each tier (admin only).
+   */
+  async getPlans(): Promise<PlanDefinition[]> {
+    const response = await apiClient.get<PlanDefinition[]>(
+      "/api/v1/user/admin/plans",
+    );
+    return response.data;
+  },
+
+  /**
+   * Update an access plan's title, duration, and device cap (admin only). A null durationMonths
+   * (omitted from the request) means the plan never expires.
+   */
+  async updatePlan(plan: PlanDefinition): Promise<PlanDefinition> {
+    const formData = new FormData();
+    formData.append("tier", plan.tier);
+    formData.append("title", plan.title);
+    if (plan.durationMonths !== null && plan.durationMonths !== undefined) {
+      formData.append("durationMonths", String(plan.durationMonths));
+    }
+    formData.append("maxDevices", String(plan.maxDevices));
+    const response = await apiClient.post<PlanDefinition>(
+      "/api/v1/user/admin/updatePlan",
+      formData,
+      { suppressErrorToast: true },
+    );
+    return response.data;
   },
 
   /**

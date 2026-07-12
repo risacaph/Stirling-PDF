@@ -56,11 +56,19 @@ public class UserLicenseAccessService {
             List.of("pipeline", "automation", "workflow", "/ai", "ai/", "auto-");
 
     private final UserRepository userRepository;
+    private final PlanDefinitionService planDefinitionService;
 
-    /** No tier set (pre-existing / grandfathered account) is treated as full access. */
+    /**
+     * The tier the user effectively has right now. A pre-existing/grandfathered account (no tier)
+     * is treated as full access; an expired plan drops to the permanent Free tier (e.g. once the
+     * Pro trial ends) rather than locking the user out.
+     */
     public LicenseTier effectiveTier(User user) {
         if (user == null || user.getLicenseTier() == null || user.getLicenseTier().isBlank()) {
             return LicenseTier.ULTIMATE;
+        }
+        if (isExpired(user)) {
+            return LicenseTier.FREE;
         }
         return LicenseTier.fromString(user.getLicenseTier());
     }
@@ -83,11 +91,14 @@ public class UserLicenseAccessService {
         return Duration.between(LocalDateTime.now(), expiry).toDays();
     }
 
-    /** Assigns a tier and resets the expiry to now + the tier's duration. */
+    /**
+     * Assigns a tier and resets the expiry to now + the plan's configured duration. A plan with no
+     * configured duration (e.g. Free by default) leaves the expiry null, i.e. it never expires.
+     */
     @Transactional
     public User assign(User user, LicenseTier tier) {
         user.setLicenseTier(tier.name());
-        user.setLicenseExpiresAt(LocalDateTime.now().plusDays(tier.getDurationDays()));
+        user.setLicenseExpiresAt(planDefinitionService.computeExpiry(tier));
         return userRepository.save(user);
     }
 

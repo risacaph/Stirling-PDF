@@ -20,12 +20,9 @@ import stirling.software.proprietary.security.service.UserLicenseAccessService;
 import stirling.software.proprietary.security.service.UserService;
 
 /**
- * Enforces the admin-managed per-user access license on tool operations:
- *
- * <ul>
- *   <li>expired users are read-only — mutating tool calls are blocked (403);
- *   <li>tools above the user's tier are blocked (403).
- * </ul>
+ * Enforces the admin-managed per-user access license on tool operations: tools above the user's
+ * effective tier are blocked (403). An expired plan is not a lockout — it downgrades to the Free
+ * tier (see {@link UserLicenseAccessService#effectiveTier}), so the user keeps Free-tier tools.
  *
  * <p>Only mutating requests ({@code POST/PUT/PATCH/DELETE}) to tool endpoints under {@code
  * /api/v1/} are gated. Account/config/admin/auth/info endpoints, admins, internal API accounts and
@@ -98,14 +95,6 @@ public class UserLicenseInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        if (licenseAccessService.isExpired(user)) {
-            deny(
-                    response,
-                    "license_expired",
-                    "Your access has expired and the app is read-only. Contact your administrator"
-                            + " to renew.");
-            return false;
-        }
         if (!licenseAccessService.isToolAllowed(user, path)) {
             LicenseTier required = licenseAccessService.requiredTierForPath(path);
             deny(
