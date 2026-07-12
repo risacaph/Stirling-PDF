@@ -44,12 +44,14 @@ import stirling.software.proprietary.model.Team;
 import stirling.software.proprietary.security.database.repository.UserRepository;
 import stirling.software.proprietary.security.model.AuthenticationType;
 import stirling.software.proprietary.security.model.LicenseTier;
+import stirling.software.proprietary.security.model.PlanDefinition;
 import stirling.software.proprietary.security.model.User;
 import stirling.software.proprietary.security.model.api.user.UsernameAndPass;
 import stirling.software.proprietary.security.repository.TeamRepository;
 import stirling.software.proprietary.security.saml2.CustomSaml2AuthenticatedPrincipal;
 import stirling.software.proprietary.security.service.EmailService;
 import stirling.software.proprietary.security.service.LoginAttemptService;
+import stirling.software.proprietary.security.service.PlanDefinitionService;
 import stirling.software.proprietary.security.service.SaveUserRequest;
 import stirling.software.proprietary.security.service.TeamMembershipService;
 import stirling.software.proprietary.security.service.TeamService;
@@ -77,6 +79,7 @@ public class UserController {
     private final TeamMembershipService teamMembershipService;
     private final UserLicenseAccessService licenseAccessService;
     private final TurnstileVerificationService turnstileService;
+    private final PlanDefinitionService planDefinitionService;
 
     @PreAuthorize("!hasAuthority('ROLE_DEMO_USER')")
     @PostMapping("/register")
@@ -844,7 +847,7 @@ public class UserController {
     }
 
     // Admin-managed per-user access license: assign a tier (FREE/PRO/ULTIMATE), which resets the
-    // user's expiry to now + the tier's duration (renew = assign the same tier again).
+    // user's expiry to now + the plan's configured duration (renew = assign the same tier again).
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/admin/setUserLicense")
     public ResponseEntity<?> setUserLicense(
@@ -862,6 +865,41 @@ public class UserController {
         body.put("tier", licenseTier.name());
         body.put("expiresAt", saved.getLicenseExpiresAt());
         return ResponseEntity.ok(body);
+    }
+
+    // Admin: list the editable access plans (title, duration, device cap) for each tier.
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/admin/plans")
+    public ResponseEntity<List<PlanDefinition>> getPlans() {
+        return ResponseEntity.ok(planDefinitionService.getPlans());
+    }
+
+    // Admin: update a plan's title, duration in months (blank = never expires), and device cap.
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/admin/updatePlan")
+    public ResponseEntity<?> updatePlan(
+            @RequestParam(name = "tier") String tier,
+            @RequestParam(name = "title") String title,
+            @RequestParam(name = "durationMonths", required = false) String durationMonths,
+            @RequestParam(name = "maxDevices") int maxDevices) {
+        Integer months;
+        try {
+            months =
+                    (durationMonths == null || durationMonths.isBlank())
+                            ? null
+                            : Integer.valueOf(durationMonths.trim());
+        } catch (NumberFormatException e) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("error", "Duration must be a whole number of months, or empty."));
+        }
+        try {
+            PlanDefinition updated =
+                    planDefinitionService.updatePlan(
+                            LicenseTier.fromString(tier), title, months, maxDevices);
+            return ResponseEntity.ok(updated);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
     }
 
     // Current user's own license status (for the in-app remaining-days / read-only banner).

@@ -6,7 +6,6 @@ import static stirling.software.proprietary.security.service.MfaService.MFA_REQU
 import static stirling.software.proprietary.security.service.MfaService.MFA_SECRET_KEY;
 
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -547,17 +546,16 @@ public class UserService implements UserServiceInterface {
             user.setTeam(resolveTeam(request.getTeamId(), this::getDefaultTeam));
         }
 
-        // New accounts start on the Free 7-day trial — except admins and internal API accounts,
-        // which are exempt from license enforcement. Leaving their tier unset keeps them shown as
-        // unlimited (rather than as an expired Free trial) in the admin People view.
+        // New accounts start on the Free plan — except admins and internal API accounts, which are
+        // exempt from license enforcement. Leaving their tier unset keeps them shown as unlimited
+        // (rather than as an expired Free trial) in the admin People view. The Free plan never
+        // expires, so no expiry is stamped; an admin can still assign a paid tier with a duration.
         String role = request.getRole();
         boolean privileged =
                 Role.ADMIN.getRoleId().equals(role)
                         || Role.INTERNAL_API_USER.getRoleId().equals(role);
         if (user.getLicenseTier() == null && !privileged) {
             user.setLicenseTier(LicenseTier.FREE.name());
-            user.setLicenseExpiresAt(
-                    LocalDateTime.now().plusDays(LicenseTier.FREE.getDurationDays()));
         }
 
         // Save user

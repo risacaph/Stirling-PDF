@@ -9206,6 +9206,19 @@ plan = "Plan"
 title = "Licensing & Analytics"
 usageAnalytics = "Usage Analytics"
 
+[settings.plan.editor]
+description = "Edit each plan's name, how long it lasts, and how many devices a user may activate. Changes apply the next time a plan is assigned to a user."
+durationLabel = "Duration (months)"
+heading = "Access plans"
+loadError = "Could not load access plans."
+maxDevicesLabel = "Max devices per user"
+maxDevicesNote = "Device limits are saved now; enforcement at sign-in arrives in an upcoming update."
+neverExpires = "Never expires"
+planNameLabel = "Plan name"
+save = "Save"
+saved = "Saved"
+saveError = "Could not save the plan."
+
 [settings.plan.selfHosted]
 allUnlocked = "All premium and enterprise features are unlocked on this self-hosted Papyra deployment. There is no vendor subscription, license key, or user limit."
 manageHint = "Go to Settings → People to change a user's access plan. Expired users can still sign in, but the app becomes read-only until an admin renews their plan."
