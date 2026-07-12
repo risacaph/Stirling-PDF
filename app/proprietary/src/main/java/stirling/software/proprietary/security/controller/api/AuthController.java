@@ -90,13 +90,13 @@ public class AuthController {
             if (!securityProperties.isUserPass()) {
                 log.warn(
                         "Username/password login attempted but not allowed by current login method"
-                            + " configuration");
+                                + " configuration");
                 return ResponseEntity.status(HttpStatus.FORBIDDEN)
                         .body(
                                 Map.of(
                                         "error",
                                         "Username/password authentication is not enabled. Please"
-                                            + " use the configured authentication method."));
+                                                + " use the configured authentication method."));
             }
 
             // Validate input parameters
