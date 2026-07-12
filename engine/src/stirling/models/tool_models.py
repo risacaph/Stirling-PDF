@@ -761,6 +761,10 @@ class PdfToEpubParams(ApiModel):
     )
 
 
+class PdfToGrayscaleParams(ApiModel):
+    dpi: int = Field(300, description="Rendering resolution in DPI used to rasterize each page", ge=72)
+
+
 class PdfToHtmlParams(ApiModel):
     """
     Either upload a file or provide a server-side file ID
@@ -1440,6 +1444,7 @@ class Model(
         | ExtractImagesParams
         | FlattenParams
         | OcrPdfParams
+        | PdfToGrayscaleParams
         | RemoveBlanksParams
         | RenameAttachmentParams
         | RepairParams
@@ -1513,6 +1518,7 @@ class Model(
         | ExtractImagesParams
         | FlattenParams
         | OcrPdfParams
+        | PdfToGrayscaleParams
         | RemoveBlanksParams
         | RenameAttachmentParams
         | RepairParams
@@ -1587,6 +1593,7 @@ type ParamToolModel = (
     | ExtractImagesParams
     | FlattenParams
     | OcrPdfParams
+    | PdfToGrayscaleParams
     | RemoveBlanksParams
     | RenameAttachmentParams
     | RepairParams
@@ -1662,6 +1669,7 @@ class ToolEndpoint(StrEnum):
     EXTRACT_IMAGES = "/api/v1/misc/extract-images"
     FLATTEN = "/api/v1/misc/flatten"
     OCR_PDF = "/api/v1/misc/ocr-pdf"
+    PDF_TO_GRAYSCALE = "/api/v1/misc/pdf-to-grayscale"
     REMOVE_BLANKS = "/api/v1/misc/remove-blanks"
     RENAME_ATTACHMENT = "/api/v1/misc/rename-attachment"
     REPAIR = "/api/v1/misc/repair"
@@ -1735,6 +1743,7 @@ OPERATIONS: dict[ToolEndpoint, ParamToolModelType] = {
     ToolEndpoint.EXTRACT_IMAGES: ExtractImagesParams,
     ToolEndpoint.FLATTEN: FlattenParams,
     ToolEndpoint.OCR_PDF: OcrPdfParams,
+    ToolEndpoint.PDF_TO_GRAYSCALE: PdfToGrayscaleParams,
     ToolEndpoint.REMOVE_BLANKS: RemoveBlanksParams,
     ToolEndpoint.RENAME_ATTACHMENT: RenameAttachmentParams,
     ToolEndpoint.REPAIR: RepairParams,

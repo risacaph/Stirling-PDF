@@ -48,7 +48,7 @@ class GrayscaleControllerTest {
     private GrayscaleController controller;
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws IOException {
         controller =
                 new GrayscaleController(new GrayscaleService(pdfDocumentFactory), tempFileManager);
 
