@@ -2,6 +2,7 @@ package stirling.software.proprietary.security.controller.api;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -35,6 +36,7 @@ import stirling.software.proprietary.security.model.Authority;
 import stirling.software.proprietary.security.model.User;
 import stirling.software.proprietary.security.model.api.user.UsernameAndPassMfa;
 import stirling.software.proprietary.security.service.CustomUserDetailsService;
+import stirling.software.proprietary.security.service.DeviceActivationService;
 import stirling.software.proprietary.security.service.JwtServiceInterface;
 import stirling.software.proprietary.security.service.LoginAttemptService;
 import stirling.software.proprietary.security.service.MfaService;
@@ -64,6 +66,7 @@ class AuthControllerLoginTest {
     @Mock private TurnstileVerificationService turnstileService;
     @Mock private ResourceAccessService resourceAccessService;
     @Mock private TeamLeadLookup teamLeadLookup;
+    @Mock private DeviceActivationService deviceActivationService;
 
     @BeforeEach
     void setUp() {
@@ -89,7 +92,11 @@ class AuthControllerLoginTest {
                         applicationProperties,
                         new stirling.software.proprietary.service.AiUserDataService(null),
                         resourceAccessService,
-                        teamLeadLookup);
+                        teamLeadLookup,
+                        deviceActivationService);
+        lenient()
+                .when(deviceActivationService.registerOrReject(any(), any(), any()))
+                .thenReturn(true);
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
     }
 

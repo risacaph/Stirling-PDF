@@ -140,6 +140,18 @@ userControlSettings = "User Control Settings"
 webBrowserSettings = "Web Browser Setting"
 yourApiKey = "Your API Key"
 
+[account.devices]
+count = "{{used}} of {{max}}"
+description = "Devices signed in to your account. Your plan allows a limited number; remove one to free a slot."
+lastSeen = "Last used {{date}}"
+loadError = "Could not load your devices."
+none = "No devices registered yet."
+remove = "Remove"
+revokeError = "Could not remove that device."
+thisDevice = "This device"
+title = "Devices"
+unknown = "Unknown device"
+
 [account.license]
 daysRemaining_one = "{{count}} day left"
 daysRemaining_other = "{{count}} days left"
