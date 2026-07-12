@@ -54,6 +54,7 @@ import { extractTablesCsvOperationConfig } from "@app/hooks/tools/extractTablesC
 import { addQrCodeOperationConfig } from "@app/hooks/tools/addQrCode/useAddQrCodeOperation";
 import { replaceColorOperationConfig } from "@app/hooks/tools/replaceColor/useReplaceColorOperation";
 import { grayscaleOperationConfig } from "@app/hooks/tools/grayscale/useGrayscaleOperation";
+import { scannerEffectOperationConfig } from "@app/hooks/tools/scannerEffect/useScannerEffectOperation";
 import { removePagesOperationConfig } from "@app/hooks/tools/removePages/useRemovePagesOperation";
 import { removeBlanksOperationConfig } from "@app/hooks/tools/removeBlanks/useRemoveBlanksOperation";
 import { overlayPdfsOperationConfig } from "@app/hooks/tools/overlayPdfs/useOverlayPdfsOperation";
@@ -1221,16 +1222,21 @@ export function useTranslatedToolCatalog(): TranslatedToolCatalog {
           />
         ),
         name: t("home.scannerEffect.title", "Scanner Effect"),
-        component: null,
+        component: lazy(() => import("@app/tools/ScannerEffect")),
         description: t(
           "home.scannerEffect.desc",
           "Create a PDF that looks like it was scanned",
         ),
         categoryId: ToolCategoryId.ADVANCED_TOOLS,
         subcategoryId: SubcategoryId.ADVANCED_FORMATTING,
+        maxFiles: 1,
         endpoints: ["scanner-effect"],
+        operationConfig: asRegistryConfig(scannerEffectOperationConfig),
+        automationSettings: lazySettings(
+          () =>
+            import("@app/components/tools/scannerEffect/ScannerEffectSettings"),
+        ),
         synonyms: getSynonyms(t, "scannerEffect"),
-        automationSettings: null,
       },
 
       // Developer Tools
