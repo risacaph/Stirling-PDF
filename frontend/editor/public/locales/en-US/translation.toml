@@ -8969,7 +8969,40 @@ tags = "resize,adjust,scale,page size,resize page,scale page,change size,adjust 
 title = "Adjust page-scale"
 
 [scannerEffect]
+submit = "Apply scanner effect"
 tags = "scan,simulate,create,fake scan,look scanned,scanner effect,make look scanned,photocopy effect,simulate scanner,realistic scan"
+title = "Scanner Effect"
+
+[scannerEffect.error]
+failed = "An error occurred while applying the scanner effect."
+
+[scannerEffect.labels]
+settings = "Settings"
+
+[scannerEffect.settings]
+colorspaceLabel = "Colour"
+note = "Rasterises each page and adds subtle skew, blur and noise so the PDF looks scanned or photocopied."
+qualityDescription = "Higher quality keeps the page cleaner; lower quality adds more scan artefacts."
+qualityLabel = "Scan quality"
+rotationDescription = "How much random page skew to apply."
+rotationLabel = "Rotation"
+yellowishDescription = "Tint the page to mimic aged or photocopied paper."
+yellowishLabel = "Yellowed paper"
+
+[scannerEffect.settings.colorspace]
+color = "Colour"
+grayscale = "Grayscale"
+
+[scannerEffect.settings.quality]
+high = "High"
+low = "Low"
+medium = "Medium"
+
+[scannerEffect.settings.rotation]
+moderate = "Moderate"
+none = "None"
+severe = "Severe"
+slight = "Slight"
 
 [ScannerImageSplit.selectText]
 1 = "Angle Threshold:"
