@@ -184,7 +184,6 @@ public class RequestUriUtils {
                 || trimmedUri.startsWith("/api/v1/auth/refresh")
                 || trimmedUri.startsWith("/api/v1/auth/logout")
                 || trimmedUri.startsWith("/api/v1/user/register") // Self-registration portal
-
                 || trimmedUri.startsWith(
                         "/api/v1/proprietary/ui-data/login") // Login page config (SSO providers +
                 // enableLogin)

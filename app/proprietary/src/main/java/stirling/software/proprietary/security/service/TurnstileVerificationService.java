@@ -95,7 +95,8 @@ public class TurnstileVerificationService {
                                             form.toString(), StandardCharsets.UTF_8))
                             .build();
             HttpResponse<String> resp =
-                    httpClient.send(req, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
+                    httpClient.send(
+                            req, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
             if (resp.statusCode() != 200) {
                 log.warn("Turnstile siteverify returned HTTP {}", resp.statusCode());
                 return false;
