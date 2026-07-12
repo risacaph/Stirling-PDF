@@ -12,6 +12,9 @@ export interface AppConfig {
   enableEmailInvites?: boolean;
   enableOAuth?: boolean;
   enableSaml?: boolean;
+  registrationEnabled?: boolean;
+  turnstileEnabled?: boolean;
+  turnstileSiteKey?: string;
   isAdmin?: boolean;
   shouldShowUpdate?: boolean;
   enableAlphaFunctionality?: boolean;

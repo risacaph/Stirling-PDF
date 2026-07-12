@@ -53,9 +53,11 @@ import stirling.software.proprietary.security.service.LoginAttemptService;
 import stirling.software.proprietary.security.service.SaveUserRequest;
 import stirling.software.proprietary.security.service.TeamMembershipService;
 import stirling.software.proprietary.security.service.TeamService;
+import stirling.software.proprietary.security.service.TurnstileVerificationService;
 import stirling.software.proprietary.security.service.UserLicenseAccessService;
 import stirling.software.proprietary.security.service.UserService;
 import stirling.software.proprietary.security.session.SessionPersistentRegistry;
+import stirling.software.proprietary.security.util.DesktopClientUtils;
 import stirling.software.proprietary.service.UserLicenseSettingsService;
 
 @UserApi
@@ -74,15 +76,38 @@ public class UserController {
     private final LoginAttemptService loginAttemptService;
     private final TeamMembershipService teamMembershipService;
     private final UserLicenseAccessService licenseAccessService;
+    private final TurnstileVerificationService turnstileService;
 
     @PreAuthorize("!hasAuthority('ROLE_DEMO_USER')")
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody UsernameAndPass usernameAndPass)
+    public ResponseEntity<?> register(
+            @RequestBody UsernameAndPass usernameAndPass, HttpServletRequest request)
             throws SQLException, UnsupportedProviderException {
         String username = usernameAndPass.getUsername();
         String password = usernameAndPass.getPassword();
         try {
             log.debug("Registration attempt for user: {}", username);
+
+            // Self-registration must be explicitly enabled by an admin.
+            if (!applicationProperties.getSecurity().isEnableRegistration()) {
+                log.warn("Registration attempt while self-registration is disabled");
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                        .body(Map.of("error", "Registration is disabled"));
+            }
+
+            // Cloudflare Turnstile: verify web registrations when enabled (desktop clients exempt).
+            String ip = request.getRemoteAddr();
+            if (turnstileService.isEnabled()
+                    && !DesktopClientUtils.isDesktopClient(request)
+                    && !turnstileService.verify(usernameAndPass.getTurnstileToken(), ip)) {
+                log.warn("Turnstile verification failed for registration from IP: {}", ip);
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(
+                                Map.of(
+                                        "error", "captcha_failed",
+                                        "message",
+                                                "Captcha verification failed. Please try again."));
+            }
 
             if (userService.usernameExistsIgnoreCase(username)) {
                 log.warn("Registration failed: username already exists: {}", username);
@@ -119,7 +144,7 @@ public class UserController {
                             .username(username)
                             .password(password)
                             .team(team)
-                            .enabled(false);
+                            .enabled(true);
             User user = userService.saveUserCore(builder.build());
 
             log.info("User registered successfully: {}", username);

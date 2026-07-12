@@ -253,6 +253,17 @@ public class ConfigController {
                     "showSettingsWhenNoLogin",
                     applicationProperties.getSystem().isShowSettingsWhenNoLogin());
 
+            // Self-registration (only meaningful when proprietary security is loaded)
+            configData.put(
+                    "registrationEnabled",
+                    enableLogin && applicationProperties.getSecurity().isEnableRegistration());
+
+            // Cloudflare Turnstile (site key is public; secret key must NEVER be exposed here)
+            ApplicationProperties.Security.Turnstile turnstile =
+                    applicationProperties.getSecurity().getTurnstile();
+            configData.put("turnstileEnabled", turnstile != null && turnstile.isEnabled());
+            configData.put("turnstileSiteKey", turnstile != null ? turnstile.getSiteKey() : "");
+
             // SSO Provider settings
             boolean enableOAuth =
                     applicationProperties.getSecurity().getOauth2() != null

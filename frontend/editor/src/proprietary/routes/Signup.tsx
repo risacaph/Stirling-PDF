@@ -3,7 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useDocumentMeta } from "@app/hooks/useDocumentMeta";
 import { useAuth } from "@app/auth/UseSession";
+import { useAppConfig } from "@app/contexts/AppConfigContext";
 import AuthLayout from "@app/routes/authShared/AuthLayout";
+import TurnstileWidget from "@app/auth/ui/TurnstileWidget";
 import "@app/auth/ui/auth.css";
 import { BASE_PATH, withBasePath } from "@app/constants/app";
 
@@ -23,12 +25,14 @@ export default function Signup() {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { session, loading } = useAuth();
+  const { config } = useAppConfig();
   const [isSigningUp, setIsSigningUp] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [fieldErrors, setFieldErrors] = useState<SignupFieldErrors>({});
+  const [turnstileToken, setTurnstileToken] = useState("");
 
   // Redirect immediately if user has valid session (JWT already validated by AuthProvider)
   useEffect(() => {
@@ -37,6 +41,13 @@ export default function Signup() {
       navigate("/", { replace: true });
     }
   }, [session, loading, navigate]);
+
+  // Self-registration must be enabled by an admin; otherwise send visitors to login.
+  useEffect(() => {
+    if (config && config.registrationEnabled === false) {
+      navigate("/login", { replace: true });
+    }
+  }, [config, navigate]);
 
   const baseUrl = window.location.origin + BASE_PATH;
 
@@ -72,7 +83,12 @@ export default function Signup() {
       setError(null);
       setFieldErrors({});
 
-      const result = await signUp(email, password, "");
+      const result = await signUp(
+        email,
+        password,
+        "",
+        turnstileToken || undefined,
+      );
 
       if (result.user) {
         // Show success message and redirect to login
@@ -122,6 +138,13 @@ export default function Signup() {
         showName={false}
         showTerms={false}
       />
+
+      {config?.turnstileEnabled && config?.turnstileSiteKey && (
+        <TurnstileWidget
+          siteKey={config.turnstileSiteKey}
+          onToken={setTurnstileToken}
+        />
+      )}
 
       <DividerWithText
         text={t("signup.or", "or")}

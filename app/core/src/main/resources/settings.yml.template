@@ -15,6 +15,11 @@ security:
   loginAttemptCount: 5 # lock user account after 5 tries; when using e.g. Fail2Ban you can deactivate the function with -1
   loginResetTimeMinutes: 120 # lock account for 2 hours after x attempts
   loginMethod: all # Accepts values like 'all' and 'normal'(only Login with Username/Password), 'oauth2'(only Login with OAuth2) or 'saml2'(only Login with SAML2)
+  enableRegistration: false # set to 'true' to let visitors self-register from the login portal (new accounts are created as Free-tier users)
+  turnstile: # Cloudflare Turnstile (CAPTCHA) for the login + registration portal
+    enabled: false # set to 'true' to show the Turnstile challenge and verify it server-side
+    siteKey: "" # Turnstile site key (public; sent to the browser)
+    secretKey: "" # Turnstile secret key (kept server-side only; never exposed to the frontend)
   initialLogin:
     username: "" # initial username for the first login
     password: "" # initial password for the first login

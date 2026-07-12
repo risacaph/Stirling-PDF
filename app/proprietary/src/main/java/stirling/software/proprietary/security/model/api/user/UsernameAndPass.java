@@ -11,4 +11,10 @@ public class UsernameAndPass extends Username {
 
     @Schema(description = "password of user", format = "password")
     private String password;
+
+    @Schema(
+            description =
+                    "Cloudflare Turnstile response token (required when Turnstile is enabled for"
+                            + " web clients)")
+    private String turnstileToken;
 }

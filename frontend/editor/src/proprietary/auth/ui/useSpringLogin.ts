@@ -51,6 +51,8 @@ export interface SpringLoginState {
   loginMethod: string;
   isUserPassAllowed: boolean;
   hasProviders: boolean;
+  turnstileToken: string;
+  setTurnstileToken: (value: string) => void;
   signInWithEmail: () => Promise<void>;
   signInWithProvider: (provider: OAuthProvider) => Promise<void>;
 }
@@ -75,6 +77,7 @@ export function useSpringLogin(
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [providers, setProviders] = useState<OAuthProvider[]>([]);
   const [loginMethod, setLoginMethod] = useState("all");
+  const [turnstileToken, setTurnstileToken] = useState("");
 
   // Keep callbacks current without re-running the fetch effect on every render.
   const optionsRef = useRef(options);
@@ -129,6 +132,7 @@ export function useSpringLogin(
         email: email.trim(),
         password,
         mfaCode: requiresMfa ? mfaCode.trim() : undefined,
+        turnstileToken: turnstileToken || undefined,
       });
       if (signInError) {
         setError(signInError.message);
@@ -153,7 +157,7 @@ export function useSpringLogin(
     } finally {
       setIsSubmitting(false);
     }
-  }, [email, password, mfaCode, requiresMfa, t]);
+  }, [email, password, mfaCode, requiresMfa, turnstileToken, t]);
 
   const signInWithProvider = useCallback(
     async (provider: OAuthProvider) => {
@@ -210,6 +214,8 @@ export function useSpringLogin(
     loginMethod,
     isUserPassAllowed,
     hasProviders: providers.length > 0,
+    turnstileToken,
+    setTurnstileToken,
     signInWithEmail,
     signInWithProvider,
   };

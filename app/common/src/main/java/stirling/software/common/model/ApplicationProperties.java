@@ -551,6 +551,15 @@ public class ApplicationProperties {
         private Validation validation = new Validation();
         private Timestamp timestamp = new Timestamp();
         private String xFrameOptions = "DENY";
+        private boolean enableRegistration = false;
+        private Turnstile turnstile = new Turnstile();
+
+        @Data
+        public static class Turnstile {
+            private boolean enabled = false;
+            private String siteKey = "";
+            @ToString.Exclude private String secretKey = "";
+        }
 
         public Boolean isAltLogin() {
             return saml2.getEnabled() || oauth2.getEnabled();

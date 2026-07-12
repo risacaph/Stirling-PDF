@@ -22,6 +22,7 @@ import {
   oauthProviderConfig,
 } from "@app/auth/ui/OAuthButtons";
 import SpringLoginForm from "@app/auth/ui/SpringLoginForm";
+import TurnstileWidget from "@app/auth/ui/TurnstileWidget";
 import { useSpringLogin } from "@app/auth/ui/useSpringLogin";
 import LoggedInState from "@app/routes/login/LoggedInState";
 import loginHeader from "@app/assets/brand/modern-logo/LoginLightModeHeader.svg";
@@ -44,7 +45,7 @@ export default function Login() {
       return fromQuery;
     }
   };
-  const { refetch } = useAppConfig();
+  const { config, refetch } = useAppConfig();
   const { t } = useTranslation();
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [showEmailForm, setShowEmailForm] = useState(false);
@@ -514,59 +515,83 @@ export default function Login() {
           ) : undefined
         }
         footer={
-          isFirstTimeSetup && showDefaultCredentials && isUserPassAllowed ? (
-            <Alert color="blue" variant="light" radius="md" mt="xl">
-              <Stack gap="xs" align="center">
-                <Text
-                  size="sm"
-                  fw={600}
-                  ta="center"
-                  style={{ color: "var(--text-primary)" }}
+          <>
+            {config?.turnstileEnabled && config?.turnstileSiteKey && (
+              <TurnstileWidget
+                siteKey={config.turnstileSiteKey}
+                onToken={login.setTurnstileToken}
+              />
+            )}
+            {isFirstTimeSetup &&
+              showDefaultCredentials &&
+              isUserPassAllowed && (
+                <Alert color="blue" variant="light" radius="md" mt="xl">
+                  <Stack gap="xs" align="center">
+                    <Text
+                      size="sm"
+                      fw={600}
+                      ta="center"
+                      style={{ color: "var(--text-primary)" }}
+                    >
+                      {t(
+                        "login.defaultCredentials",
+                        "Default Login Credentials",
+                      )}
+                    </Text>
+                    <Text
+                      size="sm"
+                      ta="center"
+                      style={{ color: "var(--text-primary)" }}
+                    >
+                      <Text
+                        component="span"
+                        fw={600}
+                        style={{ color: "var(--text-primary)" }}
+                      >
+                        {t("login.username", "Username")}:
+                      </Text>{" "}
+                      admin
+                    </Text>
+                    <Text
+                      size="sm"
+                      ta="center"
+                      style={{ color: "var(--text-primary)" }}
+                    >
+                      <Text
+                        component="span"
+                        fw={600}
+                        style={{ color: "var(--text-primary)" }}
+                      >
+                        {t("login.password", "Password")}:
+                      </Text>{" "}
+                      stirling
+                    </Text>
+                    <Text
+                      size="xs"
+                      ta="center"
+                      mt="xs"
+                      style={{ color: "var(--text-muted)" }}
+                    >
+                      {t(
+                        "login.changePasswordWarning",
+                        "Please change your password after logging in for the first time",
+                      )}
+                    </Text>
+                  </Stack>
+                </Alert>
+              )}
+            {config?.registrationEnabled && (
+              <div style={{ textAlign: "center", marginTop: "0.75rem" }}>
+                <Button
+                  variant="tertiary"
+                  onClick={() => navigate("/signup")}
+                  className="auth-link-black"
                 >
-                  {t("login.defaultCredentials", "Default Login Credentials")}
-                </Text>
-                <Text
-                  size="sm"
-                  ta="center"
-                  style={{ color: "var(--text-primary)" }}
-                >
-                  <Text
-                    component="span"
-                    fw={600}
-                    style={{ color: "var(--text-primary)" }}
-                  >
-                    {t("login.username", "Username")}:
-                  </Text>{" "}
-                  admin
-                </Text>
-                <Text
-                  size="sm"
-                  ta="center"
-                  style={{ color: "var(--text-primary)" }}
-                >
-                  <Text
-                    component="span"
-                    fw={600}
-                    style={{ color: "var(--text-primary)" }}
-                  >
-                    {t("login.password", "Password")}:
-                  </Text>{" "}
-                  stirling
-                </Text>
-                <Text
-                  size="xs"
-                  ta="center"
-                  mt="xs"
-                  style={{ color: "var(--text-muted)" }}
-                >
-                  {t(
-                    "login.changePasswordWarning",
-                    "Please change your password after logging in for the first time",
-                  )}
-                </Text>
-              </Stack>
-            </Alert>
-          ) : undefined
+                  {t("signup.createAccount", "Create an account")}
+                </Button>
+              </div>
+            )}
+          </>
         }
       />
     </AuthLayout>

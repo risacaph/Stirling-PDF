@@ -14,6 +14,8 @@ import {
   Badge,
   Accordion,
   Textarea,
+  TextInput,
+  PasswordInput,
 } from "@mantine/core";
 import { alert } from "@app/components/toast";
 import LocalIcon from "@app/components/shared/LocalIcon";
@@ -34,6 +36,12 @@ interface SecuritySettingsData {
   loginAttemptCount?: number;
   loginResetTimeMinutes?: number;
   xFrameOptions?: string;
+  enableRegistration?: boolean;
+  turnstile?: {
+    enabled?: boolean;
+    siteKey?: string;
+    secretKey?: string;
+  };
   jwt?: {
     enableKeyCleanup?: boolean;
     tokenExpiryMinutes?: number;
@@ -160,6 +168,11 @@ export default function AdminSecuritySection() {
         "security.loginResetTimeMinutes":
           securitySettings.loginResetTimeMinutes,
         "security.xFrameOptions": securitySettings.xFrameOptions,
+        // Self-registration + Turnstile
+        "security.enableRegistration": securitySettings.enableRegistration,
+        "security.turnstile.enabled": securitySettings.turnstile?.enabled,
+        "security.turnstile.siteKey": securitySettings.turnstile?.siteKey,
+        "security.turnstile.secretKey": securitySettings.turnstile?.secretKey,
         // JWT settings
         "security.jwt.enableKeyCleanup": securitySettings.jwt?.enableKeyCleanup,
         "security.jwt.tokenExpiryMinutes":
@@ -486,6 +499,141 @@ export default function AdminSecuritySection() {
                 disabled={!loginEnabled}
               />
             </div>
+          </Stack>
+        </Paper>
+
+        {/* Registration & CAPTCHA */}
+        <Paper withBorder p="md" radius="md">
+          <Stack gap="md">
+            <Text fw={600} size="sm" mb="xs">
+              {t(
+                "admin.settings.security.registration.label",
+                "Registration & CAPTCHA",
+              )}
+            </Text>
+
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <Text fw={500} size="sm">
+                  {t(
+                    "admin.settings.security.enableRegistration.label",
+                    "Allow self-registration",
+                  )}
+                </Text>
+                <Text size="xs" c="dimmed" mt={4}>
+                  {t(
+                    "admin.settings.security.enableRegistration.description",
+                    "Let visitors create their own account from the login portal. New accounts are created as Free-tier users.",
+                  )}
+                </Text>
+              </div>
+              <Group gap="xs">
+                <Switch
+                  name="enableRegistration"
+                  checked={settings?.enableRegistration || false}
+                  onChange={(e) =>
+                    setSettings({
+                      ...settings,
+                      enableRegistration: e.target.checked,
+                    })
+                  }
+                  disabled={!loginEnabled}
+                />
+                <PendingBadge show={isFieldPending("enableRegistration")} />
+              </Group>
+            </div>
+
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <Text fw={500} size="sm">
+                  {t(
+                    "admin.settings.security.turnstile.enabled.label",
+                    "Enable Cloudflare Turnstile",
+                  )}
+                </Text>
+                <Text size="xs" c="dimmed" mt={4}>
+                  {t(
+                    "admin.settings.security.turnstile.enabled.description",
+                    "Show a Cloudflare Turnstile challenge on the login and registration forms and verify it server-side. Desktop app clients are exempt.",
+                  )}
+                </Text>
+              </div>
+              <Group gap="xs">
+                <Switch
+                  name="turnstile_enabled"
+                  checked={settings?.turnstile?.enabled || false}
+                  onChange={(e) =>
+                    setSettings({
+                      ...settings,
+                      turnstile: {
+                        ...settings?.turnstile,
+                        enabled: e.target.checked,
+                      },
+                    })
+                  }
+                  disabled={!loginEnabled}
+                />
+                <PendingBadge show={isFieldPending("turnstile.enabled")} />
+              </Group>
+            </div>
+
+            <TextInput
+              name="turnstile_siteKey"
+              label={t(
+                "admin.settings.security.turnstile.siteKey.label",
+                "Turnstile Site Key",
+              )}
+              description={t(
+                "admin.settings.security.turnstile.siteKey.description",
+                "Public site key from your Cloudflare Turnstile widget",
+              )}
+              value={settings?.turnstile?.siteKey || ""}
+              onChange={(e) =>
+                setSettings({
+                  ...settings,
+                  turnstile: {
+                    ...settings?.turnstile,
+                    siteKey: e.target.value,
+                  },
+                })
+              }
+              disabled={!loginEnabled}
+            />
+
+            <PasswordInput
+              name="turnstile_secretKey"
+              label={t(
+                "admin.settings.security.turnstile.secretKey.label",
+                "Turnstile Secret Key",
+              )}
+              description={t(
+                "admin.settings.security.turnstile.secretKey.description",
+                "Secret key used for server-side verification. Stored server-side only and never sent to browsers.",
+              )}
+              value={settings?.turnstile?.secretKey || ""}
+              onChange={(e) =>
+                setSettings({
+                  ...settings,
+                  turnstile: {
+                    ...settings?.turnstile,
+                    secretKey: e.target.value,
+                  },
+                })
+              }
+              disabled={!loginEnabled}
+            />
           </Stack>
         </Paper>
 
