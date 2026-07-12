@@ -61,8 +61,46 @@ mod macos {
 #[cfg(target_os = "macos")]
 pub use macos::print_pdf_file_native;
 
-#[cfg(not(target_os = "macos"))]
+#[cfg(target_os = "linux")]
+mod linux {
+    use std::path::Path;
+    use std::process::Command;
+
+    // Print via CUPS `lp`, which reads the file synchronously and returns once the
+    // job is queued, so the caller may safely delete the temp file afterwards.
+    #[tauri::command]
+    pub fn print_pdf_file_native(file_path: String, title: Option<String>) -> Result<(), String> {
+        if !Path::new(&file_path).exists() {
+            return Err(format!("Print file does not exist: {}", file_path));
+        }
+
+        let mut command = Command::new("lp");
+        if let Some(job_title) = title.as_deref() {
+            command.arg("-t").arg(job_title);
+        }
+        command.arg(&file_path);
+
+        let output = command
+            .output()
+            .map_err(|error| format!("Failed to run 'lp' (is CUPS installed?): {}", error))?;
+
+        if !output.status.success() {
+            return Err(format!(
+                "lp failed to queue the print job: {}",
+                String::from_utf8_lossy(&output.stderr).trim()
+            ));
+        }
+        Ok(())
+    }
+}
+
+#[cfg(target_os = "linux")]
+pub use linux::print_pdf_file_native;
+
+// Windows prints via the WebView2 iframe path in the frontend, so this native
+// command is not invoked there; other platforms have no native implementation.
+#[cfg(not(any(target_os = "macos", target_os = "linux")))]
 #[tauri::command]
 pub fn print_pdf_file_native(_file_path: String, _title: Option<String>) -> Result<(), String> {
-    Err("Native PDF printing is only implemented on macOS".to_string())
+    Err("Native PDF printing is not available on this platform".to_string())
 }

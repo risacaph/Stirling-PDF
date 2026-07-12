@@ -17,6 +17,7 @@ import java.util.TimeZone;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +33,7 @@ public class PostHogService {
     private final ApplicationProperties applicationProperties;
     private final UserServiceInterface userService;
     private final Environment env;
+    private final String posthogApiKey;
     private boolean configDirMounted;
 
     public PostHogService(
@@ -41,19 +43,29 @@ public class PostHogService {
             @Qualifier("appVersion") String appVersion,
             ApplicationProperties applicationProperties,
             @Autowired(required = false) UserServiceInterface userService,
-            Environment env) {
+            Environment env,
+            @Value("${posthog.api.key:}") String posthogApiKey) {
         this.postHog = postHog;
         this.uniqueId = uuid;
         this.appVersion = appVersion;
         this.applicationProperties = applicationProperties;
         this.userService = userService;
         this.env = env;
+        this.posthogApiKey = posthogApiKey;
         this.configDirMounted = configDirMounted;
         captureSystemInfo();
     }
 
+    // No PostHog project key configured means analytics can never leave this
+    // instance, regardless of the enableAnalytics toggle. This fork ships with no
+    // key so nothing is ever sent to a third-party analytics account.
+    private boolean isTelemetrySendable() {
+        return applicationProperties.getSystem().isPosthogEnabled()
+                && StringUtils.isNotBlank(posthogApiKey);
+    }
+
     private void captureSystemInfo() {
-        if (!applicationProperties.getSystem().isPosthogEnabled()) {
+        if (!isTelemetrySendable()) {
             return;
         }
         try {
@@ -64,7 +76,7 @@ public class PostHogService {
     }
 
     public void captureEvent(String eventName, Map<String, Object> properties) {
-        if (!applicationProperties.getSystem().isPosthogEnabled()) {
+        if (!isTelemetrySendable()) {
             return;
         }
 

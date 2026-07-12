@@ -28,6 +28,7 @@ class PostHogServiceTest {
 
     private static final String UUID = "test-uuid-1234";
     private static final String APP_VERSION = "9.9.9";
+    private static final String POSTHOG_KEY = "phc_test_key";
 
     @Mock PostHog postHog;
     @Mock UserServiceInterface userService;
@@ -46,7 +47,7 @@ class PostHogServiceTest {
             boolean configDirMounted,
             MockEnvironment env) {
         return new PostHogService(
-                postHog, UUID, configDirMounted, APP_VERSION, appProps, user, env);
+                postHog, UUID, configDirMounted, APP_VERSION, appProps, user, env, POSTHOG_KEY);
     }
 
     private MockEnvironment env() {
@@ -84,6 +85,18 @@ class PostHogServiceTest {
             appProps.getSystem().setEnablePosthog(false);
 
             newService(appProps, userService, false, env());
+
+            verify(postHog, never()).capture(anyString(), anyString(), anyMap());
+        }
+
+        @Test
+        @DisplayName("constructor does not capture when posthog api key is blank")
+        void constructorNoCaptureWhenKeyBlank() {
+            ApplicationProperties appProps = props(true);
+
+            // No PostHog key configured (Papyra default) -> never sends, even when
+            // analytics + posthog are enabled.
+            new PostHogService(postHog, UUID, false, APP_VERSION, appProps, userService, env(), "");
 
             verify(postHog, never()).capture(anyString(), anyString(), anyMap());
         }

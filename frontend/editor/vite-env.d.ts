@@ -13,6 +13,8 @@ interface ImportMetaEnv {
   readonly VITE_STRIPE_PUBLISHABLE_KEY: string;
   readonly VITE_PUBLIC_POSTHOG_KEY: string;
   readonly VITE_PUBLIC_POSTHOG_HOST: string;
+  /** Scarf analytics pixel id. Blank disables the Scarf pixel entirely. */
+  readonly VITE_SCARF_PXID: string;
 
   // SaaS only (.env.saas)
   readonly VITE_USERBACK_TOKEN: string;

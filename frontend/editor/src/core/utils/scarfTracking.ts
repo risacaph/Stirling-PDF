@@ -26,6 +26,11 @@ let lastFiredTime = 0;
 const pendingPaths: string[] = [];
 const PENDING_PATHS_CAP = 8;
 
+// Papyra ships no Scarf pixel id (VITE_SCARF_PXID blank), so the analytics
+// pixel is never sent to a third-party/Stirling Scarf account. Set your own
+// pxid to opt in.
+const SCARF_PXID = import.meta.env.VITE_SCARF_PXID;
+
 /**
  * Configure scarf tracking with app config and consent checker
  * Should be called from a React hook during app initialization (see useScarfTracking)
@@ -57,6 +62,11 @@ export function setScarfConfig(
  * @param pathname - The pathname to track (usually window.location.pathname)
  */
 export function firePixel(pathname: string): void {
+  // Scarf disabled in Papyra (no pxid configured) — never contacts scarf.sh.
+  if (!SCARF_PXID) {
+    return;
+  }
+
   // Pre-init: queue and bail. setScarfConfig() drains.
   if (!configured) {
     if (pendingPaths.length >= PENDING_PATHS_CAP) pendingPaths.shift();
@@ -85,7 +95,8 @@ export function firePixel(pathname: string): void {
   lastFiredTime = now;
 
   const url =
-    "https://static.scarf.sh/a.png?x-pxid=3c1d68de-8945-4e9f-873f-65320b6fabf7" +
+    "https://static.scarf.sh/a.png?x-pxid=" +
+    encodeURIComponent(SCARF_PXID) +
     "&path=" +
     encodeURIComponent(pathname);
 
