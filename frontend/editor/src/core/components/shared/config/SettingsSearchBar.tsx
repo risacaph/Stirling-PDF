@@ -41,6 +41,7 @@ const SETTINGS_SEARCH_TRANSLATION_PREFIXES: Partial<Record<string, string[]>> =
     adminAdvanced: ["admin.settings.advanced"],
     adminSecurity: ["admin.settings.security"],
     adminMcp: ["admin.settings.mcp"],
+    adminAi: ["admin.settings.ai"],
     adminConnections: [
       "admin.settings.connections",
       "admin.settings.mail",

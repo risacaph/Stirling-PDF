@@ -32,6 +32,7 @@ export const VALID_NAV_KEYS = [
   "adminEndpoints",
   "adminStorageSharing",
   "adminMcp",
+  "adminAi",
   "help",
   "legal",
   "backendThirdPartyLicenses",
