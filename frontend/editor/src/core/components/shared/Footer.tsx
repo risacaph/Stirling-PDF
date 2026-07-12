@@ -95,22 +95,6 @@ export default function Footer({
             {t("legal.terms", "Terms and Conditions")}
           </a>
         )}
-        <a
-          className="footer-link px-3"
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://discord.gg/Cn8pWhQRxZ"
-        >
-          {t("footer.discord", "Discord")}
-        </a>
-        <a
-          className="footer-link px-3"
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://github.com/risacaph/Papyra-PDF"
-        >
-          {t("footer.issues", "GitHub")}
-        </a>
         {isValidLink(finalAccessibilityStatement) && (
           <a
             className="footer-link px-3"

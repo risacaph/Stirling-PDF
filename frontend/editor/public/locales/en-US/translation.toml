@@ -4176,10 +4176,6 @@ title = "What does 'Flatten only forms' mean?"
 [flatten.tooltip.header]
 title = "About Flattening PDFs"
 
-[footer]
-discord = "Discord"
-issues = "GitHub"
-
 [formFill]
 flattenAfterFilling = "Flatten after filling"
 rescanFields = "Re-scan fields"
