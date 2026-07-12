@@ -346,8 +346,10 @@ public class ConfigController {
             // Premium/Enterprise settings
             configData.put("premiumEnabled", applicationProperties.getPremium().isEnabled());
 
-            // AI Engine settings
+            // AI Engine settings (provider/model are safe to expose; the API key is not)
             configData.put("aiEngineEnabled", applicationProperties.getAiEngine().isEnabled());
+            configData.put("aiProvider", applicationProperties.getAiEngine().getProvider());
+            configData.put("aiModel", applicationProperties.getAiEngine().getModel());
 
             // Timestamp TSA settings — single source of truth for presets + admin URLs
             ApplicationProperties.Security.Timestamp tsConfig =

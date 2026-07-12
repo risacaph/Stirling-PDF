@@ -65,6 +65,8 @@ export interface AppConfig {
   timestampCustomTsaUrls?: string[];
   timestampTsaPresets?: { label: string; url: string }[];
   aiEngineEnabled?: boolean;
+  aiProvider?: string;
+  aiModel?: string;
 }
 
 export type AppConfigBootstrapMode = "blocking" | "non-blocking";

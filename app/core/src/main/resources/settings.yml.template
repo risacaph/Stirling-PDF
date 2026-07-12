@@ -371,6 +371,10 @@ aiEngine:
   enabled: false # Set to 'true' to enable the AI engine integration
   url: http://localhost:5001 # URL of the Python AI engine
   timeoutSeconds: 120 # Timeout in seconds for AI engine requests
+  provider: '' # Active AI provider: openai, anthropic, deepseek, or custom (self-hosted OpenAI-compatible). Blank uses the engine's own model
+  apiKey: '' # API key for the selected provider (kept server-side, never sent to the browser)
+  model: '' # Model name for the selected provider, e.g. gpt-4o or claude-haiku-4-5
+  baseUrl: '' # Base URL for custom/self-hosted OpenAI-compatible providers (e.g. http://ollama:11434/v1)
 
 policies:
   # Folder automations can read from and write to the directories you allow here, so treat this as a

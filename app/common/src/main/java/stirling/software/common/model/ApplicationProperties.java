@@ -309,6 +309,27 @@ public class ApplicationProperties {
          * explicitly requests it via {@code AiEngineClient.postWithTimeout}.
          */
         private int longRunningTimeoutSeconds = 600;
+
+        /**
+         * Active AI provider for on-demand capabilities: one of {@code openai}, {@code anthropic},
+         * {@code deepseek}, or {@code custom} (a self-hosted OpenAI-compatible endpoint). Blank
+         * lets the engine fall back to its own configured model.
+         */
+        private String provider = "";
+
+        /** API key for the selected provider. Never exposed to the frontend. */
+        @ToString.Exclude private String apiKey = "";
+
+        /**
+         * Model name for the selected provider, e.g. {@code gpt-4o} or {@code claude-haiku-4-5}.
+         */
+        private String model = "";
+
+        /**
+         * Base URL for OpenAI-compatible providers ({@code custom}/self-hosted, or a DeepSeek
+         * override). Ignored for providers with a built-in endpoint.
+         */
+        private String baseUrl = "";
     }
 
     /**
