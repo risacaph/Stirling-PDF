@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
-import { Paper, Stack, Group, Text, Badge, Button, Alert } from "@mantine/core";
+import { Paper, Stack, Group, Text, Badge, Alert } from "@mantine/core";
 import { useTranslation } from "react-i18next";
+import { Button } from "@app/ui/Button";
 import { deviceService, type DeviceInfo } from "@app/services/deviceService";
 
 /**
@@ -119,9 +120,9 @@ export function AccountDevices() {
               )}
             </Stack>
             <Button
-              size="xs"
-              variant="subtle"
-              color="red"
+              size="sm"
+              variant="tertiary"
+              accent="danger"
               loading={revoking === device.id}
               onClick={() => revoke(device.id)}
             >
