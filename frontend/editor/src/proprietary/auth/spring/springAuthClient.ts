@@ -405,6 +405,7 @@ class SpringAuthClient {
     email: string;
     password: string;
     mfaCode?: string;
+    turnstileToken?: string;
   }): Promise<AuthResponse> {
     try {
       const response = await http().post(
@@ -413,6 +414,7 @@ class SpringAuthClient {
           username: credentials.email,
           password: credentials.password,
           mfaCode: credentials.mfaCode,
+          turnstileToken: credentials.turnstileToken,
         },
         {
           withCredentials: true, // Include cookies for CSRF
@@ -480,6 +482,7 @@ class SpringAuthClient {
   async signUp(credentials: {
     email: string;
     password: string;
+    turnstileToken?: string;
     options?: { data?: { full_name?: string }; emailRedirectTo?: string };
   }): Promise<AuthResponse> {
     try {
@@ -488,6 +491,7 @@ class SpringAuthClient {
         {
           username: credentials.email,
           password: credentials.password,
+          turnstileToken: credentials.turnstileToken,
         },
         {
           withCredentials: true,

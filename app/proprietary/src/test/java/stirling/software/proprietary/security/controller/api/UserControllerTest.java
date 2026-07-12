@@ -35,6 +35,8 @@ import stirling.software.proprietary.security.service.EmailService;
 import stirling.software.proprietary.security.service.LoginAttemptService;
 import stirling.software.proprietary.security.service.TeamMembershipService;
 import stirling.software.proprietary.security.service.TeamService;
+import stirling.software.proprietary.security.service.TurnstileVerificationService;
+import stirling.software.proprietary.security.service.UserLicenseAccessService;
 import stirling.software.proprietary.security.service.UserService;
 import stirling.software.proprietary.security.session.SessionPersistentRegistry;
 import stirling.software.proprietary.service.UserLicenseSettingsService;
@@ -55,6 +57,8 @@ class UserControllerTest {
     @Mock private UserLicenseSettingsService licenseSettingsService;
     @Mock private LoginAttemptService loginAttemptService;
     @Mock private TeamMembershipService teamMembershipService;
+    @Mock private UserLicenseAccessService licenseAccessService;
+    @Mock private TurnstileVerificationService turnstileService;
 
     private ApplicationProperties applicationProperties;
     private MockMvc mockMvc;
@@ -75,12 +79,15 @@ class UserControllerTest {
                         Optional.of(emailService),
                         licenseSettingsService,
                         loginAttemptService,
-                        teamMembershipService);
+                        teamMembershipService,
+                        licenseAccessService,
+                        turnstileService);
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
     }
 
     @Test
     void registerRejectsExistingUser() throws Exception {
+        applicationProperties.getSecurity().setEnableRegistration(true);
         UsernameAndPass payload = new UsernameAndPass();
         payload.setUsername("existing@example.com");
         payload.setPassword("pw");
@@ -98,6 +105,7 @@ class UserControllerTest {
 
     @Test
     void registerCreatesUserWhenValid() throws Exception {
+        applicationProperties.getSecurity().setEnableRegistration(true);
         UsernameAndPass payload = new UsernameAndPass();
         payload.setUsername("new@example.com");
         payload.setPassword("pw");
@@ -121,6 +129,23 @@ class UserControllerTest {
                                 .content(objectMapper.writeValueAsString(payload)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.user.username").value("new@example.com"));
+    }
+
+    @Test
+    void registerRejectedWhenRegistrationDisabled() throws Exception {
+        applicationProperties.getSecurity().setEnableRegistration(false);
+        UsernameAndPass payload = new UsernameAndPass();
+        payload.setUsername("new@example.com");
+        payload.setPassword("pw");
+
+        mockMvc.perform(
+                        post("/api/v1/user/register")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(payload)))
+                .andExpect(status().isForbidden())
+                .andExpect(jsonPath("$.error").value("Registration is disabled"));
+
+        verify(userService, never()).saveUserCore(any());
     }
 
     @Test

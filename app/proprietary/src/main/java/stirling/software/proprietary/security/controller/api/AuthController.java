@@ -44,6 +44,7 @@ import stirling.software.proprietary.security.service.LoginAttemptService;
 import stirling.software.proprietary.security.service.MfaService;
 import stirling.software.proprietary.security.service.RefreshRateLimitService;
 import stirling.software.proprietary.security.service.TotpService;
+import stirling.software.proprietary.security.service.TurnstileVerificationService;
 import stirling.software.proprietary.security.service.UserService;
 import stirling.software.proprietary.security.util.DesktopClientUtils;
 import stirling.software.proprietary.service.AiUserDataService;
@@ -63,6 +64,7 @@ public class AuthController {
     private final MfaService mfaService;
     private final TotpService totpService;
     private final RefreshRateLimitService refreshRateLimitService;
+    private final TurnstileVerificationService turnstileService;
     private final ApplicationProperties.Security securityProperties;
     private final ApplicationProperties applicationProperties;
     private final AiUserDataService aiUserDataService;
@@ -87,12 +89,14 @@ public class AuthController {
             // Check if username/password authentication is allowed
             if (!securityProperties.isUserPass()) {
                 log.warn(
-                        "Username/password login attempted but not allowed by current login method configuration");
+                        "Username/password login attempted but not allowed by current login method"
+                                + " configuration");
                 return ResponseEntity.status(HttpStatus.FORBIDDEN)
                         .body(
                                 Map.of(
                                         "error",
-                                        "Username/password authentication is not enabled. Please use the configured authentication method."));
+                                        "Username/password authentication is not enabled. Please"
+                                                + " use the configured authentication method."));
             }
 
             // Validate input parameters
@@ -112,6 +116,20 @@ public class AuthController {
 
             String username = request.getUsername().trim();
             String ip = httpRequest.getRemoteAddr();
+
+            // Cloudflare Turnstile: verify web logins when enabled. Desktop (Tauri) clients are
+            // exempt because their webview CSP blocks the Turnstile widget.
+            if (turnstileService.isEnabled()
+                    && !DesktopClientUtils.isDesktopClient(httpRequest)
+                    && !turnstileService.verify(request.getTurnstileToken(), ip)) {
+                log.warn("Turnstile verification failed for login attempt from IP: {}", ip);
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(
+                                Map.of(
+                                        "error", "captcha_failed",
+                                        "message",
+                                                "Captcha verification failed. Please try again."));
+            }
 
             // Check if account is blocked due to too many failed attempts
             if (loginAttemptService.isBlocked(username)) {

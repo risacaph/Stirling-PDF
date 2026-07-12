@@ -1368,6 +1368,10 @@ label = "Disable CSRF Protection"
 description = "Require users to log in before accessing the application"
 label = "Enable Login"
 
+[admin.settings.security.enableRegistration]
+description = "Let visitors create their own account from the login portal. New accounts are created as Free-tier users."
+label = "Allow self-registration"
+
 [admin.settings.security.htmlUrlSecurity]
 advanced = "Advanced Settings"
 description = "Configure URL access restrictions for HTML processing to prevent SSRF attacks"
@@ -1475,9 +1479,24 @@ saml2 = "SAML2 Only"
 description = "Time before failed login attempts are reset"
 label = "Login Reset Time (minutes)"
 
+[admin.settings.security.registration]
+label = "Registration & CAPTCHA"
+
 [admin.settings.security.ssoNotice]
 message = "OAuth2 and SAML2 authentication providers have been moved to the Connections menu for easier management."
 title = "Looking for SSO/SAML settings?"
+
+[admin.settings.security.turnstile.enabled]
+description = "Show a Cloudflare Turnstile challenge on the login and registration forms and verify it server-side. Desktop app clients are exempt."
+label = "Enable Cloudflare Turnstile"
+
+[admin.settings.security.turnstile.secretKey]
+description = "Secret key used for server-side verification. Stored server-side only and never sent to browsers."
+label = "Turnstile Secret Key"
+
+[admin.settings.security.turnstile.siteKey]
+description = "Public site key from your Cloudflare Turnstile widget"
+label = "Turnstile Site Key"
 
 [admin.settings.security.xFrameOptions]
 deny = "Deny (Prevents all framing)"
@@ -5906,12 +5925,6 @@ unlimitedUsers = "Unlimited users"
 upToFiveUsers = "Up to 5 users"
 usageTrackingPrometheus = "Usage tracking & Prometheus"
 
-[plan.licenseWarning]
-body = "You have {{total}} users but the free tier only supports {{limit}} per server. Upgrade to keep Papyra running smoothly."
-cta = "See plans"
-overLimit = "more than {{limit}}"
-title = "Free self-hosted limit reached"
-
 [plan.period]
 month = "month"
 
@@ -9463,6 +9476,7 @@ checkEmailConfirmation = "Check your email for a confirmation link to complete y
 confirmPassword = "Confirm password"
 confirmPasswordPlaceholder = "Confirm password"
 confirmPasswordRequired = "Please confirm your password"
+createAccount = "Create an account"
 creatingAccount = "Creating Account..."
 email = "Email"
 emailRequired = "Email is required"

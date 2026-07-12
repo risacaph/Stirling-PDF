@@ -32,6 +32,8 @@ import stirling.software.proprietary.security.service.EmailService;
 import stirling.software.proprietary.security.service.LoginAttemptService;
 import stirling.software.proprietary.security.service.TeamMembershipService;
 import stirling.software.proprietary.security.service.TeamService;
+import stirling.software.proprietary.security.service.TurnstileVerificationService;
+import stirling.software.proprietary.security.service.UserLicenseAccessService;
 import stirling.software.proprietary.security.service.UserService;
 import stirling.software.proprietary.security.session.SessionPersistentRegistry;
 import stirling.software.proprietary.service.UserLicenseSettingsService;
@@ -48,6 +50,8 @@ class UserControllerMoreTest {
     @Mock private UserLicenseSettingsService licenseSettingsService;
     @Mock private LoginAttemptService loginAttemptService;
     @Mock private TeamMembershipService teamMembershipService;
+    @Mock private UserLicenseAccessService licenseAccessService;
+    @Mock private TurnstileVerificationService turnstileService;
 
     private ApplicationProperties applicationProperties;
     private MockMvc mockMvc;
@@ -67,7 +71,9 @@ class UserControllerMoreTest {
                         Optional.of(emailService),
                         licenseSettingsService,
                         loginAttemptService,
-                        teamMembershipService);
+                        teamMembershipService,
+                        licenseAccessService,
+                        turnstileService);
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
     }
 

@@ -40,6 +40,7 @@ import stirling.software.proprietary.security.service.LoginAttemptService;
 import stirling.software.proprietary.security.service.MfaService;
 import stirling.software.proprietary.security.service.RefreshRateLimitService;
 import stirling.software.proprietary.security.service.TotpService;
+import stirling.software.proprietary.security.service.TurnstileVerificationService;
 import stirling.software.proprietary.security.service.UserService;
 
 import tools.jackson.databind.ObjectMapper;
@@ -61,6 +62,7 @@ class AuthControllerMoreTest {
     @Mock private MfaService mfaService;
     @Mock private TotpService totpService;
     @Mock private RefreshRateLimitService refreshRateLimitService;
+    @Mock private TurnstileVerificationService turnstileService;
     @Mock private ResourceAccessService resourceAccessService;
     @Mock private TeamLeadLookup teamLeadLookup;
 
@@ -83,6 +85,7 @@ class AuthControllerMoreTest {
                         mfaService,
                         totpService,
                         refreshRateLimitService,
+                        turnstileService,
                         securityProperties,
                         applicationProperties,
                         new stirling.software.proprietary.service.AiUserDataService(null),
