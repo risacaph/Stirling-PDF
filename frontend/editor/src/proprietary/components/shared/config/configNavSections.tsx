@@ -17,6 +17,7 @@ import AdminPlanSection from "@app/components/shared/config/configSections/Admin
 import AdminFeaturesSection from "@app/components/shared/config/configSections/AdminFeaturesSection";
 import AdminEndpointsSection from "@app/components/shared/config/configSections/AdminEndpointsSection";
 import AdminMcpSection from "@app/components/shared/config/configSections/AdminMcpSection";
+import AdminAiSection from "@app/components/shared/config/configSections/AdminAiSection";
 import AdminAuditSection from "@app/components/shared/config/configSections/AdminAuditSection";
 import AdminUsageSection from "@app/components/shared/config/configSections/AdminUsageSection";
 import AdminStorageSharingSection from "@app/components/shared/config/configSections/AdminStorageSharingSection";
@@ -133,6 +134,14 @@ export const useConfigNavSections = (
           label: t("settings.configuration.endpoints", "Endpoints"),
           icon: "api-rounded",
           component: <AdminEndpointsSection />,
+          disabled: requiresLogin,
+          disabledTooltip: requiresLogin ? enableLoginTooltip : undefined,
+        },
+        {
+          key: "adminAi",
+          label: t("settings.configuration.ai", "AI"),
+          icon: "smart-toy-rounded",
+          component: <AdminAiSection />,
           disabled: requiresLogin,
           disabledTooltip: requiresLogin ? enableLoginTooltip : undefined,
         },

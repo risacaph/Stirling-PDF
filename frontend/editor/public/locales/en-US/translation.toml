@@ -772,6 +772,37 @@ manualLinks = "Manual downloads: click the links and place the files into the te
 noLanguages = "No tessdata languages found in the configured directory."
 permissionNotice = "The tessdata path is not writable. Downloads will be opened in the browser; please save the .traineddata files manually into the tessdata folder."
 
+[admin.settings.ai]
+description = "Enable the AI engine and choose which provider powers on-demand features like summarizing and asking questions about a document."
+note = "The AI engine runs as a separate service. Make sure it is deployed and reachable at the URL above before enabling."
+title = "AI"
+
+[admin.settings.ai.apiKey]
+description = "API key for the selected provider. Stored server-side and never shown; leave unchanged to keep the current key."
+label = "API key"
+
+[admin.settings.ai.baseUrl]
+description = "Base URL for a self-hosted / OpenAI-compatible endpoint (e.g. http://ollama:11434/v1)."
+label = "Base URL"
+
+[admin.settings.ai.enabled]
+description = "When off (default), AI features are hidden and no AI calls are made."
+label = "Enable AI engine"
+
+[admin.settings.ai.model]
+description = "Model name for the selected provider, e.g. gpt-4o or claude-haiku-4-5."
+label = "Model"
+
+[admin.settings.ai.provider]
+custom = "Custom (OpenAI-compatible)"
+default = "Engine default"
+description = "Which model provider to use. Leave as 'Engine default' to use the engine's own configured model."
+label = "Provider"
+
+[admin.settings.ai.url]
+description = "URL of the Papyra AI engine service."
+label = "AI engine URL"
+
 [admin.settings.badge]
 clickToUpgrade = "Click to view plan details"
 
@@ -9037,6 +9068,7 @@ close = "Close"
 
 [settings.configuration]
 advanced = "Advanced"
+ai = "AI"
 database = "Database"
 endpoints = "Endpoints"
 features = "Features"

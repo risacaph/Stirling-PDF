@@ -369,9 +369,12 @@ export default function AdminGeneralSection() {
 
   // Show the server setting when loaded (for admin config), otherwise show user's preference
   // Note: User's preference in localStorage is separate and takes precedence in the app via useLogoVariant hook
-  const logoStyleValue = loginEnabled
-    ? (settings.ui?.logoStyle ?? preferences.logoVariant ?? "classic")
-    : (preferences.logoVariant ?? "classic");
+  // The classic (Stirling) logo has been retired; only the modern Papyra logo remains, so any
+  // stored "classic" value is presented as "modern".
+  const rawLogoStyle = loginEnabled
+    ? (settings.ui?.logoStyle ?? preferences.logoVariant ?? "modern")
+    : (preferences.logoVariant ?? "modern");
+  const logoStyleValue = rawLogoStyle === "classic" ? "modern" : rawLogoStyle;
 
   const handleLogoStyleChange = (value: string) => {
     const nextValue = value === "modern" ? "modern" : "classic";
@@ -500,34 +503,6 @@ export default function AdminGeneralSection() {
                 value={logoStyleValue}
                 onChange={handleLogoStyleChange}
                 options={[
-                  {
-                    value: "classic",
-                    label: (
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "0.5rem",
-                          padding: "0.25rem 0",
-                        }}
-                      >
-                        <img
-                          src="classic-logo/favicon.ico"
-                          alt={t(
-                            "admin.settings.general.logoStyle.classicAlt",
-                            "Classic logo",
-                          )}
-                          style={{ width: "24px", height: "24px" }}
-                        />
-                        <span>
-                          {t(
-                            "admin.settings.general.logoStyle.classic",
-                            "Classic",
-                          )}
-                        </span>
-                      </div>
-                    ),
-                  },
                   {
                     value: "modern",
                     label: (
