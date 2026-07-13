@@ -77,6 +77,7 @@ public class ApplicationProperties {
     private ProcessExecutor processExecutor = new ProcessExecutor();
     private PdfEditor pdfEditor = new PdfEditor();
     private AiEngine aiEngine = new AiEngine();
+    private CloudDrives cloudDrives = new CloudDrives();
     private Mcp mcp = new Mcp();
     private InternalApi internalApi = new InternalApi();
     private Cluster cluster = new Cluster();
@@ -330,6 +331,25 @@ public class ApplicationProperties {
          * override). Ignored for providers with a built-in endpoint.
          */
         private String baseUrl = "";
+    }
+
+    @Data
+    public static class CloudDrives {
+        private CloudDriveProvider googleDrive = new CloudDriveProvider();
+        private CloudDriveProvider dropbox = new CloudDriveProvider();
+        private CloudDriveProvider oneDrive = new CloudDriveProvider();
+
+        /**
+         * OAuth configuration for a single cloud-drive provider. The client secret is stored
+         * server-side: it is masked by the admin settings API and never included in the public app
+         * config.
+         */
+        @Data
+        public static class CloudDriveProvider {
+            private boolean enabled = false;
+            private String clientId = "";
+            @ToString.Exclude private String clientSecret = "";
+        }
     }
 
     /**

@@ -264,6 +264,25 @@ public class ConfigController {
             configData.put("turnstileEnabled", turnstile != null && turnstile.isEnabled());
             configData.put("turnstileSiteKey", turnstile != null ? turnstile.getSiteKey() : "");
 
+            // Cloud drives: expose only which providers are enabled (client secrets stay
+            // server-side and must NEVER be exposed here).
+            ApplicationProperties.CloudDrives cloudDrives = applicationProperties.getCloudDrives();
+            configData.put(
+                    "cloudDriveGoogleDriveEnabled",
+                    cloudDrives != null
+                            && cloudDrives.getGoogleDrive() != null
+                            && cloudDrives.getGoogleDrive().isEnabled());
+            configData.put(
+                    "cloudDriveDropboxEnabled",
+                    cloudDrives != null
+                            && cloudDrives.getDropbox() != null
+                            && cloudDrives.getDropbox().isEnabled());
+            configData.put(
+                    "cloudDriveOneDriveEnabled",
+                    cloudDrives != null
+                            && cloudDrives.getOneDrive() != null
+                            && cloudDrives.getOneDrive().isEnabled());
+
             // SSO Provider settings
             boolean enableOAuth =
                     applicationProperties.getSecurity().getOauth2() != null

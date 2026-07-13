@@ -811,6 +811,21 @@ label = "AI engine URL"
 [admin.settings.badge]
 clickToUpgrade = "Click to view plan details"
 
+[admin.settings.cloudDrives]
+appKey = "App key (client ID)"
+applicationId = "Application (client) ID"
+appSecret = "App secret (client secret)"
+clientId = "Client ID"
+clientSecret = "Client secret"
+clientSecretDescription = "Stored server-side and never shown; leave unchanged to keep the current secret."
+description = "Link cloud storage providers so users can open and save files from them. Enter each provider's OAuth credentials and enable it. Client secrets are stored server-side and never shown in the browser."
+dropbox = "Dropbox"
+enabledDescription = "When off (default), this drive is hidden and cannot be connected."
+googleDrive = "Google Drive"
+note = "Create an OAuth app in each provider's developer console, then paste its client ID and secret here. Add this server's callback URL as an authorized redirect URI in that console."
+oneDrive = "OneDrive"
+title = "Cloud Drives"
+
 [admin.settings.connections]
 connect = "Connect"
 description = "Configure external authentication providers like OAuth2 and SAML."
@@ -9214,6 +9229,7 @@ close = "Close"
 [settings.configuration]
 advanced = "Advanced"
 ai = "AI"
+cloudDrives = "Cloud Drives"
 database = "Database"
 endpoints = "Endpoints"
 features = "Features"

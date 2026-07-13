@@ -515,6 +515,11 @@
       "title": "Admin Ai Settings - Stirling PDF",
       "description": "The Free Adobe Acrobat alternative (10M+ Downloads)"
     },
+    "/settings/adminCloudDrives": {
+      "image": "/og_images/home.png",
+      "title": "Admin Cloud Drives Settings - Stirling PDF",
+      "description": "The Free Adobe Acrobat alternative (10M+ Downloads)"
+    },
     "/settings/help": {
       "image": "/og_images/home.png",
       "title": "Help Settings - Stirling PDF",
@@ -702,6 +707,7 @@
     "/settings/adminStorageSharing": "/settings/adminStorageSharing",
     "/settings/adminMcp": "/settings/adminMcp",
     "/settings/adminAi": "/settings/adminAi",
+    "/settings/adminCloudDrives": "/settings/adminCloudDrives",
     "/settings/help": "/settings/help",
     "/settings/legal": "/settings/legal",
     "/settings/backendThirdPartyLicenses": "/settings/backendThirdPartyLicenses",

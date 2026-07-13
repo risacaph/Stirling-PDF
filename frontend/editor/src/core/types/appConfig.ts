@@ -62,6 +62,9 @@ export interface AppConfig {
   googleDriveClientId?: string;
   googleDriveApiKey?: string;
   googleDriveAppId?: string;
+  cloudDriveGoogleDriveEnabled?: boolean;
+  cloudDriveDropboxEnabled?: boolean;
+  cloudDriveOneDriveEnabled?: boolean;
   timestampDefaultTsaUrl?: string;
   timestampCustomTsaUrls?: string[];
   timestampTsaPresets?: { label: string; url: string }[];

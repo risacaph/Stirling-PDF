@@ -376,6 +376,20 @@ aiEngine:
   model: '' # Model name for the selected provider, e.g. gpt-4o or claude-haiku-4-5
   baseUrl: '' # Base URL for custom/self-hosted OpenAI-compatible providers (e.g. http://ollama:11434/v1)
 
+cloudDrives: # OAuth configuration for linking cloud storage providers. Configure each provider in the admin settings; client secrets are kept server-side and never sent to the browser
+  googleDrive:
+    enabled: false # Set to 'true' to enable Google Drive
+    clientId: '' # OAuth client ID
+    clientSecret: '' # OAuth client secret (kept server-side)
+  dropbox:
+    enabled: false # Set to 'true' to enable Dropbox
+    clientId: '' # OAuth client ID (app key)
+    clientSecret: '' # OAuth client secret (app secret, kept server-side)
+  oneDrive:
+    enabled: false # Set to 'true' to enable OneDrive
+    clientId: '' # OAuth client ID (application ID)
+    clientSecret: '' # OAuth client secret (kept server-side)
+
 policies:
   # Folder automations can read from and write to the directories you allow here, so treat this as a
   # security boundary. Leave allowedFolderRoots empty (default) to disable folder sources/outputs
