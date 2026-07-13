@@ -124,6 +124,10 @@ from .summarize import (
     SummarizeRequest,
     SummarizeResponse,
 )
+from .translate import (
+    TranslateRequest,
+    TranslateResponse,
+)
 
 __all__ = [
     "AgentDraft",
@@ -215,6 +219,8 @@ __all__ = [
     "SummarizeResponse",
     "SupportedCapability",
     "TextChunk",
+    "TranslateRequest",
+    "TranslateResponse",
     "ToolCallExecutionAction",
     "ToolOperationStep",
     "ToolReportArtifact",

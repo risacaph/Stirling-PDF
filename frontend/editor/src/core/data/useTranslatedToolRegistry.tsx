@@ -62,6 +62,7 @@ import { adjustPageScaleOperationConfig } from "@app/hooks/tools/adjustPageScale
 import { scannerImageSplitOperationConfig } from "@app/hooks/tools/scannerImageSplit/useScannerImageSplitOperation";
 import { addPageNumbersOperationConfig } from "@app/components/tools/addPageNumbers/useAddPageNumbersOperation";
 import { batesNumberingOperationConfig } from "@app/components/tools/batesNumbering/useBatesNumberingOperation";
+import { translateOperationConfig } from "@app/hooks/tools/translate/useTranslateOperation";
 import { extractPagesOperationConfig } from "@app/hooks/tools/extractPages/useExtractPagesOperation";
 import { ENDPOINTS as SPLIT_ENDPOINT_NAMES } from "@app/constants/splitConstants";
 import { ToolId } from "@app/types/toolId";
@@ -754,6 +755,25 @@ export function useTranslatedToolCatalog(): TranslatedToolCatalog {
             import("@app/components/tools/batesNumbering/BatesNumberingSettings"),
         ),
         synonyms: getSynonyms(t, "batesNumbering"),
+      },
+      translate: {
+        icon: (
+          <LocalIcon icon="translate-rounded" width="1.5rem" height="1.5rem" />
+        ),
+        name: t("home.translate.title", "AI Translate"),
+        component: lazy(() => import("@app/tools/Translate")),
+        description: t(
+          "home.translate.desc",
+          "Translate a document's text into another language with AI.",
+        ),
+        categoryId: ToolCategoryId.ADVANCED_TOOLS,
+        subcategoryId: SubcategoryId.GENERAL,
+        maxFiles: 1,
+        operationConfig: asRegistryConfig(translateOperationConfig),
+        automationSettings: lazySettings(
+          () => import("@app/components/tools/translate/TranslateSettings"),
+        ),
+        synonyms: getSynonyms(t, "translate"),
       },
       pageLayout: {
         icon: (

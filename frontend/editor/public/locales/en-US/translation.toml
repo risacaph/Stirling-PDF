@@ -4818,6 +4818,11 @@ desc = "Add an RFC 3161 document timestamp to prove when your PDF existed"
 tags = "timestamp,RFC 3161,TSA,time stamp authority,document timestamp,proof of existence,timestamp token,trusted timestamp,sign timestamp,notarize"
 title = "Timestamp PDF"
 
+[home.translate]
+desc = "Translate a document's text into another language with AI."
+tags = "translate,translation,language,localize,localise,ai,convert language,multilingual"
+title = "AI Translate"
+
 [home.unlockPDFForms]
 desc = "Remove read-only property of form fields in a PDF document."
 tags = "unlock,enable,edit,unlock forms,enable forms,editable forms,remove read only,make editable,unlock fields,enable editing,form fields,fillable,unprotect forms"
@@ -10277,6 +10282,20 @@ noTools = "No tools available"
 
 [tooltip]
 close = "Close tooltip"
+
+[translate]
+submit = "Translate"
+title = "Translation"
+
+[translate.error]
+failed = "An error occurred while translating the document. Make sure the AI engine is enabled and configured."
+
+[translate.labels]
+settings = "Settings"
+
+[translate.settings]
+note = "Extracts the document's text and translates it into the chosen language using AI. The result is provided as a text file."
+targetLanguage = "Translate into"
 
 [unlockPDFForms]
 description = "This tool will remove read-only restrictions from PDF form fields, making them editable and fillable."

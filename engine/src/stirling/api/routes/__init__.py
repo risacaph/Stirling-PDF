@@ -9,6 +9,7 @@ from .pdf_comments import router as pdf_comments_router
 from .pdf_edit import router as pdf_edit_router
 from .pdf_questions import router as pdf_question_router
 from .summarize import router as summarize_router
+from .translate import router as translate_router
 
 __all__ = [
     "agent_capabilities_router",
@@ -22,4 +23,5 @@ __all__ = [
     "pdf_edit_router",
     "pdf_question_router",
     "summarize_router",
+    "translate_router",
 ]

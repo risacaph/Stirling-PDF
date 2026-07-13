@@ -170,6 +170,11 @@
       "title": "Bates Numbering - Stirling PDF",
       "description": "Stamp sequential Bates numbers (e.g. ABC-000123) onto every page for legal discovery."
     },
+    "translate": {
+      "image": "/og_images/home.png",
+      "title": "AI Translate - Stirling PDF",
+      "description": "Translate a document's text into another language with AI."
+    },
     "redact": {
       "image": "/og_images/redact.png",
       "title": "Redact - Stirling PDF",
@@ -570,6 +575,7 @@
     "/compare": "compare",
     "/add-page-numbers": "addPageNumbers",
     "/bates-numbering": "batesNumbering",
+    "/translate": "translate",
     "/redact": "redact",
     "/flatten": "flatten",
     "/remove-cert-sign": "removeCertSign",

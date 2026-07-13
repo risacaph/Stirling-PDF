@@ -16,6 +16,7 @@ from stirling.agents import (
     PdfEditAgent,
     PdfQuestionAgent,
     SummarizeAgent,
+    TranslateAgent,
     UserSpecAgent,
 )
 from stirling.agents.ledger import MathAuditorAgent
@@ -35,6 +36,7 @@ from stirling.api.routes import (
     pdf_edit_router,
     pdf_question_router,
     summarize_router,
+    translate_router,
 )
 from stirling.config import AppSettings, load_settings
 from stirling.contracts import HealthResponse
@@ -101,6 +103,7 @@ async def lifespan(fast_api: FastAPI):
     fast_api.state.pdf_comment_agent = PdfCommentAgent(runtime)
     fast_api.state.document_classifier_agent = DocumentClassifierAgent(runtime)
     fast_api.state.summarize_agent = SummarizeAgent(runtime)
+    fast_api.state.translate_agent = TranslateAgent(runtime)
     tracer_provider = setup_posthog_tracking(settings)
     if tracer_provider:
         Agent.instrument_all(InstrumentationSettings(tracer_provider=tracer_provider))
@@ -139,6 +142,7 @@ app.include_router(pdf_comments_router, dependencies=_user_gate)
 app.include_router(agent_capabilities_router, dependencies=_user_gate)
 app.include_router(document_classifier_router, dependencies=_user_gate)
 app.include_router(summarize_router, dependencies=_user_gate)
+app.include_router(translate_router, dependencies=_user_gate)
 
 
 @app.get("/health", response_model=HealthResponse)
