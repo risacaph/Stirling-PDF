@@ -1755,7 +1755,7 @@ admin = "Admin"
 title = "User Control Settings"
 
 [agents]
-stirling_name = "Papyra"
+papyra_name = "Papyra"
 
 [analytics]
 learnMore = "Learn more about our analytics"

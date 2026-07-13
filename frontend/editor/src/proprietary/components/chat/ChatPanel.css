@@ -41,13 +41,13 @@
 }
 
 .chat-fab-window--open .chat-panel__agent-pill {
-  view-transition-name: stirling-agent;
+  view-transition-name: papyra-agent;
 }
 
 /* Match the active-tool morph timing for a consistent rail feel. */
-::view-transition-group(stirling-agent),
-::view-transition-old(stirling-agent),
-::view-transition-new(stirling-agent) {
+::view-transition-group(papyra-agent),
+::view-transition-old(papyra-agent),
+::view-transition-new(papyra-agent) {
   animation-duration: 220ms;
   animation-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
 }
@@ -685,62 +685,24 @@
   }
 }
 
-/* ─── Stirling logo thinking animation ─────────────────────────────────── */
+/* ─── Papyra logo thinking animation ─────────────────────────────────── */
 
-.stirling-thinking__path-right {
-  animation: stirling-orbit-right 2s ease-in-out infinite;
+.papyra-thinking__mark {
+  animation: papyra-pulse 1.4s ease-in-out infinite;
 }
 
-.stirling-thinking__path-left {
-  animation: stirling-orbit-left 2s ease-in-out infinite;
-}
-
-@keyframes stirling-orbit-right {
+@keyframes papyra-pulse {
   0%,
   100% {
-    transform: translate(0, 0);
-    opacity: 0.5;
-  }
-  25% {
-    transform: translate(-1px, -5px);
-    opacity: 0.45;
+    opacity: 0.4;
   }
   50% {
-    transform: translate(-6px, 0);
-    opacity: 0.9;
-  }
-  75% {
-    transform: translate(-1px, 5px);
-    opacity: 0.55;
-  }
-}
-
-@keyframes stirling-orbit-left {
-  0%,
-  100% {
-    transform: translate(0, 0);
     opacity: 1;
-  }
-  25% {
-    transform: translate(1px, 5px);
-    opacity: 0.85;
-  }
-  50% {
-    transform: translate(6px, 0);
-    opacity: 0.5;
-  }
-  75% {
-    transform: translate(1px, -5px);
-    opacity: 0.85;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .stirling-thinking__path-right {
-    animation: none;
-    opacity: 0.5;
-  }
-  .stirling-thinking__path-left {
+  .papyra-thinking__mark {
     animation: none;
     opacity: 1;
   }
