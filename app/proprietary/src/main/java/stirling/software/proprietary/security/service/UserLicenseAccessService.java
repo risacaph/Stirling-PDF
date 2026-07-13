@@ -99,6 +99,8 @@ public class UserLicenseAccessService {
     public User assign(User user, LicenseTier tier) {
         user.setLicenseTier(tier.name());
         user.setLicenseExpiresAt(planDefinitionService.computeExpiry(tier));
+        // Re-arm the expiry reminder for the new grant cycle.
+        user.setLicenseExpiryReminderSentAt(null);
         return userRepository.save(user);
     }
 
@@ -111,6 +113,8 @@ public class UserLicenseAccessService {
     public User applyGrant(User user, LicenseTier tier, LocalDateTime expiresAt) {
         user.setLicenseTier(tier.name());
         user.setLicenseExpiresAt(expiresAt);
+        // Re-arm the expiry reminder for the new grant cycle.
+        user.setLicenseExpiryReminderSentAt(null);
         return userRepository.save(user);
     }
 

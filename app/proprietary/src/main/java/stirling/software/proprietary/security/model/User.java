@@ -95,6 +95,12 @@ public class User implements UserDetails, Serializable {
     @Column(name = "license_expires_at")
     private LocalDateTime licenseExpiresAt;
 
+    // When the "your plan is about to expire" reminder was last emailed for the current grant.
+    // Null = not yet reminded; cleared whenever a new tier/expiry is assigned so the next cycle
+    // re-arms the reminder.
+    @Column(name = "license_expiry_reminder_sent_at")
+    private LocalDateTime licenseExpiryReminderSentAt;
+
     // SaaS-only: Supabase user UUID. Null in OSS / proprietary deployments.
     // Column is `supabase_auth_id` (canonical name from the initial Supabase remote
     // schema migration). An earlier Flyway V2 (PR #6384) accidentally introduced a

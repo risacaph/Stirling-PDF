@@ -314,6 +314,63 @@ public class EmailService {
         sendPlainEmail(to, subject, body, true);
     }
 
+    /**
+     * Sends a reminder that the user's access plan is about to expire.
+     *
+     * @param to The recipient email address
+     * @param tierTitle The name of the plan that is expiring
+     * @param expiresAt The expiry date
+     * @param daysRemaining Whole days until expiry
+     * @param loginUrl The sign-in URL
+     * @throws MessagingException If there is an issue with creating or sending the email.
+     */
+    @Async
+    public void sendLicenseExpiryReminderEmail(
+            String to, String tierTitle, String expiresAt, long daysRemaining, String loginUrl)
+            throws MessagingException {
+        String subject = "Your Papyra plan is expiring soon";
+
+        String body =
+                """
+                <html><body style="margin: 0; padding: 0;">
+                <div style="font-family: Arial, sans-serif; background-color: #f8f9fa; padding: 20px;">
+                  <div style="max-width: 600px; margin: auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; border: 1px solid #e0e0e0;">
+                    <!-- Logo -->
+                    <div style="text-align: center; padding: 20px; background-color: #17252A;">
+                      <span style="font-family: Arial, sans-serif; font-size: 30px; font-weight: bold; color: #3AAFA9; letter-spacing: 0.5px;">Papyra</span>
+                    </div>
+                    <!-- Content -->
+                    <div style="padding: 30px; color: #333;">
+                      <h2 style="color: #17252A; margin-top: 0;">Your plan is expiring soon</h2>
+                      <p>Hi there,</p>
+                      <p>This is a friendly reminder that your Papyra <strong>%s</strong> plan is about to expire.</p>
+                      <div style="background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 20px 0; border-radius: 4px;">
+                        <p style="margin: 0; color: #856404; font-size: 14px;"><strong>⚠️ Expires on %s</strong> — that's %s day(s) from now. After it lapses your account moves to the Free plan.</p>
+                      </div>
+                      <p>Contact your administrator to renew or upgrade your access.</p>
+                      <!-- CTA Button -->
+                      <div style="text-align: center; margin: 30px 0;">
+                        <a href="%s" style="display: inline-block; background-color: #3AAFA9; color: #ffffff; padding: 14px 28px; text-decoration: none; border-radius: 5px; font-weight: bold;">Sign in</a>
+                      </div>
+                      <p style="font-size: 14px; color: #666;">Or copy and paste this link in your browser:</p>
+                      <div style="background-color: #f8f9fa; padding: 12px; margin: 15px 0; border-radius: 4px; word-break: break-all; font-size: 13px; color: #555;">
+                        %s
+                      </div>
+                      <p style="margin-bottom: 0;">— The Papyra Team</p>
+                    </div>
+                    <!-- Footer -->
+                    <div style="text-align: center; padding: 15px; font-size: 12px; color: #777; background-color: #f0f0f0;">
+                      &copy; Papyra. All rights reserved.
+                    </div>
+                  </div>
+                </div>
+                </body></html>
+                """
+                        .formatted(tierTitle, expiresAt, daysRemaining, loginUrl, loginUrl);
+
+        sendPlainEmail(to, subject, body, true);
+    }
+
     @Async
     public void sendPasswordChangedNotification(
             String to, String username, String newPassword, String loginUrl)
