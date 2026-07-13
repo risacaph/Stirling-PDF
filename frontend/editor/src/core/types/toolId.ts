@@ -44,6 +44,7 @@ export const CORE_REGULAR_TOOL_IDS = [
   "repair",
   "compare",
   "addPageNumbers",
+  "batesNumbering",
   "redact",
   "flatten",
   "removeCertSign",

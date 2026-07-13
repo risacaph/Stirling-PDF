@@ -165,6 +165,11 @@
       "title": "Add Page Numbers - Stirling PDF",
       "description": "Add Page numbers throughout a document in a set location"
     },
+    "batesNumbering": {
+      "image": "/og_images/home.png",
+      "title": "Bates Numbering - Stirling PDF",
+      "description": "Stamp sequential Bates numbers (e.g. ABC-000123) onto every page for legal discovery."
+    },
     "redact": {
       "image": "/og_images/redact.png",
       "title": "Redact - Stirling PDF",
@@ -564,6 +569,7 @@
     "/repair": "repair",
     "/compare": "compare",
     "/add-page-numbers": "addPageNumbers",
+    "/bates-numbering": "batesNumbering",
     "/redact": "redact",
     "/flatten": "flatten",
     "/remove-cert-sign": "removeCertSign",

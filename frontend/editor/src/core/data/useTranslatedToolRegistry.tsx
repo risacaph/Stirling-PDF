@@ -61,6 +61,7 @@ import { overlayPdfsOperationConfig } from "@app/hooks/tools/overlayPdfs/useOver
 import { adjustPageScaleOperationConfig } from "@app/hooks/tools/adjustPageScale/useAdjustPageScaleOperation";
 import { scannerImageSplitOperationConfig } from "@app/hooks/tools/scannerImageSplit/useScannerImageSplitOperation";
 import { addPageNumbersOperationConfig } from "@app/components/tools/addPageNumbers/useAddPageNumbersOperation";
+import { batesNumberingOperationConfig } from "@app/components/tools/batesNumbering/useBatesNumberingOperation";
 import { extractPagesOperationConfig } from "@app/hooks/tools/extractPages/useExtractPagesOperation";
 import { ENDPOINTS as SPLIT_ENDPOINT_NAMES } from "@app/constants/splitConstants";
 import { ToolId } from "@app/types/toolId";
@@ -734,6 +735,25 @@ export function useTranslatedToolCatalog(): TranslatedToolCatalog {
         endpoints: ["add-page-numbers"],
         operationConfig: asRegistryConfig(addPageNumbersOperationConfig),
         synonyms: getSynonyms(t, "addPageNumbers"),
+      },
+      batesNumbering: {
+        icon: <LocalIcon icon="gavel-rounded" width="1.5rem" height="1.5rem" />,
+        name: t("home.batesNumbering.title", "Bates Numbering"),
+        component: lazy(() => import("@app/tools/BatesNumbering")),
+        description: t(
+          "home.batesNumbering.desc",
+          "Stamp sequential Bates numbers (e.g. ABC-000123) onto every page for legal discovery.",
+        ),
+        categoryId: ToolCategoryId.STANDARD_TOOLS,
+        subcategoryId: SubcategoryId.PAGE_FORMATTING,
+        maxFiles: 1,
+        endpoints: ["add-page-numbers"],
+        operationConfig: asRegistryConfig(batesNumberingOperationConfig),
+        automationSettings: lazySettings(
+          () =>
+            import("@app/components/tools/batesNumbering/BatesNumberingSettings"),
+        ),
+        synonyms: getSynonyms(t, "batesNumbering"),
       },
       pageLayout: {
         icon: (

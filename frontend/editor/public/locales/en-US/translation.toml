@@ -2144,6 +2144,32 @@ notFoundTitle = "Backend not found"
 retry = "Retry"
 unreachable = "The application cannot currently connect to the backend. Verify the backend status and network connectivity, then try again."
 
+[batesNumbering]
+submit = "Apply Bates numbering"
+title = "Bates Numbering"
+
+[batesNumbering.error]
+failed = "An error occurred while applying Bates numbering."
+
+[batesNumbering.labels]
+settings = "Settings"
+
+[batesNumbering.settings]
+fontSize = "Font size"
+note = "Stamp a unique sequential identifier on every page, as used for legal discovery and exhibits."
+padWidth = "Digits"
+padWidthDescription = "Zero-pad the number to this many digits."
+positionLabel = "Position"
+prefix = "Prefix"
+preview = "Preview"
+startingNumber = "Start at"
+suffix = "Suffix"
+
+[batesNumbering.settings.position]
+bottomCenter = "Bottom centre"
+bottomLeft = "Bottom left"
+bottomRight = "Bottom right"
+
 [billing]
 basedOnUsers = "(current users)"
 currentSeats = "Current Seats"
@@ -4513,6 +4539,11 @@ title = "Auto Split by Size/Count"
 [home.autoSplitPDF]
 tags = "auto,split,QR,auto split,QR code,QR split,barcode,automatic split,divider page,separator page,scan divider,batch scanning"
 title = "Auto Split Pages"
+
+[home.batesNumbering]
+desc = "Stamp sequential Bates numbers (e.g. ABC-000123) onto every page for legal discovery."
+tags = "bates,legal,discovery,stamp,numbering,sequential,exhibit,litigation,pagination"
+title = "Bates Numbering"
 
 [home.bookletImposition]
 desc = "Create booklets with proper page ordering and multi-page layout for printing and binding"
