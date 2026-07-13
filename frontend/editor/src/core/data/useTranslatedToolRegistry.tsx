@@ -64,6 +64,7 @@ import { addPageNumbersOperationConfig } from "@app/components/tools/addPageNumb
 import { batesNumberingOperationConfig } from "@app/components/tools/batesNumbering/useBatesNumberingOperation";
 import { translateOperationConfig } from "@app/hooks/tools/translate/useTranslateOperation";
 import { formBuilderOperationConfig } from "@app/hooks/tools/formBuilder/useFormBuilderOperation";
+import { insertBlankPagesOperationConfig } from "@app/hooks/tools/insertBlankPages/useInsertBlankPagesOperation";
 import { extractPagesOperationConfig } from "@app/hooks/tools/extractPages/useExtractPagesOperation";
 import { ENDPOINTS as SPLIT_ENDPOINT_NAMES } from "@app/constants/splitConstants";
 import { ToolId } from "@app/types/toolId";
@@ -722,6 +723,33 @@ export function useTranslatedToolCatalog(): TranslatedToolCatalog {
         operationConfig: asRegistryConfig(reorganizePagesOperationConfig),
         synonyms: getSynonyms(t, "reorganizePages"),
         automationSettings: null,
+      },
+      insertBlankPages: {
+        icon: (
+          <LocalIcon icon="note-add-rounded" width="1.5rem" height="1.5rem" />
+        ),
+        name: t("home.insertBlankPages.title", "Insert Blank Pages"),
+        component: lazy(() => import("@app/tools/InsertBlankPages")),
+        description: t(
+          "home.insertBlankPages.desc",
+          "Insert one or more blank pages at a chosen position in the document.",
+        ),
+        categoryId: ToolCategoryId.STANDARD_TOOLS,
+        subcategoryId: SubcategoryId.PAGE_FORMATTING,
+        maxFiles: 1,
+        operationConfig: asRegistryConfig(insertBlankPagesOperationConfig),
+        automationSettings: lazySettings(
+          () =>
+            import("@app/components/tools/insertBlankPages/InsertBlankPagesSettings"),
+        ),
+        synonyms: [
+          "insert",
+          "blank",
+          "add page",
+          "empty page",
+          "insert page",
+          "spacer",
+        ],
       },
       scalePages: {
         icon: (

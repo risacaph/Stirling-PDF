@@ -4715,6 +4715,11 @@ desc = "Convert a PDF to grayscale to save ink when printing"
 tags = "grayscale,greyscale,black and white,ink saver,ink,toner,monochrome,desaturate,remove color,remove colour,save ink,print friendly,gray,grey"
 title = "Grayscale / Ink-Saver"
 
+[home.insertBlankPages]
+desc = "Insert one or more blank pages at a chosen position in the document."
+tags = "insert,blank,add page,empty page,insert page,spacer,blank page,add blank"
+title = "Insert Blank Pages"
+
 [home.manageCertificates]
 tags = "certificates,import,export,manage certificates,digital certificates,certificate management,PFX,P12,keystore,import certificate,export certificate,certificate store,PKI"
 title = "Manage Certificates"
@@ -4931,6 +4936,24 @@ title = "Image to PDF"
 
 [infoBanner]
 dismiss = "Dismiss"
+
+[insertBlankPages]
+submit = "Insert Pages"
+title = "Inserted pages"
+
+[insertBlankPages.error]
+failed = "An error occurred while inserting blank pages."
+
+[insertBlankPages.labels]
+settings = "Settings"
+
+[insertBlankPages.settings]
+count = "Number of pages"
+note = "Insert one or more blank pages at a chosen position in the document."
+pageSize = "Page size"
+position = "Insert after page"
+positionHint = "Use 0 to insert before the first page."
+sizeMatch = "Match document"
 
 [invite]
 acceptError = "Failed to create account"

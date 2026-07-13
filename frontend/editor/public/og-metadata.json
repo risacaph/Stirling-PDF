@@ -295,6 +295,11 @@
       "title": "Form Builder - Stirling PDF",
       "description": "Add fillable form fields to a PDF by placing them visually on the page"
     },
+    "insertBlankPages": {
+      "image": "/og_images/home.png",
+      "title": "Insert Blank Pages - Stirling PDF",
+      "description": "Insert one or more blank pages at a chosen position in the document."
+    },
     "multiTool": {
       "image": "/og_images/multi-tool.png",
       "title": "Multi-Tool - Stirling PDF",
@@ -610,6 +615,7 @@
     "/pdf-text-editor": "pdfTextEditor",
     "/form-fill": "formFill",
     "/form-builder": "formBuilder",
+    "/insert-blank-pages": "insertBlankPages",
     "/multi-tool": "multiTool",
     "/read": "read",
     "/automate": "automate",
