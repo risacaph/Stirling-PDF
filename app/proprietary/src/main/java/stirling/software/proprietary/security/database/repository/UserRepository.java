@@ -31,6 +31,12 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByEmail(String email);
 
+    // Users whose access plan lapses within a window and who haven't yet been reminded for this
+    // grant cycle. Excludes never-expiring accounts (null expiry) and already-reminded ones.
+    List<User>
+            findByLicenseExpiresAtIsNotNullAndLicenseExpiresAtBetweenAndLicenseExpiryReminderSentAtIsNull(
+                    LocalDateTime start, LocalDateTime end);
+
     Optional<User> findBySupabaseId(UUID supabaseId);
 
     Optional<User> findBySsoProviderAndSsoProviderId(String ssoProvider, String ssoProviderId);
