@@ -63,6 +63,7 @@ import { scannerImageSplitOperationConfig } from "@app/hooks/tools/scannerImageS
 import { addPageNumbersOperationConfig } from "@app/components/tools/addPageNumbers/useAddPageNumbersOperation";
 import { batesNumberingOperationConfig } from "@app/components/tools/batesNumbering/useBatesNumberingOperation";
 import { translateOperationConfig } from "@app/hooks/tools/translate/useTranslateOperation";
+import { formBuilderOperationConfig } from "@app/hooks/tools/formBuilder/useFormBuilderOperation";
 import { extractPagesOperationConfig } from "@app/hooks/tools/extractPages/useExtractPagesOperation";
 import { ENDPOINTS as SPLIT_ENDPOINT_NAMES } from "@app/constants/splitConstants";
 import { ToolId } from "@app/types/toolId";
@@ -490,6 +491,31 @@ export function useTranslatedToolCatalog(): TranslatedToolCatalog {
         automationSettings: null,
         supportsAutomate: false,
         synonyms: ["form", "fill", "fillable", "input", "field", "acroform"],
+      },
+      formBuilder: {
+        icon: (
+          <LocalIcon icon="post-add-rounded" width="1.5rem" height="1.5rem" />
+        ),
+        name: t("home.formBuilder.title", "Form Builder"),
+        component: lazy(() => import("@app/tools/FormBuilder")),
+        description: t(
+          "home.formBuilder.desc",
+          "Add fillable form fields to a PDF by placing them visually on the page",
+        ),
+        categoryId: ToolCategoryId.STANDARD_TOOLS,
+        subcategoryId: SubcategoryId.GENERAL,
+        maxFiles: 1,
+        operationConfig: asRegistryConfig(formBuilderOperationConfig),
+        automationSettings: null,
+        supportsAutomate: false,
+        synonyms: [
+          "form",
+          "builder",
+          "create form",
+          "fillable",
+          "add fields",
+          "acroform",
+        ],
       },
       changePermissions: {
         icon: <LocalIcon icon="lock-outline" width="1.5rem" height="1.5rem" />,

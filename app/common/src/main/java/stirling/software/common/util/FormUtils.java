@@ -1664,6 +1664,120 @@ public class FormUtils {
         ensureAppearances(acroForm);
     }
 
+    /**
+     * Creates new fillable form fields on an existing PDF, producing an interactive AcroForm (and
+     * creating one if the document has none, i.e. a flat PDF).
+     *
+     * <p>Each definition's {@code x}/{@code y}/{@code width}/{@code height} are interpreted as
+     * fractions (0-1) of the page's CropBox, measured from the top-left corner (the coordinate
+     * space produced by the interactive placement overlay). They are converted to a PDF
+     * lower-left-origin widget rectangle server-side. Only field types that support
+     * definition-based creation (text, checkbox, combobox, listbox) are honored; unsupported
+     * entries are skipped.
+     */
+    public void addFormFields(PDDocument document, List<NewFormFieldDefinition> definitions) {
+        if (document == null || definitions == null || definitions.isEmpty()) {
+            return;
+        }
+
+        PDDocumentCatalog catalog = document.getDocumentCatalog();
+        if (catalog == null) {
+            log.warn("Cannot add form fields because the document has no catalog");
+            return;
+        }
+
+        PDAcroForm acroForm = getAcroFormSafely(document);
+        if (acroForm == null) {
+            acroForm = new PDAcroForm(document);
+            catalog.setAcroForm(acroForm);
+        }
+        if (acroForm.getDefaultResources() == null) {
+            acroForm.setDefaultResources(new PDResources());
+        }
+
+        Set<String> existingNames = collectExistingFieldNames(acroForm);
+        int pageCount = document.getNumberOfPages();
+        boolean added = false;
+
+        for (NewFormFieldDefinition definition : definitions) {
+            if (definition == null) {
+                continue;
+            }
+
+            String resolvedType = normalizeFieldType(definition.type());
+            FormFieldTypeSupport handler = FormFieldTypeSupport.forTypeName(resolvedType);
+            if (handler == null || handler.doesNotsupportsDefinitionCreation()) {
+                log.warn("Skipping unsupported new field type '{}'", resolvedType);
+                continue;
+            }
+
+            int pageIndex = definition.pageIndex() != null ? definition.pageIndex() : 0;
+            if (pageIndex < 0 || pageIndex >= pageCount) {
+                log.warn("Skipping new field with out-of-range page index {}", pageIndex);
+                continue;
+            }
+            PDPage page = document.getPage(pageIndex);
+
+            PDRectangle rectangle = toWidgetRectangle(page, definition);
+            if (rectangle == null) {
+                continue;
+            }
+
+            String baseName =
+                    Optional.ofNullable(definition.name())
+                            .map(String::trim)
+                            .filter(s -> !s.isEmpty())
+                            .orElse("field");
+            String uniqueName = generateUniqueFieldName(baseName, existingNames);
+            existingNames.add(uniqueName);
+
+            List<String> options = sanitizeOptions(definition.options());
+
+            try {
+                createNewField(handler, acroForm, page, rectangle, uniqueName, definition, options);
+                added = true;
+            } catch (Exception e) {
+                log.warn(
+                        "Failed to create new field '{}' of type '{}': {}",
+                        uniqueName,
+                        resolvedType,
+                        e.getMessage(),
+                        e);
+            }
+        }
+
+        if (added) {
+            ensureAppearances(acroForm);
+        }
+    }
+
+    /**
+     * Converts a definition's top-left, fractional (0-1) CropBox coordinates into a PDF
+     * lower-left-origin widget rectangle. This is the inverse of the y-flip performed by {@link
+     * #createWidgetCoordinates}, scaled by the CropBox dimensions.
+     */
+    private PDRectangle toWidgetRectangle(PDPage page, NewFormFieldDefinition definition) {
+        float fracW = definition.width() != null ? definition.width() : 0f;
+        float fracH = definition.height() != null ? definition.height() : 0f;
+        if (fracW <= 0f || fracH <= 0f) {
+            log.warn("Skipping new field '{}' with non-positive size", definition.name());
+            return null;
+        }
+
+        float fracX = definition.x() != null ? definition.x() : 0f;
+        float fracY = definition.y() != null ? definition.y() : 0f;
+
+        PDRectangle cropBox = page.getCropBox();
+        float cropWidth = cropBox.getWidth();
+        float cropHeight = cropBox.getHeight();
+
+        float width = fracW * cropWidth;
+        float height = fracH * cropHeight;
+        float pdfX = fracX * cropWidth + cropBox.getLowerLeftX();
+        float pdfY = (1f - fracY - fracH) * cropHeight + cropBox.getLowerLeftY();
+        return new PDRectangle(pdfX, pdfY, width, height);
+    }
+
     private void modifyFieldPropertiesInPlace(
             PDField field, ModifyFormFieldDefinition modification, String newName)
             throws IOException {

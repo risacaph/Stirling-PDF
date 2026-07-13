@@ -289,6 +289,51 @@ public class FormFillController {
                 file, "updated", document -> FormUtils.modifyFormFields(document, modifications));
     }
 
+    @PostMapping(value = "/add-fields", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Operation(
+            summary = "Add new form fields",
+            description =
+                    "Creates the specified fillable fields in the provided PDF and returns the"
+                            + " updated file. Works on flat PDFs by creating an AcroForm when none"
+                            + " exists.")
+    public ResponseEntity<Resource> addFields(
+            @Parameter(
+                            description = "The input PDF file",
+                            required = true,
+                            content =
+                                    @Content(
+                                            mediaType = MediaType.APPLICATION_PDF_VALUE,
+                                            schema = @Schema(type = "string", format = "binary")))
+                    @RequestParam("file")
+                    MultipartFile file,
+            @Parameter(
+                            description =
+                                    "JSON array of field definitions. Geometry (x, y, width,"
+                                            + " height) is expressed as fractions (0-1) of the page,"
+                                            + " measured from the top-left corner. Supported types:"
+                                            + " text, checkbox, combobox, listbox. Optional:"
+                                            + " label, required, options, defaultValue, tooltip.",
+                            example =
+                                    "[{\"name\":\"Field1\",\"type\":\"text\",\"pageIndex\":0,"
+                                            + "\"x\":0.1,\"y\":0.1,\"width\":0.3,\"height\":0.03}]")
+                    @RequestPart(value = "fields", required = false)
+                    byte[] fieldsPayload)
+            throws IOException {
+
+        String rawFields = decodePart(fieldsPayload);
+        List<FormUtils.NewFormFieldDefinition> definitions =
+                FormPayloadParser.parseNewFieldDefinitions(objectMapper, rawFields);
+        if (definitions.isEmpty()) {
+            throw ExceptionUtils.createIllegalArgumentException(
+                    "error.dataRequired",
+                    "{0} must contain at least one definition",
+                    "fields payload");
+        }
+
+        return processSingleFile(
+                file, "form", document -> FormUtils.addFormFields(document, definitions));
+    }
+
     @PostMapping(value = "/delete-fields", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(
             summary = "Delete form fields",

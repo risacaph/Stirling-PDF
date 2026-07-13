@@ -4259,6 +4259,57 @@ title = "What does 'Flatten only forms' mean?"
 [flatten.tooltip.header]
 title = "About Flattening PDFs"
 
+[formBuilder]
+submit = "Generate PDF"
+
+[formBuilder.canvas]
+loading = "Rendering page…"
+noFile = "No PDF selected."
+pageAlt = "PDF page"
+
+[formBuilder.error]
+failed = "An error occurred while adding the form fields."
+
+[formBuilder.fieldType]
+checkbox = "Checkbox"
+combobox = "Dropdown"
+listbox = "List"
+text = "Text"
+
+[formBuilder.properties]
+count = "{{count}} field(s) total across all pages."
+delete = "Delete field"
+name = "Field name"
+none = "Add a field or select one to edit its properties."
+options = "Options (one per line)"
+required = "Required"
+title = "Field properties"
+type = "Type"
+
+[formBuilder.results]
+download = "Download"
+title = "Fillable PDF ready"
+undo = "Undo"
+
+[formBuilder.settings]
+count = "{{count}} field(s) placed."
+note = "Add fillable form fields to a PDF. Use the workspace to place, drag and resize fields on the page, then generate an interactive PDF."
+step1 = "Pick a field type in the workspace toolbar to drop it on the page."
+step2 = "Drag to move, or drag the corner handle to resize."
+step3 = "Edit the selected field's name and options on the right."
+title = "Form builder"
+
+[formBuilder.toolbar]
+addField = "Add field"
+generate = "Generate PDF"
+nextPage = "Next page"
+page = "Page"
+prevPage = "Previous page"
+
+[formBuilder.workbench.empty]
+description = "Select the Form Builder tool and choose a PDF to add fillable fields."
+title = "Open the tool to start building"
+
 [formFill]
 flattenAfterFilling = "Flatten after filling"
 rescanFields = "Re-scan fields"
@@ -4629,6 +4680,11 @@ title = "Extract Tables to CSV"
 desc = "Remove all interactive elements and forms from a PDF"
 tags = "simplify,remove,interactive,flatten,flatten form,remove form fields,make static,finalize form,lock form,disable editing,convert to image,non-editable"
 title = "Flatten"
+
+[home.formBuilder]
+desc = "Add fillable form fields to a PDF by placing them visually on the page"
+tags = "form,form builder,create form,fillable,add fields,acroform,text field,checkbox,dropdown,widget"
+title = "Form Builder"
 
 [home.formFill]
 desc = "Fill PDF form fields interactively with a visual editor"
