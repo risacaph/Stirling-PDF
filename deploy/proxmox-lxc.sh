@@ -3,7 +3,7 @@
 # proxmox-lxc.sh — run this ON THE PROXMOX VE HOST.
 #
 # Creates a Docker-ready Debian LXC and installs the self-hosted,
-# license-unlocked Stirling-PDF from this fork inside it (via the embedded
+# license-unlocked Papyra from this fork inside it (via the embedded
 # Docker image, which bundles LibreOffice/unoserver/OCR/etc.). Same
 # "one command on the host" experience as the community helper scripts, but it
 # deploys THIS fork instead of the upstream release.
@@ -25,7 +25,7 @@
 set -euo pipefail
 
 CTID="${CTID:-}"
-CT_HOSTNAME="${CT_HOSTNAME:-stirling-pdf}"
+CT_HOSTNAME="${CT_HOSTNAME:-papyra}"
 CORES="${CORES:-2}"
 RAM_MB="${RAM_MB:-4096}"
 DISK_GB="${DISK_GB:-16}"
@@ -88,7 +88,7 @@ pct create "$CTID" "$TEMPLATE_REF" \
     --features "nesting=1,keyctl=1" \
     --ostype debian \
     --onboot 1 \
-    --description "Stirling-PDF (self-hosted, license-unlocked fork)"
+    --description "Papyra (self-hosted, license-unlocked fork)"
 
 log "Starting container..."
 pct start "$CTID"
@@ -102,8 +102,8 @@ for _ in $(seq 1 30); do
     sleep 5
 done
 
-# --- Install Stirling-PDF inside the container ---------------------------
-log "Installing Docker + Stirling-PDF inside the container (first build takes several minutes)..."
+# --- Install Papyra inside the container ----------------------------------
+log "Installing Docker + Papyra inside the container (first build takes several minutes)..."
 pct exec "$CTID" -- bash -c "apt-get install -y curl >/dev/null 2>&1"
 pct exec "$CTID" -- env \
     REPO_URL="$REPO_URL" \
@@ -116,7 +116,7 @@ IP="$(pct exec "$CTID" -- bash -c "hostname -I 2>/dev/null | awk '{print \$1}'" 
 [ -n "$IP" ] || IP="<container-ip>"
 
 echo
-log "Stirling-PDF LXC ${CTID} is up."
+log "Papyra LXC ${CTID} is up."
 echo "    URL: http://${IP}:8080"
 echo "    Credentials were printed above and saved inside the container at:"
 echo "      /opt/stirling-pdf/.stirling-selfhosted.env"

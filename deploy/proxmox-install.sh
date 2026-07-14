@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# proxmox-install.sh — one-command self-hosted install for Stirling-PDF.
+# proxmox-install.sh — one-command self-hosted install for Papyra.
 #
 # Builds the image from THIS fork (so it includes the license-unlock changes)
 # and starts it with the full server/enterprise feature set enabled.
@@ -29,7 +29,7 @@ ENV_FILE="${INSTALL_DIR}/.stirling-selfhosted.env"
 
 STIRLING_PORT="${STIRLING_PORT:-8080}"
 STIRLING_ADMIN_USERNAME="${STIRLING_ADMIN_USERNAME:-admin}"
-STIRLING_APPNAME="${STIRLING_APPNAME:-Stirling-PDF}"
+STIRLING_APPNAME="${STIRLING_APPNAME:-Papyra}"
 
 log() { printf '\033[1;34m==>\033[0m %s\n' "$*"; }
 warn() { printf '\033[1;33m!!\033[0m %s\n' "$*" >&2; }
@@ -98,7 +98,7 @@ EOF
 }
 
 deploy() {
-    log "Building and starting Stirling-PDF (first build compiles the frontend + backend; this can take several minutes)..."
+    log "Building and starting Papyra (first build compiles the frontend + backend; this can take several minutes)..."
     ( cd "$INSTALL_DIR" \
         && $SUDO env \
             STIRLING_PORT="$STIRLING_PORT" \
@@ -120,7 +120,7 @@ main() {
     [ -n "$ip" ] || ip="<host-ip>"
 
     echo
-    log "Stirling-PDF is starting."
+    log "Papyra is starting."
     echo "    URL:      http://${ip}:${STIRLING_PORT}"
     echo "    Username: ${STIRLING_ADMIN_USERNAME}"
     if [ "${GENERATED_PW:-0}" -eq 1 ]; then
