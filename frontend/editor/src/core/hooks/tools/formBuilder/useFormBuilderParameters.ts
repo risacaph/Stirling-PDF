@@ -5,7 +5,12 @@ import {
 } from "@app/hooks/tools/shared/useBaseParameters";
 
 /** Field types the backend can create from a definition (see FormFieldTypeSupport). */
-export type FormBuilderFieldKind = "text" | "checkbox" | "combobox" | "listbox";
+export type FormBuilderFieldKind =
+  | "text"
+  | "checkbox"
+  | "combobox"
+  | "listbox"
+  | "signature";
 
 /**
  * A single field to place on the PDF. Geometry (x, y, width, height) is stored as fractions

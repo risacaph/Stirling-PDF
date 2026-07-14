@@ -272,6 +272,14 @@ public enum FormFieldTypeSupport {
         PDTerminalField createField(PDAcroForm acroForm) {
             return new PDSignatureField(acroForm);
         }
+
+        @Override
+        boolean doesNotsupportsDefinitionCreation() {
+            // Allow creating empty (unsigned) signature fields via the form builder so a PDF
+            // can be prepared for signing. The default definition application is a no-op, which
+            // is correct for a signature field (no default value or options).
+            return false;
+        }
     },
     BUTTON("button", "pushButton", PDPushButton.class) {
         @Override

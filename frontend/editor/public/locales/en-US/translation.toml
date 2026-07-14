@@ -4289,6 +4289,7 @@ failed = "An error occurred while adding the form fields."
 checkbox = "Checkbox"
 combobox = "Dropdown"
 listbox = "List"
+signature = "Signature"
 text = "Text"
 
 [formBuilder.properties]

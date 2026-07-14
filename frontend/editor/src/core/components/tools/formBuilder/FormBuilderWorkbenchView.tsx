@@ -66,6 +66,7 @@ const DEFAULT_SIZE: Record<
   checkbox: { width: 0.03, height: 0.024 },
   combobox: { width: 0.3, height: 0.03 },
   listbox: { width: 0.3, height: 0.12 },
+  signature: { width: 0.25, height: 0.06 },
 };
 
 const FIELD_KINDS: FormBuilderFieldKind[] = [
@@ -73,6 +74,7 @@ const FIELD_KINDS: FormBuilderFieldKind[] = [
   "checkbox",
   "combobox",
   "listbox",
+  "signature",
 ];
 
 const FormBuilderWorkbenchView = ({ data }: FormBuilderWorkbenchViewProps) => {
@@ -89,6 +91,8 @@ const FormBuilderWorkbenchView = ({ data }: FormBuilderWorkbenchViewProps) => {
         return t("formBuilder.fieldType.combobox", "Dropdown");
       case "listbox":
         return t("formBuilder.fieldType.listbox", "List");
+      case "signature":
+        return t("formBuilder.fieldType.signature", "Signature");
     }
   };
 
