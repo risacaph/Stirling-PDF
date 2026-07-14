@@ -2,7 +2,7 @@
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "Papyra",
   "mainBinaryName": "Papyra",
-  "version": "2.15.0",
+  "version": "2.16.0",
   "identifier": "com.papyra.desktop",
   "build": {
     "frontendDist": "../dist",
