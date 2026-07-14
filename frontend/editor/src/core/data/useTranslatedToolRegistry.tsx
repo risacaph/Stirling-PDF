@@ -65,6 +65,7 @@ import { batesNumberingOperationConfig } from "@app/components/tools/batesNumber
 import { translateOperationConfig } from "@app/hooks/tools/translate/useTranslateOperation";
 import { formBuilderOperationConfig } from "@app/hooks/tools/formBuilder/useFormBuilderOperation";
 import { insertBlankPagesOperationConfig } from "@app/hooks/tools/insertBlankPages/useInsertBlankPagesOperation";
+import { headersFootersOperationConfig } from "@app/hooks/tools/headersFooters/useHeadersFootersOperation";
 import { extractPagesOperationConfig } from "@app/hooks/tools/extractPages/useExtractPagesOperation";
 import { ENDPOINTS as SPLIT_ENDPOINT_NAMES } from "@app/constants/splitConstants";
 import { ToolId } from "@app/types/toolId";
@@ -749,6 +750,38 @@ export function useTranslatedToolCatalog(): TranslatedToolCatalog {
           "empty page",
           "insert page",
           "spacer",
+        ],
+      },
+      headersFooters: {
+        icon: (
+          <LocalIcon
+            icon="format-align-center"
+            width="1.5rem"
+            height="1.5rem"
+          />
+        ),
+        name: t("home.headersFooters.title", "Headers & Footers"),
+        component: lazy(() => import("@app/tools/HeadersFooters")),
+        description: t(
+          "home.headersFooters.desc",
+          "Add text, page numbers or dates to the top and bottom margins of every page.",
+        ),
+        categoryId: ToolCategoryId.STANDARD_TOOLS,
+        subcategoryId: SubcategoryId.PAGE_FORMATTING,
+        maxFiles: -1,
+        endpoints: ["add-stamp"],
+        operationConfig: asRegistryConfig(headersFootersOperationConfig),
+        automationSettings: lazySettings(
+          () =>
+            import("@app/components/tools/headersFooters/HeadersFootersSettings"),
+        ),
+        synonyms: [
+          "header",
+          "footer",
+          "page number",
+          "running head",
+          "title block",
+          "date stamp",
         ],
       },
       scalePages: {

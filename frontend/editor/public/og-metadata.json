@@ -300,6 +300,11 @@
       "title": "Insert Blank Pages - Stirling PDF",
       "description": "Insert one or more blank pages at a chosen position in the document."
     },
+    "headersFooters": {
+      "image": "/og_images/home.png",
+      "title": "Headers & Footers - Stirling PDF",
+      "description": "Add text, page numbers or dates to the top and bottom margins of every page."
+    },
     "multiTool": {
       "image": "/og_images/multi-tool.png",
       "title": "Multi-Tool - Stirling PDF",
@@ -616,6 +621,7 @@
     "/form-fill": "formFill",
     "/form-builder": "formBuilder",
     "/insert-blank-pages": "insertBlankPages",
+    "/headers-footers": "headersFooters",
     "/multi-tool": "multiTool",
     "/read": "read",
     "/automate": "automate",

@@ -4544,6 +4544,34 @@ message = "Create a free account to save your work, access more features, and su
 signUp = "Sign Up Free"
 title = "You're using Papyra as a guest!"
 
+[headersFooters]
+submit = "Add Headers & Footers"
+title = "Headers & Footers"
+
+[headersFooters.error]
+failed = "An error occurred while adding headers and footers."
+
+[headersFooters.labels]
+settings = "Settings"
+
+[headersFooters.settings]
+center = "Center"
+fontColor = "Text color"
+fontSize = "Font size"
+footer = "Footer (bottom)"
+header = "Header (top)"
+left = "Left"
+margin = "Margin"
+marginLarge = "Large"
+marginMedium = "Medium"
+marginSmall = "Small"
+marginXLarge = "Extra large"
+note = "Add text to the top and bottom margins of every page. Leave a slot blank to skip it."
+pages = "Pages"
+pagesHint = 'e.g. "all", "1,3,5" or "2-8"'
+right = "Right"
+tokens = "Tokens: @page_number, @total_pages, @date, @time, @filename. Example: Page @page_number of @total_pages"
+
 [home.addAttachments]
 desc = "Add or remove embedded files (attachments) to/from a PDF"
 tags = "embed,attach,include,attachments,attach files,embed files,include files,add files,file attachment,associated files,supplementary files"
@@ -4715,6 +4743,11 @@ title = "Get ALL Info on PDF"
 desc = "Convert a PDF to grayscale to save ink when printing"
 tags = "grayscale,greyscale,black and white,ink saver,ink,toner,monochrome,desaturate,remove color,remove colour,save ink,print friendly,gray,grey"
 title = "Grayscale / Ink-Saver"
+
+[home.headersFooters]
+desc = "Add text, page numbers or dates to the top and bottom margins of every page."
+tags = "header,footer,page number,running head,title block,date stamp,top,bottom,margin"
+title = "Headers & Footers"
 
 [home.insertBlankPages]
 desc = "Insert one or more blank pages at a chosen position in the document."
