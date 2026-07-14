@@ -217,6 +217,15 @@ public class EditLinksController {
         float width = rectangle.getWidth() / cropBox.getWidth();
         float height = rectangle.getHeight() / cropBox.getHeight();
 
+        // The client renders pages with /Rotate applied, so report geometry in that
+        // displayed space rather than the un-rotated user space of the /Rect.
+        float[] displayed =
+                unrotatedToDisplayed(normalizeRotation(page.getRotation()), x, y, width, height);
+        x = displayed[0];
+        y = displayed[1];
+        width = displayed[2];
+        height = displayed[3];
+
         String type = "other";
         String uri = null;
         Integer targetPage = null;
@@ -368,8 +377,9 @@ public class EditLinksController {
     }
 
     /**
-     * Converts fractional page geometry (0-1, top-left origin) into a PDF rectangle against the
-     * page CropBox — the same conversion the form builder uses for widget placement.
+     * Converts fractional page geometry (0-1, top-left origin, in the displayed/rotated space the
+     * client draws in) into a PDF rectangle against the page CropBox — the same conversion the form
+     * builder uses for widget placement, plus a /Rotate-aware transform.
      */
     private PDRectangle toLinkRectangle(PDPage page, LinkAddition addition) {
         float fracX = addition.x() != null ? addition.x() : 0f;
@@ -383,12 +393,54 @@ public class EditLinksController {
                     "link addition",
                     "link rectangle must have a positive size");
         }
+        float[] unrotated =
+                displayedToUnrotated(
+                        normalizeRotation(page.getRotation()), fracX, fracY, fracW, fracH);
+        fracX = unrotated[0];
+        fracY = unrotated[1];
+        fracW = unrotated[2];
+        fracH = unrotated[3];
         PDRectangle cropBox = page.getCropBox();
         float width = fracW * cropBox.getWidth();
         float height = fracH * cropBox.getHeight();
         float pdfX = fracX * cropBox.getWidth() + cropBox.getLowerLeftX();
         float pdfY = (1f - fracY - fracH) * cropBox.getHeight() + cropBox.getLowerLeftY();
         return new PDRectangle(pdfX, pdfY, width, height);
+    }
+
+    static int normalizeRotation(int rotation) {
+        int normalized = rotation % 360;
+        if (normalized < 0) {
+            normalized += 360;
+        }
+        // /Rotate must be a multiple of 90; treat anything else as unrotated.
+        return normalized % 90 == 0 ? normalized : 0;
+    }
+
+    /**
+     * Maps a fractional rectangle (top-left origin) from the displayed space of a page rotated
+     * clockwise by {@code rotation} degrees back into the un-rotated page space.
+     */
+    static float[] displayedToUnrotated(int rotation, float x, float y, float w, float h) {
+        return switch (rotation) {
+            case 90 -> new float[] {y, 1f - x - w, h, w};
+            case 180 -> new float[] {1f - x - w, 1f - y - h, w, h};
+            case 270 -> new float[] {1f - y - h, x, h, w};
+            default -> new float[] {x, y, w, h};
+        };
+    }
+
+    /**
+     * Maps a fractional rectangle (top-left origin) from the un-rotated page space into the
+     * displayed space of a page rotated clockwise by {@code rotation} degrees.
+     */
+    static float[] unrotatedToDisplayed(int rotation, float x, float y, float w, float h) {
+        return switch (rotation) {
+            case 90 -> new float[] {1f - y - h, x, h, w};
+            case 180 -> new float[] {1f - x - w, 1f - y - h, w, h};
+            case 270 -> new float[] {y, 1f - x - w, h, w};
+            default -> new float[] {x, y, w, h};
+        };
     }
 
     private static void requirePdf(MultipartFile file) {

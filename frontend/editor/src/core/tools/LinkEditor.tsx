@@ -52,6 +52,8 @@ const LinkEditor = (props: BaseToolProps) => {
 
   const viewIcon = useMemo(() => <LinkIcon fontSize="small" />, []);
   const hasAutoOpenedRef = useRef(false);
+  // The file whose annotation indices the current additions/removals were authored against.
+  const authoredForFileIdRef = useRef<string | null>(null);
 
   const selectedFile = base.selectedFiles[0] ?? null;
   const totalPages = selectedFile
@@ -114,13 +116,32 @@ const LinkEditor = (props: BaseToolProps) => {
 
   // Stable handler identities so the data effect only re-runs on real data changes.
   const handleAdditionsChange = useStableCallback((additions: NewLink[]) => {
+    authoredForFileIdRef.current = selectedFile?.fileId ?? null;
     updateParameter("additions", additions);
   });
   const handleRemovalsChange = useStableCallback(
     (removals: ExistingLinkRef[]) => {
+      authoredForFileIdRef.current = selectedFile?.fileId ?? null;
       updateParameter("removals", removals);
     },
   );
+
+  // Link edits reference a specific file's annotation indices. Drop them when a
+  // different file becomes active so stale indices can't delete the wrong links.
+  // The results view is left intact: the swap to the output file is expected there.
+  useEffect(() => {
+    const currentFileId = selectedFile?.fileId ?? null;
+    const authoredFor = authoredForFileIdRef.current;
+    if (
+      authoredFor === null ||
+      authoredFor === currentFileId ||
+      base.hasResults
+    ) {
+      return;
+    }
+    authoredForFileIdRef.current = null;
+    base.params.resetParameters();
+  }, [selectedFile, base.hasResults, base.params]);
   const handleExecute = useStableCallback(() => {
     void base.handleExecute();
   });

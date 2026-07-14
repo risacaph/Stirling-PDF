@@ -243,13 +243,16 @@ const LinkEditorWorkbenchView = ({ data }: LinkEditorWorkbenchViewProps) => {
       setDraft(lastDraft);
 
       const handleMove = (moveEvent: PointerEvent) => {
+        // Re-measure so scrolling mid-draw doesn't skew the fractions.
+        const bounds = canvasRef.current?.getBoundingClientRect();
+        if (!bounds) return;
         const currentX = clamp(
-          (moveEvent.clientX - rect.left) / rect.width,
+          (moveEvent.clientX - bounds.left) / bounds.width,
           0,
           1,
         );
         const currentY = clamp(
-          (moveEvent.clientY - rect.top) / rect.height,
+          (moveEvent.clientY - bounds.top) / bounds.height,
           0,
           1,
         );
@@ -286,9 +289,9 @@ const LinkEditorWorkbenchView = ({ data }: LinkEditorWorkbenchViewProps) => {
       setSelection({ kind: "new", id: link.id });
       const canvas = canvasRef.current;
       if (!canvas) return;
-      const rect = canvas.getBoundingClientRect();
-      const startX = event.clientX;
-      const startY = event.clientY;
+      const startBounds = canvas.getBoundingClientRect();
+      const startFx = (event.clientX - startBounds.left) / startBounds.width;
+      const startFy = (event.clientY - startBounds.top) / startBounds.height;
       const origin = {
         x: link.x,
         y: link.y,
@@ -297,8 +300,11 @@ const LinkEditorWorkbenchView = ({ data }: LinkEditorWorkbenchViewProps) => {
       };
 
       const handleMove = (moveEvent: PointerEvent) => {
-        const dx = (moveEvent.clientX - startX) / rect.width;
-        const dy = (moveEvent.clientY - startY) / rect.height;
+        // Re-measure so scrolling mid-drag doesn't skew the fractions.
+        const bounds = canvasRef.current?.getBoundingClientRect();
+        if (!bounds) return;
+        const dx = (moveEvent.clientX - bounds.left) / bounds.width - startFx;
+        const dy = (moveEvent.clientY - bounds.top) / bounds.height - startFy;
         if (mode === "move") {
           updateAddition(link.id, {
             x: clamp(origin.x + dx, 0, 1 - origin.width),
@@ -548,6 +554,9 @@ const LinkEditorWorkbenchView = ({ data }: LinkEditorWorkbenchViewProps) => {
                         top: `${link.y * 100}%`,
                         width: `${link.width * 100}%`,
                         height: `${link.height * 100}%`,
+                        // While drawing, let the pointer reach the canvas so a new
+                        // link can be drawn on top of an existing one.
+                        pointerEvents: drawArmed ? "none" : undefined,
                       }}
                       onPointerDown={(e) => {
                         e.stopPropagation();
@@ -575,6 +584,9 @@ const LinkEditorWorkbenchView = ({ data }: LinkEditorWorkbenchViewProps) => {
                         top: `${link.y * 100}%`,
                         width: `${link.width * 100}%`,
                         height: `${link.height * 100}%`,
+                        // While drawing, let the pointer reach the canvas so a new
+                        // link can be drawn on top of an existing one.
+                        pointerEvents: drawArmed ? "none" : undefined,
                       }}
                       onPointerDown={(e) => beginDrag(e, link, "move")}
                     >
